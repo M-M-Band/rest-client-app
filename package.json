@@ -2,29 +2,48 @@
   "name": "rest-client-app",
   "version": "0.1.0",
   "private": true,
+  "contributors": [
+    {
+      "name": "Danila Katsenkou",
+      "email": "froze333@gmail.com",
+      "url": "https://github.com/froze36"
+    },
+    {
+      "name": "Ekaterina Grigoreva",
+      "email": "grigoreva.katie@gmail.com",
+      "url": "https://github.com/katiegrigoreva"
+    },
+    {
+      "name": "Alexandr Kabanau",
+      "email": "alexandr.kabanau@gmail.com",
+      "url": "https://github.com/alexkabanau"
+    }
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format:fix": "prettier --write .",
     "postinstall": "nvm use && npm install -g npm@11.2.0 || true"
   },
   "dependencies": {
+    "next": "15.2.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.2.4"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
-    "@eslint/eslintrc": "^3"
+    "typescript": "^5"
   },
   "engines": {
-  "node": ">=22.14.0",
-  "npm": ">=11.2.0"
+    "node": ">=22.14.0",
+    "npm": ">=11.2.0"
   }
 }
