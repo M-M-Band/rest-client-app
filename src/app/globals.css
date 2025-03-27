@@ -1,4 +1,5 @@
 :root {
+  --background-dark: #1A1A1A;
   --background-grey: #1C1C1C;
   --background-grey-hover: #262626;
   --background-focus: #CAFF33;
@@ -17,12 +18,24 @@
 html,
 body {
   max-width: 100vw;
+  height: 100%;
   overflow-x: hidden;
   background: url('../../public/background.svg') top left/100vw;
 }
 
+main {
+  flex-grow: 1;
+}
+
+.appWrapper {
+  display: flex;
+  min-width: 1200px;
+  flex-direction: column;
+  height: 100%;
+}
+
 .container {
-  max-width: 1200px;
+  min-width: 1200px;
   margin: 20px auto;
   padding: 25px;
   height: 75px;
@@ -33,4 +46,9 @@ body {
   background-color: var(--background-grey);
   color: var(--text-light);
   z-index: 10;
+}
+
+.container_dark {
+  background-color: var(--background-dark);
+  margin: 0;
 }
