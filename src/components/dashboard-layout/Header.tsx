@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './header.module.css';
+import styles from '../../app/page.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../../public/logo.svg';
@@ -18,7 +18,7 @@ const Header = () => {
         <Link href='/about' className={styles.button}>About</Link>
       </div>
       <div className={styles.buttons_container}>
-        <select className={styles.button}>
+        <select className={styles.select}>
           <option value="En">En</option>
           <option value="Ru">Ru</option>
         </select>
