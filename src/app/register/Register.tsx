@@ -4,35 +4,31 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import React from 'react';
 
-import { DASHBOARD_PAGES } from '@/config/pages-url.config';
-
 import { supabase } from '@/lib/supabase';
 
-const Auth = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
-    });
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+      }    });
     setLoading(false);
 
     if (error) return alert(error.message);
-    console.log('Successfully login!');
-    router.push(DASHBOARD_PAGES.HOME); // Перенаправление после успешного входа
+    alert('Письмо с подтверждением отправлено!');
+    router.push('/auth'); // Перенаправляем на вход
   };
-  const handleRegister = () => {
-    // router.push(DASHBOARD_PAGES.REGISTER);
-    router.push('/register');
-  }
   return (
     <div className='flex flex-col items-center p-8'>
-      <h1 className='text-2xl font-bold mb-4'>Вход</h1>
+      <h1 className='text-2xl font-bold mb-4'>Регистрация</h1>
       <input
         type='email'
         placeholder='Email'
@@ -48,15 +44,14 @@ const Auth = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button
-        onClick={handleLogin}
-        className='bg-blue-500 text-white px-4 py-2 rounded'
+        onClick={handleRegister}
+        className='bg-green-500 text-white px-4 py-2 rounded'
         disabled={loading}
       >
-        {loading ? 'Вход...' : 'Войти'}
+        {loading ? 'Регистрация...' : 'Зарегистрироваться'}
       </button>
-      <button onClick={handleRegister}>Зарегистрироваться</button>
     </div>
   );
 };
 
-export default Auth;
+export default Register;
