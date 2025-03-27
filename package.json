@@ -25,7 +25,8 @@
     "start": "next start",
     "lint": "next lint",
     "format:fix": "prettier --write .",
-    "postinstall": "nvm use && npm install -g npm@11.2.0 || true"
+    "postinstall": "nvm use && npm install -g npm@11.2.0 || true",
+    "prepare": "husky"
   },
   "dependencies": {
     "next": "15.2.4",
@@ -40,6 +41,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "typescript": "^5"
   },
   "engines": {
