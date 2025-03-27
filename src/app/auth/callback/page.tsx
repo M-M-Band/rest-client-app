@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { DASHBOARD_PAGES, LOGIN_PATH } from '@/config/pages-url.config';
+
 import { supabase } from '@/lib/supabase';
 
 export default function AuthCallback() {
@@ -10,11 +12,11 @@ export default function AuthCallback() {
 
   useEffect(() => {
     async function checkAuth() {
-      const { data, error } = await supabase.auth.getUser();
+      const { data } = await supabase.auth.getUser();
       if (data?.user) {
-        router.push('/dashboard'); // Перенаправляем в личный кабинет
+        router.push(DASHBOARD_PAGES.HOME); // Перенаправляем в личный кабинет
       } else {
-        router.push('/login'); // Если что-то пошло не так
+        router.push(LOGIN_PATH); // Если что-то пошло не так
       }
     }
     checkAuth();

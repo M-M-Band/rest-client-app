@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import React from 'react';
 
+import { AUTH_PATH } from '@/config/pages-url.config';
+
 import { supabase } from '@/lib/supabase';
 
 const Register = () => {
@@ -18,34 +20,35 @@ const Register = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-      }    });
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      },
+    });
     setLoading(false);
 
     if (error) return alert(error.message);
     alert('Письмо с подтверждением отправлено!');
-    router.push('/auth'); // Перенаправляем на вход
+    router.push(AUTH_PATH); // Перенаправляем на вход
   };
   return (
-    <div className='flex flex-col items-center p-8'>
-      <h1 className='text-2xl font-bold mb-4'>Регистрация</h1>
+    <div className=''>
+      <h1 className=''>Регистрация</h1>
       <input
         type='email'
         placeholder='Email'
-        className='border p-2 mb-2'
+        className=''
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type='password'
         placeholder='Пароль'
-        className='border p-2 mb-4'
+        className=''
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <button
         onClick={handleRegister}
-        className='bg-green-500 text-white px-4 py-2 rounded'
+        className=''
         disabled={loading}
       >
         {loading ? 'Регистрация...' : 'Зарегистрироваться'}
