@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import Header from './Header';
+
 import Footer from './Footer';
+import Header from './Header';
 
 const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
