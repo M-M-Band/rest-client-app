@@ -2,6 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
+import {
+  AUTH_PATH,
+  DASHBOARD_PAGES,
+  REGISTER_PATH,
+} from '@/config/pages-url.config';
+
 import logo from '../../../public/logo.svg';
 import styles from '../../app/page.module.css';
 
@@ -9,7 +15,7 @@ const Header = () => {
   return (
     <header className='container'>
       <Link
-        href='/'
+        href={DASHBOARD_PAGES.ROOT}
         className={styles.buttons_container}
         style={{ textDecoration: 'none' }}
       >
@@ -24,13 +30,19 @@ const Header = () => {
       </Link>
       <div className={styles.buttons_container}>
         <Link
-          href='/'
+          href={DASHBOARD_PAGES.HOME}
           className={styles.button}
         >
           Home
         </Link>
         <Link
-          href='/about'
+          href={DASHBOARD_PAGES.REST}
+          className={styles.button}
+        >
+          REST
+        </Link>
+        <Link
+          href={DASHBOARD_PAGES.ABOUT}
           className={styles.button}
         >
           About
@@ -42,13 +54,13 @@ const Header = () => {
           <option value='Ru'>Ru</option>
         </select>
         <Link
-          href='/auth'
+          href={REGISTER_PATH}
           className={styles.button}
         >
           Sign in
         </Link>
         <Link
-          href='/auth'
+          href={AUTH_PATH}
           className={styles.button}
         >
           Login

@@ -1,6 +1,7 @@
 class DASHBOARD {
   private root = '/dashboard';
 
+  ROOT = `/`;
   HOME = this.root;
   REST = `${this.root}/rest`;
   HISTORY = `${this.root}/history`;
