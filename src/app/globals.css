@@ -5,6 +5,8 @@
   --background-focus: #caff33;
   --text-light: rgb(255, 255, 255);
   --text-grey: #1c1c1c;
+  --text-subtitle: #b3b3b3;
+  --text-input: #59595a;
 }
 
 * {
@@ -51,4 +53,11 @@ main {
 .container_dark {
   background-color: var(--background-dark);
   margin: 0;
+}
+button:not(:disabled) {
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
