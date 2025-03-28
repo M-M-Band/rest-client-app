@@ -1,22 +1,19 @@
 import type { Metadata } from 'next';
+import { Lexend } from 'next/font/google';
 
-// import { Geist, Geist_Mono } from 'next/font/google';
+import Footer from '@/components/dashboard-layout/Footer';
+import Header from '@/components/dashboard-layout/Header';
 
 import './globals.css';
 
-// const geistSans = Geist({
-//   variable: '--font-geist-sans',
-//   subsets: ['latin'],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: '--font-geist-mono',
-//   subsets: ['latin'],
-// });
+const lexend = Lexend({
+  variable: '--font-lexend',
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: 'REST Client',
-  description: 'Created by M-M-Band',
+  description: 'Send HTTP request and view the response',
 };
 
 export default function RootLayout({
@@ -26,7 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body>{children}</body>
+      <body className={`${lexend.variable}`}>
+        <div className='appWrapper'>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
