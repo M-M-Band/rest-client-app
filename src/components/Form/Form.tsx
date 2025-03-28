@@ -1,12 +1,17 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { SignUpFormData } from '@/types/auth.types';
+import {
+  AuthMode,
+  FORM_FIELDS_CONFIG,
+  SignInFormData,
+  SignUpFormData,
+} from '@/types/auth.types';
 
-import { SignUpSchema } from '@/utils/validators';
+import { SignInSchema, SignUpSchema } from '@/utils/validators';
 
 import Input from '../Input/Input';
 
@@ -15,23 +20,36 @@ import styles from './Form.module.css';
 const { form, container, title, subtitle, button, container_formElements } =
   styles;
 
-const Form = () => {
+type AuthFormProps = {
+  mode: AuthMode;
+  onSubmit: (dataForm: SignUpFormData | SignInFormData) => void;
+};
+
+const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
+  const isSignUp = mode === 'signup';
+  const fields = FORM_FIELDS_CONFIG[mode];
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(SignUpSchema),
+  } = useForm<SignInFormData | SignUpFormData>({
+    resolver: zodResolver(isSignUp ? SignUpSchema : SignInSchema),
     mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<SignUpFormData> = (dataForm) => {
-    console.log(dataForm);
+  const handleFormSubmit: SubmitHandler<SignInFormData | SignUpFormData> = (
+    dataForm
+  ) => {
+    if (isSignUp) {
+      onSubmit(dataForm as SignUpFormData);
+    } else {
+      onSubmit(dataForm as SignInFormData);
+    }
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleFormSubmit)}
       className={form}
     >
       <div className={container}>
@@ -41,33 +59,16 @@ const Form = () => {
         </p>
       </div>
       <div className={`${container} ${container_formElements}`}>
-        {/* <Input
-        type='text'
-        id='name'
-        {...register('name')}
-        errorMsg={errors.name?.message}
-      /> */}
-        <Input
-          type='email'
-          id='email'
-          {...register('email')}
-          errorMsg={errors.email?.message}
-          placeholder='Enter your email'
-        />
-        <Input
-          type='password'
-          id='password'
-          {...register('password')}
-          errorMsg={errors.password?.message}
-          placeholder='Enter your password'
-        />
-        <Input
-          type='password'
-          id='confirmPassword'
-          {...register('confirmPassword')}
-          errorMsg={errors.confirmPassword?.message}
-          placeholder='Enter your confirm password'
-        />
+        {fields.map((field) => (
+          <Input
+            key={field.name}
+            type={field.type}
+            id={field.name}
+            {...register(field.name)}
+            placeholder={field.placeholder}
+            errorMsg={errors[field.name as keyof typeof errors]?.message}
+          />
+        ))}
         <button
           type='submit'
           formNoValidate

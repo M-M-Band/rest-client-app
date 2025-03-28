@@ -21,8 +21,13 @@ export const SignUpSchema = z
     password: passwordSchema,
     confirmPassword: passwordSchema,
   })
-  .strict()
+  // .strict()
   .refine(({ confirmPassword, password }) => password === confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
   });
+
+export const SignInSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, 'Password is required'),
+});
