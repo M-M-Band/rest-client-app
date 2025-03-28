@@ -5,7 +5,9 @@ import { useState } from 'react';
 
 import { DASHBOARD_PAGES, REGISTER_PATH } from '@/config/pages-url.config';
 
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
+
+import styles from '@/app/page.module.css';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +17,13 @@ const Auth = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email,
+    //   password,
+    // });
     setLoading(false);
 
-    if (error) return alert(error.message);
+    // if (error) return alert(error.message);
     router.replace(DASHBOARD_PAGES.HOME);
   };
 
@@ -30,7 +32,7 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <div className={styles.mainContent}>
       <h1>Вход</h1>
       <input
         type='email'
@@ -47,10 +49,11 @@ const Auth = () => {
       <button
         onClick={handleLogin}
         disabled={loading}
+        className={`${styles.button} ${styles.button_colored}`}
       >
         {loading ? 'Вход...' : 'Войти'}
       </button>
-      <button onClick={handleRegister}>Зарегистрироваться</button>
+      <button className={`${styles.button} ${styles.button_colored}`} onClick={handleRegister}>Зарегистрироваться</button>
     </div>
   );
 };

@@ -6,8 +6,9 @@ import React from 'react';
 
 import { AUTH_PATH } from '@/config/pages-url.config';
 
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase';
 
+import styles from '@/app/page.module.css';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,21 +17,21 @@ const Register = () => {
 
   const handleRegister = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-      },
-    });
+    // const { error } = await supabase.auth.signUp({
+    //   email,
+    //   password,
+    //   options: {
+    //     emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    //   },
+    // });
     setLoading(false);
 
-    if (error) return alert(error.message);
+    // if (error) return alert(error.message);
     alert('Письмо с подтверждением отправлено!');
     router.push(AUTH_PATH); // Перенаправляем на вход
   };
   return (
-    <div className=''>
+    <div className={styles.mainContent}>
       <h1 className=''>Регистрация</h1>
       <input
         type='email'
@@ -48,7 +49,7 @@ const Register = () => {
       />
       <button
         onClick={handleRegister}
-        className=''
+        className={`${styles.button} ${styles.button_colored}`}
         disabled={loading}
       >
         {loading ? 'Регистрация...' : 'Зарегистрироваться'}

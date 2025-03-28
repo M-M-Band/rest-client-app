@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { AUTH_PATH, REGISTER_PATH } from '@/config/pages-url.config';
+import { AUTH_PATH, LOGIN_PATH } from '@/config/pages-url.config';
 
 import styles from './page.module.css';
 
@@ -23,16 +23,10 @@ export default function Home() {
           className={`${styles.buttons_container} ${styles.buttons_container_w200}`}
         >
           <Link
-            href={REGISTER_PATH}
+            href={LOGIN_PATH}
             className={`${styles.button} ${styles.button_colored}`}
           >
             Sign in
-          </Link>
-          <Link
-            href={AUTH_PATH}
-            className={`${styles.button} ${styles.button_colored}`}
-          >
-            Login
           </Link>
         </div>
       </div>

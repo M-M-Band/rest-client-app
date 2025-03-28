@@ -2,11 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import {
-  AUTH_PATH,
-  DASHBOARD_PAGES,
-  REGISTER_PATH,
-} from '@/config/pages-url.config';
+import { DASHBOARD_PAGES, LOGIN_PATH } from '@/config/pages-url.config';
 
 import logo from '../../../public/logo.svg';
 import styles from '../../app/page.module.css';
@@ -53,17 +49,12 @@ const Header = () => {
           <option value='En'>En</option>
           <option value='Ru'>Ru</option>
         </select>
+
         <Link
-          href={REGISTER_PATH}
+          href={LOGIN_PATH}
           className={styles.button}
         >
           Sign in
-        </Link>
-        <Link
-          href={AUTH_PATH}
-          className={styles.button}
-        >
-          Login
         </Link>
       </div>
     </header>

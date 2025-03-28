@@ -7,9 +7,11 @@ import { User } from '@/types/auth.types';
 
 import { AUTH_PATH } from '@/config/pages-url.config';
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/utils/supabase/client';
 
 export default function Dashboard() {
+  const supabase = createClient();
+
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
