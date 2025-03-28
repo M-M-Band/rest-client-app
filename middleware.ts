@@ -5,7 +5,7 @@ import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 // Вспомогательные функции
 const isAuthPage = (pathname: string) => pathname.includes(AUTH_PATH);
-const isRootPath = (pathname: string) => pathname === '/';
+const isDashboardPage = (pathname: string) => pathname.includes('/dashboard');
 const getRedirectUrl = (path: string) =>
   new URL(path, process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000');
 
@@ -13,11 +13,6 @@ const getRedirectUrl = (path: string) =>
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('supabase-auth-token');
-
-  // Если пользователь авторизован и находится на корневом пути
-  if (isRootPath(pathname) && token) {
-    return NextResponse.redirect(getRedirectUrl(DASHBOARD_PAGES.HOME));
-  }
 
   // Если пользователь авторизован и находится на странице auth
   if (isAuthPage(pathname) && token) {
@@ -29,8 +24,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Если пользователь не авторизован
-  if (!token) {
+  // Если пользователь пытается получить доступ к dashboard без авторизации
+  if (isDashboardPage(pathname) && !token) {
     return NextResponse.redirect(getRedirectUrl(AUTH_PATH));
   }
 
