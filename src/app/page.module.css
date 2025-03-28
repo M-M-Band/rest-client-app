@@ -6,6 +6,10 @@
   color: var(--background-focus);
 }
 
+.logo {
+  color: var(--text-light);
+}
+
 .mainContent {
   width: 600px;
   margin-left: 350px;
@@ -16,7 +20,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  align-content: center;
   gap: 10px;
 }
 
@@ -26,8 +29,7 @@
 }
 
 .button {
-  width: 75px;
-  height: 40px;
+  padding: 0px 20px;
   border-radius: 82px;
   background-color: var(--background-grey);
   color: var(--text-light);
@@ -42,7 +44,8 @@
   background-color: var(--background-grey-hover);
 }
 
-.button:focus, .active {
+.button:focus,
+.active {
   background-color: var(--background-focus);
   color: var(--text-grey);
 }
@@ -54,12 +57,11 @@
 }
 
 .button_colored:hover {
-  color: var(--text-light)
+  color: var(--text-light);
 }
 
 .select {
-  width: 75px;
-  height: 40px;
+  padding: 10px 20px;
   padding-left: 15px;
   border-radius: 82px;
   background-color: var(--background-grey);
@@ -73,5 +75,4 @@
   flex: 0 0 auto;
   height: 100px;
   background-color: var(--background-grey);
-  z-index: 10;
 }

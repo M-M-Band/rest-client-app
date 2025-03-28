@@ -1,10 +1,10 @@
 :root {
-  --background-dark: #1A1A1A;
-  --background-grey: #1C1C1C;
+  --background-dark: #1a1a1a;
+  --background-grey: #1c1c1c;
   --background-grey-hover: #262626;
-  --background-focus: #CAFF33;
-  --text-light: rgb(255,255,255);
-  --text-grey: #1C1C1C;
+  --background-focus: #caff33;
+  --text-light: rgb(255, 255, 255);
+  --text-grey: #1c1c1c;
 }
 
 * {
@@ -29,13 +29,14 @@ main {
 
 .appWrapper {
   display: flex;
-  min-width: 1200px;
+  max-width: 1200px;
+  margin: 0 auto;
   flex-direction: column;
   height: 100%;
 }
 
 .container {
-  min-width: 1200px;
+  min-width: 900px;
   margin: 20px auto;
   padding: 25px;
   height: 75px;
@@ -45,7 +46,6 @@ main {
   align-items: center;
   background-color: var(--background-grey);
   color: var(--text-light);
-  z-index: 10;
 }
 
 .container_dark {

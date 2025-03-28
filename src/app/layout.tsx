@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
 
-import './globals.css';
-import Header from '@/components/dashboard-layout/Header';
 import Footer from '@/components/dashboard-layout/Footer';
+import Header from '@/components/dashboard-layout/Header';
+
+import './globals.css';
 
 const lexend = Lexend({
   variable: '--font-lexend',
@@ -25,9 +26,7 @@ export default function RootLayout({
       <body className={`${lexend.variable}`}>
         <div className='appWrapper'>
           <Header />
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
           <Footer />
         </div>
       </body>
