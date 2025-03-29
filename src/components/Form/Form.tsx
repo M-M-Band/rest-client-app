@@ -17,8 +17,7 @@ import Input from '../Input/Input';
 
 import styles from './Form.module.css';
 
-const { form, container, title, subtitle, button, container_formElements } =
-  styles;
+const { form, container, button, container_formElements } = styles;
 
 type AuthFormProps = {
   mode: AuthMode;
@@ -53,8 +52,8 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       className={form}
     >
       <div className={container}>
-        <h1 className={title}>Sign In/Sign Up</h1>
-        <p className={subtitle}>
+        <h1 className='maintext maintext_green'>Sign In/Sign Up</h1>
+        <p className='subtext'>
           Welcome back! Please log in to access your account.
         </p>
       </div>
@@ -73,7 +72,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
           type='submit'
           formNoValidate
           disabled={!isValid}
-          className={button}
+          className={`button button_colored ${button}`}
         >
           Sign Up/Sign In
         </button>
