@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+// import { toast } from 'sonner';
+
 import { DASHBOARD_PAGES, LOGIN_PATH } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
@@ -18,14 +20,18 @@ export default function AuthCallback() {
       try {
         const { data, error } = await supabase.auth.getUser();
         if (error) {
+          // toast.error('Ошибка авторизации. Пожалуйста, попробуйте снова.');
           setError('Ошибка авторизации. Пожалуйста, попробуйте снова.');
           console.error('Error checking auth:', error);
         } else if (data?.user) {
+          // toast.success('Авторизация успешна!');
           router.push(DASHBOARD_PAGES.HOME);
         } else {
+          // toast.error('Ошибка авторизации. Войдите в систему.');
           router.push(LOGIN_PATH);
         }
       } catch (error) {
+        // toast.error('Ошибка авторизации. Пожалуйста, попробуйте снова.');
         setError('Произошла неизвестная ошибка.');
         console.error('Unexpected error:', error);
       } finally {

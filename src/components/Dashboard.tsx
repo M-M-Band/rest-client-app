@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+// import { toast } from 'sonner';
+
 import { User } from '@/types/auth.types';
 
 import { LOGIN_PATH } from '@/config/pages-url.config';
@@ -24,6 +26,7 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    // toast.success('Вы успешно вышли из системы!');
     redirect(LOGIN_PATH);
   };
 
