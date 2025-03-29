@@ -48,4 +48,3 @@ export interface User {
   user_metadata: UserMetadata;
   identities: Identity[];
 }
-

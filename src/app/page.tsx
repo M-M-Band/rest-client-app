@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { AUTH_PATH, LOGIN_PATH } from '@/config/pages-url.config';
+import { LOGIN_PATH } from '@/config/pages-url.config';
 
 import styles from './page.module.css';
 
