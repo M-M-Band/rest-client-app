@@ -17,6 +17,8 @@ interface Identity {
     email_verified: boolean;
     phone_verified: boolean;
     sub: string;
+    age?: number;
+    first_name?: string;
   };
 }
 

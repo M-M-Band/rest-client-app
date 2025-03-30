@@ -20,7 +20,9 @@ export default function Dashboard() {
     async function fetchUser() {
       const { data } = await supabase.auth.getUser();
       setUser(data?.user as User);
+      console.log('user', data?.user);
     }
+
     fetchUser();
   }, []);
 
@@ -30,41 +32,16 @@ export default function Dashboard() {
     redirect(LOGIN_PATH);
   };
 
-  // const handleDeleteAccount = async () => {
-  //   if (!user) return;
-
-  //   try {
-  //     const response = await fetch('/api/delete-user', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({ userId: user.id }),
-  //     });
-
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       console.error('Error deleting user:', errorData);
-  //       alert('Ошибка: ' + errorData.error || 'Failed to delete user');
-  //       return;
-  //     }
-
-  //     alert('Аккаунт удалён');
-  //     redirect(LOGIN_PATH);
-  //   } catch (error) {
-  //     console.error('Unexpected error:', error);
-  //     alert('Произошла непредвиденная ошибка');
-  //   }
-  // };
-
   return (
     <div>
       <h1>Личный кабинет</h1>
       {user ? (
         <div>
           <p>Email: {user.email}</p>
+          {user.identities[0].identity_data.first_name && (
+            <p>Имя: {user.identities[0].identity_data.first_name}</p>
+          )}
           <button onClick={handleLogout}>Выйти</button>
-          {/* <button onClick={handleDeleteAccount}>Удалить аккаунт</button> */}
         </div>
       ) : (
         <p>Загрузка...</p>
