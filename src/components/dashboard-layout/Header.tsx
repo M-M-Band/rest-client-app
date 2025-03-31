@@ -1,17 +1,19 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 import logo from '../../../public/logo.svg';
-import styles from '../../app/page.module.css';
 
 const Header = () => {
+  const pathname = usePathname();
   return (
-    <header className='container'>
+    <header>
       <Link
         href='/'
-        className={styles.buttons_container}
-        style={{ textDecoration: 'none' }}
+        className='buttons-container'
       >
         <Image
           priority={true}
@@ -20,38 +22,38 @@ const Header = () => {
           src={logo}
           alt='logo'
         />
-        <p className={styles.logo}>Rest Client</p>
+        <span>Rest Client</span>
       </Link>
-      <div className={styles.buttons_container}>
+      <div className='buttons-container'>
         <Link
           href='/'
-          className={styles.button}
+          className={`button ${pathname === '/' ? 'active' : ''}`}
         >
           Home
         </Link>
         <Link
           href='/about'
-          className={styles.button}
+          className={`button ${pathname === '/about' ? 'active' : ''}`}
         >
           About
         </Link>
       </div>
-      <div className={styles.buttons_container}>
-        <select className={styles.select}>
+      <div className='buttons-container'>
+        <select>
           <option value='En'>En</option>
           <option value='Ru'>Ru</option>
         </select>
         <Link
           href='/auth'
-          className={styles.button}
+          className={`button ${pathname === '/auth' ? 'active' : ''}`}
         >
-          Sign in
+          Sign In
         </Link>
         <Link
           href='/auth'
-          className={styles.button}
+          className={`button ${pathname === '/auth' ? 'active' : ''}`}
         >
-          Login
+          Sign Up
         </Link>
       </div>
     </header>
