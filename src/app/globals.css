@@ -77,7 +77,7 @@ a {
   color: var(--white);
 }
 
-button:not(:disabled) {
+:is(button:not(:disabled), select) {
   cursor: pointer;
 }
 
@@ -96,7 +96,7 @@ button.button {
   border-radius: var(--border-radius);
 }
 
-.button:not(:is(.active, .button_colored)):hover {
+:is(.button:not(:is(.active, .button_colored)):hover, select:hover) {
   background-color: var(--hover-button);
 }
 
