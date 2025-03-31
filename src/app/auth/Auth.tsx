@@ -1,36 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import Form from '@/components/Form/Form';
 
 import { AuthMode, SignInFormData, SignUpFormData } from '@/types/auth.types';
 
-const Auth = () => {
+interface AuthActions {
+  signInAction: (formData: SignInFormData) => Promise<void>;
+  signUpAction: (formData: SignUpFormData) => Promise<void>;
+}
+
+const Auth: FC<AuthActions> = ({ signInAction, signUpAction }) => {
   const [mode, setMode] = useState<AuthMode>('signup');
-  const handleSubmit = (data: SignUpFormData | SignInFormData) => {
-    if (mode === 'signup') {
-      console.log('SignUp:', data);
+  const isSignUpMode = mode === 'signup';
+  const handleSubmit = async (formData: SignUpFormData | SignInFormData) => {
+    if (isSignUpMode) {
+      await signUpAction(formData as SignUpFormData);
     } else {
-      console.log('SignIn:', data);
+      await signInAction(formData as SignInFormData);
     }
   };
-  const toggleMode = () => {
-    setMode(mode === 'signup' ? 'signin' : 'signup');
-  };
   return (
-    <div>
-      <Form
-        mode={mode}
-        onSubmit={handleSubmit}
-      />
-      <button
-        onClick={toggleMode}
-        style={{ padding: 20 }}
-      >
-        {mode === 'signup' ? 'SignUp' : 'Sign In'}
-      </button>
-    </div>
+    <Form
+      mode={mode}
+      onSubmit={handleSubmit}
+      setMode={setMode}
+      isSignUpMode={isSignUpMode}
+    />
   );
 };
 

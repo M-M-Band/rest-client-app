@@ -1,7 +1,7 @@
-import { PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
-import DashboardLayout from '@/components/dashboard-layout/DashboardLayout';
+const Layout: FC<PropsWithChildren> = ({ children }) => {
+  return <div data-field='123'>{children}</div>;
+};
 
-export default function Layout({ children }: PropsWithChildren<unknown>) {
-  return <DashboardLayout>{children}</DashboardLayout>;
-}
+export default Layout;

@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 const emailSchema = z.string().min(1, { message: 'Email is required' }).email();
-// const nameSchema = z
-//   .string()
-//   .min(1, { message: 'Name is required' })
-//   .regex(/[\p{L}]/u, { message: 'Name must start with an uppercase letter' });
+const nameSchema = z
+  .string()
+  .min(1, { message: 'Name is required' })
+  .regex(/[\p{L}]/u, { message: 'Name must start with an uppercase letter' });
 const passwordSchema = z
   .string()
   .min(8, { message: 'Password must contain at least 8 characters' })
@@ -17,11 +17,11 @@ const passwordSchema = z
 export const SignUpSchema = z
   .object({
     email: emailSchema,
-    // name: nameSchema,
+    name: nameSchema,
     password: passwordSchema,
     confirmPassword: passwordSchema,
   })
-  // .strict()
+  .strict()
   .refine(({ confirmPassword, password }) => password === confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],

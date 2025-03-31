@@ -17,33 +17,47 @@ import Input from '../Input/Input';
 
 import styles from './Form.module.css';
 
-const { form, container, button, container_formElements } = styles;
+const { form, container, button, button_border, container_formElements } =
+  styles;
 
 type AuthFormProps = {
   mode: AuthMode;
-  onSubmit: (dataForm: SignUpFormData | SignInFormData) => void;
+  onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
+  setMode: React.Dispatch<React.SetStateAction<AuthMode>>;
+  isSignUpMode: boolean;
 };
 
-const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
-  const isSignUp = mode === 'signup';
+const Form: FC<AuthFormProps> = ({ mode, onSubmit, setMode, isSignUpMode }) => {
+  const formNameAndButtonSubmitName = isSignUpMode ? 'Sign Up' : 'Sign In';
+  const buttonChangeFormName = !isSignUpMode ? 'Sign Up' : 'Sign In';
+  const aboutFormText = isSignUpMode
+    ? "Let's get started! Create your account in just a few steps."
+    : 'Good to see you again! Sign in to continue your journey.';
   const fields = FORM_FIELDS_CONFIG[mode];
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<SignInFormData | SignUpFormData>({
-    resolver: zodResolver(isSignUp ? SignUpSchema : SignInSchema),
+    resolver: zodResolver(isSignUpMode ? SignUpSchema : SignInSchema),
     mode: 'all',
   });
 
-  const handleFormSubmit: SubmitHandler<SignInFormData | SignUpFormData> = (
-    dataForm
-  ) => {
-    if (isSignUp) {
-      onSubmit(dataForm as SignUpFormData);
+  const toggleMode = () => {
+    setMode(isSignUpMode ? 'signin' : 'signup');
+    reset();
+  };
+
+  const handleFormSubmit: SubmitHandler<
+    SignInFormData | SignUpFormData
+  > = async (dataForm) => {
+    if (isSignUpMode) {
+      await onSubmit(dataForm as SignUpFormData);
     } else {
-      onSubmit(dataForm as SignInFormData);
+      await onSubmit(dataForm as SignInFormData);
     }
+    reset();
   };
 
   return (
@@ -52,10 +66,10 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       className={form}
     >
       <div className={container}>
-        <h1 className='maintext maintext_green'>Sign In/Sign Up</h1>
-        <p className='subtext'>
-          Welcome back! Please log in to access your account.
-        </p>
+        <h1 className='maintext maintext_green'>
+          {formNameAndButtonSubmitName}
+        </h1>
+        <p className='subtext'>{aboutFormText}</p>
       </div>
       <div className={`${container} ${container_formElements}`}>
         {fields.map((field) => (
@@ -68,13 +82,22 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
             errorMsg={errors[field.name as keyof typeof errors]?.message}
           />
         ))}
+      </div>
+      <div className={container}>
         <button
           type='submit'
           formNoValidate
           disabled={!isValid}
           className={`button button_colored ${button}`}
         >
-          Sign Up/Sign In
+          {formNameAndButtonSubmitName}
+        </button>
+        <button
+          onClick={toggleMode}
+          className={`button ${button} ${button_border}`}
+          type='button'
+        >
+          {buttonChangeFormName}
         </button>
       </div>
     </form>

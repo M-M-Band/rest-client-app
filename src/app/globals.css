@@ -43,7 +43,6 @@ body {
   padding: 20px 0px;
   flex-direction: column;
   justify-content: space-between;
-  gap: 50px;
   font-size: var(--fs-medium);
   font-weight: var(--fw-medium);
   height: 100vh;
@@ -60,7 +59,7 @@ body {
 }
 
 main {
-  padding: 0px 30px;
+  padding: 40px 30px;
   flex: 1 0 auto;
 }
 
@@ -91,6 +90,7 @@ button.button {
 }
 
 .button {
+  font-size: var(--fs-medium);
   padding: 12px 24px;
   transition: 0.2s all;
   border-radius: var(--border-radius);
