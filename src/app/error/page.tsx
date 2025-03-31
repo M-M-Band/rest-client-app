@@ -2,13 +2,11 @@ import type { Metadata } from 'next';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
-import Auth from './Auth';
-
 export const metadata: Metadata = {
-  title: 'Auth',
+  title: 'Error Page',
   ...NO_INDEX_PAGE,
 };
 
-export default function AuthPage() {
-  return <Auth />;
+export default function ErrorPage() {
+  return <p>Sorry, something went wrong</p>;
 }

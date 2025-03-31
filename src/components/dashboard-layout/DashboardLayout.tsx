@@ -1,16 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 
-import Footer from './Footer';
-import Header from './Header';
+import styles from '@/app/page.module.css';
 
 const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <div>
-      <Header />
-      {children}
-      <Footer />
-    </div>
-  );
+  return <div className={styles.mainContent}>{children}</div>;
 };
 
 export default DashboardLayout;

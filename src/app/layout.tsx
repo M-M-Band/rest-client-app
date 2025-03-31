@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 import Footer from '@/components/dashboard-layout/Footer';
 import Header from '@/components/dashboard-layout/Header';
@@ -28,6 +29,12 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+
+          <Toaster
+            theme='dark'
+            position='bottom-right'
+            duration={1500}
+          />
         </div>
       </body>
     </html>
