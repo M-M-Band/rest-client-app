@@ -1,10 +1,28 @@
 :root {
-  --background-dark: #1a1a1a;
-  --background-grey: #1c1c1c;
-  --background-grey-hover: #262626;
-  --background-focus: #caff33;
-  --text-light: rgb(255, 255, 255);
-  --text-grey: #1c1c1c;
+  --black-900: #1a1a1a;
+  --black-800: #1c1c1c;
+  --black-700: #262626;
+
+  --accent-green: #caff33;
+
+  --white: #ffffff;
+  --gray-200: #b3b3b3;
+  --gray-300: #bfbfbf;
+  --gray-500: #59595a;
+
+  --border-color: var(--black-700);
+  --hover-button: var(--black-700);
+  --active-button: var(--accent-green);
+  --bg-dark: var(--black-900);
+  --bg-grey: var(--black-800);
+
+  --fs-big: 48px;
+  --fs-medium: 18px;
+  --border-radius: 80px;
+
+  --fw-regular: 300;
+  --fw-medium: 400;
+  --fw-semiBold: 500;
 }
 
 * {
@@ -12,43 +30,117 @@
   padding: 0;
   margin: 0;
   font-family: var(--font-lexend);
-  font-weight: 300;
 }
 
-html,
 body {
-  max-width: 100vw;
-  height: 100%;
-  overflow-x: hidden;
   background: url('../../public/background.svg') top left/100vw;
-}
-
-main {
-  flex-grow: 1;
 }
 
 .appWrapper {
   display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1240px;
+  margin: 0px auto;
+  padding: 20px 0px;
   flex-direction: column;
-  height: 100%;
+  justify-content: space-between;
+  font-size: var(--fs-medium);
+  font-weight: var(--fw-medium);
+  height: 100vh;
 }
 
-.container {
-  min-width: 900px;
-  margin: 20px auto;
-  padding: 25px;
-  height: 75px;
-  border-radius: 60px;
+:is(header, footer) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--background-grey);
-  color: var(--text-light);
+  padding: 16px 25px;
+  border-radius: var(--border-radius);
+  background-color: var(--bg-grey);
+  border: 1px solid var(--border-color);
 }
 
-.container_dark {
-  background-color: var(--background-dark);
-  margin: 0;
+main {
+  padding: 40px 30px;
+  flex: 1 0 auto;
+}
+
+footer {
+  background-color: var(--bg-dark);
+  span {
+    color: var(--gray-200);
+    font-weight: var(--fw-regular);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--white);
+}
+
+:is(button:not(:disabled), select) {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+button.button {
+  border: none;
+}
+
+.button {
+  font-size: var(--fs-medium);
+  padding: 12px 24px;
+  transition: 0.2s all;
+  border-radius: var(--border-radius);
+}
+
+:is(.button:not(:is(.active, .button_colored)):hover, select:hover) {
+  background-color: var(--hover-button);
+}
+
+:is(.button_colored, .active) {
+  background-color: var(--active-button);
+  color: var(--black-800);
+}
+
+select {
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  font-size: var(--fs-medium);
+  outline: none;
+  border-radius: var(--border-radius);
+  background-color: var(--bg-grey);
+  color: var(--white);
+}
+
+.home {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  color: var(--white);
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.maintext {
+  font-size: var(--fs-big);
+  font-weight: var(--fw-semiBold);
+}
+
+.maintext_green {
+  color: var(--accent-green);
+}
+
+.subtext {
+  color: var(--gray-300);
+  font-weight: var(--fw-regular);
 }

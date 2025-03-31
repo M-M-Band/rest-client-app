@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    <div>
+    <>
       <h2>Main page</h2>
       <Dashboard />
-    </div>
+    </>
   );
 }

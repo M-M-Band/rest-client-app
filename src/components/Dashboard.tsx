@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { User } from '@/types/auth.types';
 
-import { LOGIN_PATH } from '@/config/pages-url.config';
+import { AUTH_PATH } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
@@ -24,12 +24,13 @@ export default function Dashboard() {
     }
 
     fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     // toast.success('Вы успешно вышли из системы!');
-    redirect(LOGIN_PATH);
+    redirect(AUTH_PATH);
   };
 
   return (

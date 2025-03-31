@@ -1,19 +1,21 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
-import { DASHBOARD_PAGES, LOGIN_PATH } from '@/config/pages-url.config';
+import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import logo from '../../../public/logo.svg';
-import styles from '../../app/page.module.css';
 
 const Header = () => {
+  const pathname = usePathname();
   return (
-    <header className='container'>
+    <header>
       <Link
-        href={DASHBOARD_PAGES.ROOT}
-        className={styles.buttons_container}
-        style={{ textDecoration: 'none' }}
+        href={`${DASHBOARD_PAGES.ROOT}`}
+        className='buttons-container'
       >
         <Image
           priority={true}
@@ -22,39 +24,39 @@ const Header = () => {
           src={logo}
           alt='logo'
         />
-        <p className={styles.logo}>Rest Client</p>
+        <span>Rest Client</span>
       </Link>
-      <div className={styles.buttons_container}>
+      <div className='buttons-container'>
         <Link
-          href={DASHBOARD_PAGES.HOME}
-          className={styles.button}
+          href={`${DASHBOARD_PAGES.ROOT}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.ROOT}` ? 'active' : ''}`}
         >
           Home
         </Link>
         <Link
-          href={DASHBOARD_PAGES.REST}
-          className={styles.button}
-        >
-          REST
-        </Link>
-        <Link
-          href={DASHBOARD_PAGES.ABOUT}
-          className={styles.button}
+          href={`${DASHBOARD_PAGES.ABOUT}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.ABOUT}` ? 'active' : ''}`}
         >
           About
         </Link>
       </div>
-      <div className={styles.buttons_container}>
-        <select className={styles.select}>
+      <div className='buttons-container'>
+        <select>
           <option value='En'>En</option>
           <option value='Ru'>Ru</option>
         </select>
 
         <Link
-          href={LOGIN_PATH}
-          className={styles.button}
+          href={`${AUTH_PATH}`}
+          className={`button ${pathname === '/auth' ? 'active' : ''}`}
         >
-          Sign in
+          Sign In
+        </Link>
+        <Link
+          href={`${AUTH_PATH}`}
+          className={`button ${pathname === '/auth' ? 'active' : ''}`}
+        >
+          Sign Up
         </Link>
       </div>
     </header>

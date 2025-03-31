@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/utils/supabase/middleware';
 import { createClient } from '@/utils/supabase/server';
 
-import { DASHBOARD_PAGES, LOGIN_PATH } from './config/pages-url.config';
+import { AUTH_PATH, DASHBOARD_PAGES } from './config/pages-url.config';
 
 export async function middleware(request: NextRequest) {
   console.log('middleware');
@@ -23,10 +23,10 @@ export async function middleware(request: NextRequest) {
     console.log('no user');
     console.log('user', !!user);
     console.log('url', request.nextUrl.pathname);
-    return NextResponse.redirect(new URL(LOGIN_PATH, request.url));
+    return NextResponse.redirect(new URL(AUTH_PATH, request.url));
   }
 
-  if (user && request.nextUrl.pathname.includes(LOGIN_PATH)) {
+  if (user && request.nextUrl.pathname.includes(AUTH_PATH)) {
     console.log('has user and login path');
     console.log('user', !!user);
     console.log('url', request.nextUrl.pathname);

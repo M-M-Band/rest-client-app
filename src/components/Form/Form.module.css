@@ -1,0 +1,25 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .container_formElements {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(350px, 1fr));
+    gap: 10px;
+  }
+  .button {
+    width: 500px;
+  }
+  .button_border {
+    border: 1px solid var(--border-color);
+    color: var(--white);
+    background-color: transparent;
+  }
+}

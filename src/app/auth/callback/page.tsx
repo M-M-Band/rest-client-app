@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 // import { toast } from 'sonner';
 
-import { DASHBOARD_PAGES, LOGIN_PATH } from '@/config/pages-url.config';
+import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
@@ -28,7 +28,7 @@ export default function AuthCallback() {
           router.push(DASHBOARD_PAGES.HOME);
         } else {
           // toast.error('Ошибка авторизации. Войдите в систему.');
-          router.push(LOGIN_PATH);
+          router.push(AUTH_PATH);
         }
       } catch (error) {
         // toast.error('Ошибка авторизации. Пожалуйста, попробуйте снова.');
@@ -39,6 +39,7 @@ export default function AuthCallback() {
       }
     }
     checkAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   if (isLoading) {
