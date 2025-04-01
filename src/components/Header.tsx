@@ -28,16 +28,22 @@ const Header = () => {
       </Link>
       <div className='buttons-container'>
         <Link
-          href={`${DASHBOARD_PAGES.ROOT}`}
-          className={`button ${pathname === `${DASHBOARD_PAGES.ROOT}` ? 'active' : ''}`}
+          href={`${DASHBOARD_PAGES.HOME}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.HOME}` ? 'active' : ''}`}
         >
           Home
         </Link>
         <Link
-          href={`${DASHBOARD_PAGES.ABOUT}`}
-          className={`button ${pathname === `${DASHBOARD_PAGES.ABOUT}` ? 'active' : ''}`}
+          href={`${DASHBOARD_PAGES.REST}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.REST}` ? 'active' : ''}`}
         >
-          About
+          REST
+        </Link>
+        <Link
+          href={`${DASHBOARD_PAGES.VARIABLES}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.VARIABLES}` ? 'active' : ''}`}
+        >
+          Variables
         </Link>
       </div>
       <div className='buttons-container'>
