@@ -1,16 +1,25 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import logo from '../../../public/logo.svg';
 
+import { usePathname, useRouter } from '@/i18n/navigation';
+
 const Header = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const locale = useLocale();
+
+  const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    router.replace({ pathname }, { locale: e.target.value });
+  };
+
   return (
     <header>
       <Link
@@ -41,9 +50,12 @@ const Header = () => {
         </Link>
       </div>
       <div className='buttons-container'>
-        <select>
-          <option value='En'>En</option>
-          <option value='Ru'>Ru</option>
+        <select
+          onChange={handleLangChange}
+          defaultValue={locale}
+        >
+          <option value='en'>En</option>
+          <option value='ru'>Ru</option>
         </select>
 
         <Link
