@@ -7,29 +7,22 @@ import { createClient } from '@/utils/supabase/client';
 export const useUser = () => {
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const { data, error } = await supabase.auth.getUser();
-        if (error) {
-          setError(error);
-          setUser(null);
-        } else {
-          setUser(data?.user as User);
-        }
-      } catch (err) {
-        setError(err as Error);
-        setUser(null);
-      } finally {
-        setIsLoading(false);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser((session?.user as User) || null);
       }
+    );
+
+    return () => {
+      authListener?.subscription.unsubscribe();
     };
+  }, []);
 
-    fetchUser();
-  }, [supabase]);
-
-  return { user, isLoading, error };
+  return { user, signOut };
 };

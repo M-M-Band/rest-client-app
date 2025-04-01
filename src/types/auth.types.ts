@@ -1,3 +1,4 @@
+import { Session } from '@supabase/supabase-js';
 import { z } from 'zod';
 
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
@@ -84,6 +85,16 @@ interface AppMetadata {
   provider: string;
   providers: string[];
 }
+// export interface SignInFormData {
+//   email: string;
+//   pass: string;
+// }
+
+// export interface SignUpFormData {
+//   email: string;
+//   pass: string;
+//   firstName: string;
+// }
 
 export interface User {
   id: string;
@@ -101,3 +112,24 @@ export interface User {
   user_metadata: UserMetadata;
   identities: Identity[];
 }
+export interface AuthSession {
+  session: Session | null;
+}
+
+// export const convertSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
+//   return {
+//     id: supabaseUser.id,
+//     aud: supabaseUser.aud,
+//     role: supabaseUser.role || 'authenticated', // Устанавливаем значение по умолчанию
+//     email: supabaseUser.email || '',
+//     email_confirmed_at: supabaseUser.email_confirmed_at || '',
+//     phone: supabaseUser.phone || '',
+//     confirmed_at: supabaseUser.confirmed_at || '',
+//     last_sign_in_at: supabaseUser.last_sign_in_at || '',
+//     app_metadata: supabaseUser.app_metadata,
+//     user_metadata: supabaseUser.user_metadata,
+//     identities: supabaseUser.identities || [],
+//     created_at: supabaseUser.created_at,
+//     updated_at: supabaseUser.updated_at,
+//   };
+// };

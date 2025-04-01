@@ -7,6 +7,8 @@ import React, { ChangeEvent, useEffect, useRef } from 'react';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
+import { useUser } from '@/hooks/useUser';
+
 import logo from '../../public/logo.svg';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
@@ -36,6 +38,15 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push(AUTH_PATH);
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <header ref={headerRef}>
