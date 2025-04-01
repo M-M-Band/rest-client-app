@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { FC, useState } from 'react';
+import { toast } from 'sonner';
 
 import Form from '@/components/Form/Form';
 
@@ -9,24 +10,20 @@ import { AuthMode, SignInFormData, SignUpFormData } from '@/types/auth.types';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
-import { useUser } from '@/hooks/useUser';
-
 import { createClient } from '@/utils/supabase/client';
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
 
 const Auth: FC = () => {
   const [mode, setMode] = useState<AuthMode>('signup');
+  //eslint-disable-next-line
   const [error, setError] = useState<string | null>(null);
 
   const isSignUpMode = mode === 'signup';
 
   const supabase = createClient();
   const router = useRouter();
-  const {} = useUser();
 
   const handleSubmit = async (formData: SignUpFormData | SignInFormData) => {
-    setError(null);
-
     if (isSignUpMode) {
       const result = SignUpSchema.safeParse(formData);
       if (!result.success) {
@@ -45,7 +42,10 @@ const Auth: FC = () => {
       });
       if (error) {
         setError(error.message);
+        toast.error(error.message);
       } else {
+        toast.success('Проверьте свою почту!');
+
         router.push(DASHBOARD_PAGES.ROOT);
       }
     } else {
@@ -61,7 +61,9 @@ const Auth: FC = () => {
       });
       if (error) {
         setError(error.message);
+        toast.error(error.message);
       } else {
+        toast.success('Вы успешно авторизовались!');
         router.push(DASHBOARD_PAGES.ROOT);
       }
     }
@@ -72,7 +74,6 @@ const Auth: FC = () => {
       onSubmit={handleSubmit}
       setMode={setMode}
       isSignUpMode={isSignUpMode}
-      error={error}
     />
   );
 };

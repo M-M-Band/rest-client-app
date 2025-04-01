@@ -3,7 +3,9 @@
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ChangeEvent, useEffect, useRef } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
@@ -41,6 +43,8 @@ const Header = () => {
 
   const handleLogout = async () => {
     await signOut();
+    toast.success('Вы вышли из аккаунта');
+
     router.push(AUTH_PATH);
   };
 

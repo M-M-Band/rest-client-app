@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 import { AUTH_PATH } from '@/config/pages-url.config';
 
@@ -19,6 +20,12 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await signOut();
+    // console.log('logout');
+    // debugger;
+    toast.success('Вы вышли из аккаунта');
+    // setTimeout(() => {
+    // router.push(AUTH_PATH);
+    // }, 1500);
     router.push(AUTH_PATH);
   };
 
