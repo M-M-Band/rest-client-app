@@ -4,8 +4,8 @@ import { Lexend } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { Toaster } from 'sonner';
 
-import Footer from '@/components/dashboard-layout/Footer';
-import Header from '@/components/dashboard-layout/Header';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
 import './globals.css';
 import { routing } from '@/i18n/routing';
