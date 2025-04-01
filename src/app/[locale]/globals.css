@@ -33,7 +33,7 @@
 }
 
 body {
-  background: url('../../public/background.svg') top left/100vw;
+  background: url('../../../public/background.svg') top left/100vw;
 }
 
 .appWrapper {

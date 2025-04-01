@@ -1,0 +1,6 @@
+{
+  "HomePage": {
+    "title": "Welcome to REST Client",
+    "description": "A REST client enables and simplifies communication with any open RESTful API. It offers an abstraction over HTTP libraries that allows for convenient conversion to an HTTP request, and the creation of objects from an HTTP response. To start using the application please sign up or login."
+  }
+}

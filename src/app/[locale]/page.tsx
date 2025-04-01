@@ -1,10 +1,14 @@
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 export default function Home() {
+  const t = useTranslations('HomePage');
   return (
     <section className='home'>
       <h1 className='maintext'>
-        Welcome to <span className='maintext_green'>REST Client</span>
+        {t('title')}
+        {/*         Welcome to <span className='maintext_green'>REST Client</span>
+         */}{' '}
       </h1>
       <p className='subtext'>
         A REST client enables and simplifies communication with any open RESTful

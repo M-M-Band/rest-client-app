@@ -1,9 +1,13 @@
+import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { updateSession } from '@/utils/supabase/middleware';
 import { createClient } from '@/utils/supabase/server';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from './config/pages-url.config';
+import { routing } from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   console.log('middleware');
@@ -35,6 +39,12 @@ export async function middleware(request: NextRequest) {
 
   console.log('middleware url', request.nextUrl.pathname);
   // If the user is authenticated or the requested path is /login, continue
+
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse) {
+    return intlResponse;
+  }
+
   return response;
 }
 
