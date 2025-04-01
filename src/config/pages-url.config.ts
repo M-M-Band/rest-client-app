@@ -3,9 +3,9 @@ class DASHBOARD {
 
   ROOT = `/`;
   HOME = this.root;
-  REST = `${this.ROOT}rest`;
-  HISTORY = `${this.ROOT}history`;
-  ABOUT = `${this.ROOT}about`;
+  REST = `${this.root}/rest`;
+  HISTORY = `${this.root}/history`;
+  VARIABLES = `${this.root}/variables`;
 }
 
 export const DASHBOARD_PAGES = new DASHBOARD();

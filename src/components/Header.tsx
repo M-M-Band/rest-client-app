@@ -3,15 +3,16 @@
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
-import logo from '../../../public/logo.svg';
+import logo from '../../public/logo.svg';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
 
 const Header = () => {
+  const headerRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale();
@@ -20,8 +21,23 @@ const Header = () => {
     router.replace({ pathname }, { locale: e.target.value });
   };
 
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const handleScroll = () => {
+      const shouldBeTransparent = window.scrollY > 20;
+      header.style.backgroundColor = shouldBeTransparent
+        ? 'transparent'
+        : 'var(--bg-grey)';
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header>
+    <header ref={headerRef}>
       <Link
         href={`${DASHBOARD_PAGES.ROOT}`}
         className='buttons-container'
@@ -37,16 +53,22 @@ const Header = () => {
       </Link>
       <div className='buttons-container'>
         <Link
-          href={`${DASHBOARD_PAGES.ROOT}`}
-          className={`button ${pathname === `${DASHBOARD_PAGES.ROOT}` ? 'active' : ''}`}
+          href={`${DASHBOARD_PAGES.HOME}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.HOME}` ? 'active' : ''}`}
         >
           Home
         </Link>
         <Link
-          href={`${DASHBOARD_PAGES.ABOUT}`}
-          className={`button ${pathname === `${DASHBOARD_PAGES.ABOUT}` ? 'active' : ''}`}
+          href={`${DASHBOARD_PAGES.REST}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.REST}` ? 'active' : ''}`}
         >
-          About
+          REST
+        </Link>
+        <Link
+          href={`${DASHBOARD_PAGES.VARIABLES}`}
+          className={`button ${pathname === `${DASHBOARD_PAGES.VARIABLES}` ? 'active' : ''}`}
+        >
+          Variables
         </Link>
       </div>
       <div className='buttons-container'>

@@ -12,9 +12,6 @@ import { createClient } from './server';
 export async function signIn(formData: SignInFormData) {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-
   const { error } = await supabase.auth.signInWithPassword(formData);
 
   if (error) {
@@ -28,9 +25,6 @@ export async function signIn(formData: SignInFormData) {
 export async function signUp(formData: SignUpFormData) {
   const supabase = await createClient();
   const { email, password, name } = formData;
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
 
   const { error } = await supabase.auth.signUp({
     email: email,
