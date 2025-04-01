@@ -3,16 +3,33 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import logo from '../../public/logo.svg';
 
 const Header = () => {
+  const headerRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const handleScroll = () => {
+      const shouldBeTransparent = window.scrollY > 20;
+      header.style.backgroundColor = shouldBeTransparent
+        ? 'transparent'
+        : 'var(--bg-grey)';
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header>
+    <header ref={headerRef}>
       <Link
         href={`${DASHBOARD_PAGES.ROOT}`}
         className='buttons-container'
