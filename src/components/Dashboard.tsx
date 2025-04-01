@@ -3,8 +3,6 @@
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// import { toast } from 'sonner';
-
 import { User } from '@/types/auth.types';
 
 import { AUTH_PATH } from '@/config/pages-url.config';
@@ -20,7 +18,6 @@ export default function Dashboard() {
     async function fetchUser() {
       const { data } = await supabase.auth.getUser();
       setUser(data?.user as User);
-      console.log('user', data?.user);
     }
 
     fetchUser();
@@ -29,7 +26,6 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    // toast.success('Вы успешно вышли из системы!');
     redirect(AUTH_PATH);
   };
 

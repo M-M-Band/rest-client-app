@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-import rsLogo from '../../../public/RSLogo.png';
-import githubLink from '../../../public/github.png';
+import rsLogo from '../../public/RSLogo.png';
+import githubLink from '../../public/github.png';
 
 const Footer = () => {
   return (
