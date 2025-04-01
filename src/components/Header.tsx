@@ -7,7 +7,7 @@ import React from 'react';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
 
-import logo from '../../../public/logo.svg';
+import logo from '../../public/logo.svg';
 
 const Header = () => {
   const pathname = usePathname();
