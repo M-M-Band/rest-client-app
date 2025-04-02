@@ -8,6 +8,10 @@ import { useUser } from '@/hooks/useUser';
 
 import { createClient } from '@/utils/supabase/client';
 
+import styles from './dashboard.module.css';
+
+const { dashboard } = styles;
+
 export default function Dashboard() {
   const { user, isLoading, error } = useUser();
   const supabase = createClient();
@@ -29,14 +33,24 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
-      <h1>Личный кабинет</h1>
-      <div>
-        <p>Email: {user.email}</p>
-
-        <p>Имя: {user.identities[0].identity_data.first_name}</p>
-        <button onClick={handleLogout}>Выйти</button>
-      </div>
-    </div>
+    <section className={dashboard}>
+      <h1 className='maintext'>
+        Welcome,{' '}
+        <span className='maintext_green'>
+          {user.identities[0].identity_data.first_name}
+        </span>
+        !
+      </h1>
+      <p className='subtext'>
+        We are glad to see you again. You now have access to all features of
+        your account.
+      </p>
+      <button
+        onClick={handleLogout}
+        className='button button_colored'
+      >
+        Sign Out
+      </button>
+    </section>
   );
 }

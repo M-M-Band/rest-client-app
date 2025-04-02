@@ -76,6 +76,14 @@ footer {
   }
 }
 
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  gap: 20px;
+}
+
 a {
   text-decoration: none;
   color: var(--white);
@@ -122,11 +130,7 @@ select {
 
 .home {
   width: 600px;
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
-  color: var(--white);
 }
 
 .buttons-container {
