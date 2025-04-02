@@ -1,12 +1,49 @@
 .rest {
+  gap: 30px;
   .form {
-    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
   }
   .container {
     width: 100%;
     display: inline-flex;
     justify-content: space-between;
     gap: 20px;
+  }
+  .container_headers {
+    margin-left: 20px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  h2 {
+    color: var(--accent-green);
+    font-weight: var(--fw-regular);
+  }
+  .headers__table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    margin-left: 5px;
+  }
+  .headers__table input {
+    background-color: var(--bg-dark);
+    outline: none;
+    border: none;
+    padding: 10px 0px;
+    font-size: var(--fs-medium);
+    font-weight: var(--fw-regular);
+    color: var(--white);
+  }
+  .headers__table th {
+    color: var(--gray-200);
+    font-weight: var(--fw-semiBold);
+    text-align: left;
+  }
+  .headers__table :is(th, td) {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
   }
   .container_search {
     flex: 5;
@@ -32,7 +69,7 @@
     border-left: 4px solid var(--border-color);
     background-color: var(--bg-dark);
     outline: none;
-    font-size: 18px;
+    font-size: var(--fs-medium);
     color: var(--white);
   }
   input::placeholder {
@@ -41,8 +78,21 @@
   .button {
     flex: 1;
   }
+  .button_border {
+    border: 1px solid var(--border-color);
+    color: var(--white);
+    background-color: transparent;
+  }
   .response {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 88%;
+    gap: 20px;
+    margin-left: 20px;
     .code {
+      height: 40vh;
+      overflow: scroll;
       font-size: 10px;
     }
   }

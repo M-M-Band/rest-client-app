@@ -1,6 +1,6 @@
 'use server';
 
-import { State } from '@/types/rest.types';
+import { Header, State } from '@/types/rest.types';
 
 export const sendRequest = async (
   _: State,
@@ -9,15 +9,18 @@ export const sendRequest = async (
   try {
     const method = formData.get('method') as string;
     const url = formData.get('url') as string;
-    // const headers = JSON.parse(formData.get('headers') as string) as Header[];
+    const headers = JSON.parse(formData.get('headers') as string) as Header[];
     // const body = formData.get('body') as string;
 
     const options: RequestInit = {
       method,
-      // headers: headers.reduce((acc, { key, value }) => {
-      //   if (key) acc[key] = value;
-      //   return acc;
-      // }, {}  as Record<string, string>),
+      headers: headers.reduce(
+        (acc, { key, value }) => {
+          if (key) acc[key] = value;
+          return acc;
+        },
+        {} as Record<string, string>
+      ),
     };
 
     // if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
@@ -32,7 +35,7 @@ export const sendRequest = async (
       status: 'success',
       response: {
         status: response.status,
-        // headers: Object.fromEntries(response.headers.entries()),
+        headers: Object.fromEntries(response.headers.entries()),
         data,
         time: `${endTime - startTime}ms`,
       },

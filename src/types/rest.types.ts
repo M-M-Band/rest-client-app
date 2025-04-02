@@ -11,7 +11,7 @@ export const HTTP_METHODS = [
 export type Header = { key: string; value: string };
 export type ResponseData = {
   status: number;
-  // headers: Record<string, string>;
+  headers: Record<string, string>;
   data: unknown;
   time: string;
 };
