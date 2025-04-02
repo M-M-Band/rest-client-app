@@ -7,7 +7,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
-import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
+import {
+  AUTH_PATH,
+  DASHBOARD_PAGES,
+  SIGNIN_PATH,
+  SIGNUP_PATH,
+} from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
 
@@ -48,10 +53,6 @@ const Header = () => {
 
     router.push(AUTH_PATH);
   };
-
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
 
   return (
     <header ref={headerRef}>
@@ -97,19 +98,21 @@ const Header = () => {
           <option value='ru'>Ru</option>
         </select>
 
-        <Link
-          href={`${AUTH_PATH}`}
-          className={`button ${pathname === '/auth' ? 'active' : ''}`}
-        >
-          {t('signIn')}
-        </Link>
-        <Link
-          href={`${AUTH_PATH}`}
-          className={`button ${pathname === '/auth' ? 'active' : ''}`}
-        >
+            <Link
+              href={SIGNIN_PATH}
+              className={`button ${pathname === '/auth/signin' ? 'active' : ''}`}
+            >
+              {t('signIn')}
+            </Link>
+            <Link
+              href={SIGNUP_PATH}
+              className={`button ${pathname === '/auth/signup' ? 'active' : ''}`}
+            >
           {t('signUp')}
-        </Link>
-      </div>
+            </Link>
+          </div>
+       
+      
     </header>
   );
 };

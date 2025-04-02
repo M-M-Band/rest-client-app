@@ -17,19 +17,16 @@ import Input from '../Input/Input';
 
 import styles from './Form.module.css';
 
-const { form, container, button, button_border, container_formElements } =
-  styles;
+const { form, container, button, container_formElements } = styles;
 
 type AuthFormProps = {
   mode: AuthMode;
   onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
-  setMode: React.Dispatch<React.SetStateAction<AuthMode>>;
   isSignUpMode: boolean;
 };
 
-const Form: FC<AuthFormProps> = ({ mode, onSubmit, setMode, isSignUpMode }) => {
+const Form: FC<AuthFormProps> = ({ mode, onSubmit, isSignUpMode }) => {
   const formNameAndButtonSubmitName = isSignUpMode ? 'Sign Up' : 'Sign In';
-  const buttonChangeFormName = !isSignUpMode ? 'Sign Up' : 'Sign In';
   const aboutFormText = isSignUpMode
     ? "Let's get started! Create your account in just a few steps."
     : 'Good to see you again! Sign in to continue your journey.';
@@ -43,11 +40,6 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, setMode, isSignUpMode }) => {
     resolver: zodResolver(isSignUpMode ? SignUpSchema : SignInSchema),
     mode: 'all',
   });
-
-  const toggleMode = () => {
-    setMode(isSignUpMode ? 'signin' : 'signup');
-    reset();
-  };
 
   const handleFormSubmit: SubmitHandler<
     SignInFormData | SignUpFormData
@@ -91,13 +83,6 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, setMode, isSignUpMode }) => {
           className={`button button_colored ${button}`}
         >
           {formNameAndButtonSubmitName}
-        </button>
-        <button
-          onClick={toggleMode}
-          className={`button ${button} ${button_border}`}
-          type='button'
-        >
-          {buttonChangeFormName}
         </button>
       </div>
     </form>
