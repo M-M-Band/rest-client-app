@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 import { AUTH_PATH } from '@/config/pages-url.config';
@@ -9,14 +9,14 @@ import { AUTH_PATH } from '@/config/pages-url.config';
 import { useUser } from '@/hooks/useUser';
 
 export default function Dashboard() {
-  const { user, signOut, isLoading } = useUser();
+  const { user, signOut } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user && !isLoading) {
-      router.push(AUTH_PATH);
-    }
-  }, [user, isLoading, router]);
+  // useEffect(() => {
+  //   if (!user && !isLoading) {
+  //     router.push(AUTH_PATH);
+  //   }
+  // }, [user, isLoading, router]);
 
   const handleLogout = async () => {
     await signOut();
@@ -29,9 +29,9 @@ export default function Dashboard() {
     router.push(AUTH_PATH);
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <div>

@@ -18,6 +18,7 @@ import { usePathname, useRouter } from '@/i18n/navigation';
 const Header = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
+  const { user, signOut } = useUser();
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('Main');
@@ -48,9 +49,9 @@ const Header = () => {
     router.push(AUTH_PATH);
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <header ref={headerRef}>
