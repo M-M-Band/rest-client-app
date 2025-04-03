@@ -32,23 +32,27 @@ type AuthFormProps = {
 const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
   const router = useRouter();
   const t = useTranslations('Main');
-
   const isSignUpMode = mode === 'signup';
-  const formNameAndButtonSubmitName = isSignUpMode ? t('signUp') : t('signIn');
-  const formChangeName = !isSignUpMode ? t('signUp') : t('signIn');
-  const aboutFormText = isSignUpMode
-    ? t('formSignUpDescription')
-    : t('formSignInDescription');
-  const fields = FORM_FIELDS_CONFIG[mode];
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<SignInFormData | SignUpFormData>({
     resolver: zodResolver(isSignUpMode ? SignUpSchema : SignInSchema),
     mode: 'all',
   });
+  const buttonSubmitName = isSubmitting
+    ? 'Waiting...'
+    : isSignUpMode
+      ? t('signUp')
+      : t('signIn');
+  const formName = isSignUpMode ? t('signUp') : t('signIn');
+  const buttonChangeFormName = !isSignUpMode ? t('signUp') : t('signIn');
+  const aboutFormText = isSignUpMode
+    ? t('formSignUpDescription')
+    : t('formSignInDescription');
+  const fields = FORM_FIELDS_CONFIG[mode];
 
   const handleFormSubmit: SubmitHandler<
     SignInFormData | SignUpFormData
@@ -75,9 +79,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       className={form}
     >
       <div className={container}>
-        <h1 className='maintext maintext_green'>
-          {formNameAndButtonSubmitName}
-        </h1>
+        <h1 className='maintext maintext_green'>{formName}</h1>
         <p className='subtext'>{aboutFormText}</p>
       </div>
       <div className={`${container} ${container_formElements}`}>
@@ -96,17 +98,17 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
         <button
           type='submit'
           formNoValidate
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
           className={`button button_colored ${button}`}
         >
-          {formNameAndButtonSubmitName}
+          {buttonSubmitName}
         </button>
         <button
           type='button'
           className={`button ${button} ${button_border}`}
           onClick={toogleFormHandler}
         >
-          {formChangeName}
+          {buttonChangeFormName}
         </button>
       </div>
     </form>

@@ -7,7 +7,6 @@ import React, { ChangeEvent, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 
 import {
-  AUTH_PATH,
   DASHBOARD_PAGES,
   SIGNIN_PATH,
   SIGNUP_PATH,
@@ -50,7 +49,7 @@ const Header = () => {
     await signOut();
     toast.success('Successfully signed out!');
 
-    router.push(AUTH_PATH);
+    router.push(DASHBOARD_PAGES.ROOT);
   };
 
   return (

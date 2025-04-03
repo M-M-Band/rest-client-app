@@ -31,7 +31,7 @@ const SignUpPage = () => {
       toast.error(error.message);
     } else {
       toast.success('Please, check your email!');
-      router.push(DASHBOARD_PAGES.ROOT);
+      router.push(DASHBOARD_PAGES.HOME);
     }
   };
 

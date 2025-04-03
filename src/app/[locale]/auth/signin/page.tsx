@@ -26,7 +26,7 @@ const SignInPage = () => {
       toast.error(error.message);
     } else {
       toast.success('Successfully signed in!');
-      router.push(DASHBOARD_PAGES.ROOT);
+      router.push(DASHBOARD_PAGES.HOME);
     }
   };
 
