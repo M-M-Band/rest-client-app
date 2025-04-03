@@ -27,7 +27,6 @@ export async function middleware(request: NextRequest) {
   }
 
   console.log('middleware url', request.nextUrl.pathname);
-  // If the user is authenticated or the requested path is /login, continue
 
   const intlResponse = intlMiddleware(request);
   if (intlResponse) {
