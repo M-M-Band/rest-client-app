@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
@@ -11,22 +12,27 @@ import {
   SignUpFormData,
 } from '@/types/auth.types';
 
+import { SIGNIN_PATH, SIGNUP_PATH } from '@/config/pages-url.config';
+
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
 
 import Input from '../Input/Input';
 
 import styles from './Form.module.css';
 
-const { form, container, button, container_formElements } = styles;
+const { form, container, button, button_border, container_formElements } =
+  styles;
 
 type AuthFormProps = {
   mode: AuthMode;
   onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
-  isSignUpMode: boolean;
 };
 
-const Form: FC<AuthFormProps> = ({ mode, onSubmit, isSignUpMode }) => {
+const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
+  const router = useRouter();
+  const isSignUpMode = mode === 'signup';
   const formNameAndButtonSubmitName = isSignUpMode ? 'Sign Up' : 'Sign In';
+  const formChangeName = !isSignUpMode ? 'Sign Up' : 'Sign In';
   const aboutFormText = isSignUpMode
     ? "Let's get started! Create your account in just a few steps."
     : 'Good to see you again! Sign in to continue your journey.';
@@ -50,6 +56,14 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, isSignUpMode }) => {
       await onSubmit(dataForm as SignInFormData);
     }
     reset();
+  };
+
+  const toogleFormHandler = () => {
+    if (!isSignUpMode) {
+      router.push(SIGNUP_PATH);
+    } else {
+      router.push(SIGNIN_PATH);
+    }
   };
 
   return (
@@ -83,6 +97,13 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, isSignUpMode }) => {
           className={`button button_colored ${button}`}
         >
           {formNameAndButtonSubmitName}
+        </button>
+        <button
+          type='button'
+          className={`button ${button} ${button_border}`}
+          onClick={toogleFormHandler}
+        >
+          {formChangeName}
         </button>
       </div>
     </form>

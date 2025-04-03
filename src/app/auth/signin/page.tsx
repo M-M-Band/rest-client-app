@@ -3,26 +3,21 @@
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { SignInFormData } from '@/types/auth.types';
+import Form from '@/components/Form/Form';
+
+import { SignInFormData, SignUpFormData } from '@/types/auth.types';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
-import { SignInSchema } from '@/utils/validators';
-
-import Auth from '../Auth';
 
 const SignInPage = () => {
   const supabase = createClient();
   const router = useRouter();
+  const mode = 'signin';
 
-  const handleSubmit = async (formData: SignInFormData) => {
-    const result = SignInSchema.safeParse(formData);
-    if (!result.success) {
-      toast.error(result.error.message);
-      return;
-    }
-    const { email, password } = result.data;
+  const handleSubmit = async (formData: SignInFormData | SignUpFormData) => {
+    const { email, password } = formData;
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -36,8 +31,8 @@ const SignInPage = () => {
   };
 
   return (
-    <Auth
-      mode='signin'
+    <Form
+      mode={mode}
       onSubmit={handleSubmit}
     />
   );
