@@ -10,7 +10,7 @@ export const sendRequest = async (
     const method = formData.get('method') as string;
     const url = formData.get('url') as string;
     const headers = JSON.parse(formData.get('headers') as string) as Header[];
-    // const body = formData.get('body') as string;
+    const body = formData.get('body') as string;
 
     const options: RequestInit = {
       method,
@@ -23,9 +23,9 @@ export const sendRequest = async (
       ),
     };
 
-    // if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
-    //   options.body = body;
-    // }
+    if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+      options.body = body;
+    }
     const startTime = Date.now();
     const response = await fetch(url, options);
     const data = await response.json();

@@ -12,7 +12,8 @@ const {
   rest,
   form,
   container,
-  container_headers,
+  container_nested,
+  container_requestbody,
   headers__table,
   container_search,
   selectSearch,
@@ -20,7 +21,9 @@ const {
   button,
   button_border,
   response,
-  code,
+  response__maintext,
+  response__precode,
+  response__container,
 } = styles;
 
 const Rest = () => {
@@ -31,7 +34,7 @@ const Rest = () => {
   const [headers, setHeaders] = useState<Header[]>([
     { key: 'Content-Type', value: 'application/json' },
   ]);
-  // const [body, setBody] = useState('');
+  const [body, setBody] = useState('');
   const [method, setMethod] = useState('GET');
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -47,6 +50,7 @@ const Rest = () => {
       inputSearchRef.current.style.borderColor = color;
     }
   }, [method]);
+
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
     setTimeout(() => {
@@ -82,6 +86,11 @@ const Rest = () => {
           type='hidden'
           name='headers'
           value={JSON.stringify(headers)}
+        />
+        <input
+          type='hidden'
+          name='body'
+          value={body}
         />
         <div className={container}>
           <div className={`${container} ${container_search}`}>
@@ -121,7 +130,7 @@ const Rest = () => {
             {isPending ? 'Sending...' : 'Send'}
           </button>
         </div>
-        <div className={`${container} ${container_headers}`}>
+        <div className={`${container} ${container_nested}`}>
           <h2>Headers:</h2>
           <button
             className={`button ${button_border}`}
@@ -176,13 +185,35 @@ const Rest = () => {
             ))}
           </tbody>
         </table>
+        <div className={`${container} ${container_nested}`}>
+          <h2>Code:</h2>
+        </div>
+        <div className={`${container} ${container_requestbody}`}>
+          <h2>Body:</h2>
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder='Request body (JSON)'
+            rows={6}
+          ></textarea>
+        </div>
       </form>
       <div className={response}>
         <h2>Response: </h2>
         {state.response && (
-          <pre className={code}>
-            {JSON.stringify(state.response.data, null, 3)}
-          </pre>
+          <div className={response__container}>
+            <h3 className={response__maintext}>
+              Status:{' '}
+              <span>{`${state.response.status} - ${state.status}`}</span>
+            </h3>
+            <div className={response__container}>
+              <h3 className={response__maintext}>Body:</h3>
+
+              <pre className={response__precode}>
+                {JSON.stringify(state.response.data, null, 3)}
+              </pre>
+            </div>
+          </div>
         )}
       </div>
     </section>
