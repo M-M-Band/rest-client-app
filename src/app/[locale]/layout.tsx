@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { Lexend } from 'next/font/google';
+import { Exo_2 } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { Toaster } from 'sonner';
 
@@ -10,9 +10,9 @@ import Header from '@/components/Header';
 import './globals.css';
 import { routing } from '@/i18n/routing';
 
-const lexend = Lexend({
-  variable: '--font-lexend',
-  subsets: ['latin'],
+const exo = Exo_2({
+  variable: '--font-exo',
+  subsets: ['latin', 'cyrillic'],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${lexend.variable}`}>
+      <body className={`${exo.variable}`}>
         <NextIntlClientProvider>
           <div className='appWrapper'>
             <Header />
