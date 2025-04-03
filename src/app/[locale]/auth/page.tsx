@@ -1,4 +1,4 @@
-import { signIn, signUp } from '../../utils/supabase/actions';
+import { signIn, signUp } from '../../../utils/supabase/actions';
 
 import Auth from './Auth';
 

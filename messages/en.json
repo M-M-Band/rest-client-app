@@ -1,0 +1,11 @@
+{
+  "Main": {
+    "title": "Welcome to <span>REST Client</span>",
+    "description": "A REST client enables and simplifies communication with any open RESTful API. It offers an abstraction over HTTP libraries that allows for convenient conversion to an HTTP request, and the creation of objects from an HTTP response. <br></br>To start using the application please sign up or login.",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "home": "Home",
+    "variables": "Variables"
+  }
+}

@@ -29,11 +29,11 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: var(--font-lexend);
+  font-family: var(--font-exo);
 }
 
 body {
-  background: url('../../public/background.svg') top left/100vw;
+  background: url('../../../public/background.svg') top left/100vw;
 }
 
 .appWrapper {
