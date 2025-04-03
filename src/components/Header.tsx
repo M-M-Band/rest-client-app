@@ -48,7 +48,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await signOut();
-    toast.success('Вы вышли из аккаунта');
+    toast.success('Successfully signed out!');
 
     router.push(AUTH_PATH);
   };

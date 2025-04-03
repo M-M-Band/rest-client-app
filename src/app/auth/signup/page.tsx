@@ -30,7 +30,7 @@ const SignUpPage = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success('Проверьте свою почту!');
+      toast.success('Please, check your email!');
       router.push(DASHBOARD_PAGES.ROOT);
     }
   };
