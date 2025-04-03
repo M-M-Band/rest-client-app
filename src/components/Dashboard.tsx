@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -17,6 +18,8 @@ const Dashboard = () => {
     router.push(AUTH_PATH);
   };
 
+  const t = useTranslations('Main');
+
   return (
     <div>
       <h1>Личный кабинет</h1>
@@ -25,7 +28,7 @@ const Dashboard = () => {
         {user?.identities && user.identities[0]?.identity_data?.first_name && (
           <p>Имя: {user.identities[0].identity_data.first_name}</p>
         )}
-        <button onClick={handleLogout}>Выйти</button>
+        <button onClick={handleLogout}>{t('signOut')}</button>
       </div>
     </div>
   );

@@ -150,10 +150,3 @@ select {
   color: var(--gray-300);
   font-weight: var(--fw-regular);
 }
-.toast-success {
-  border: 2px solid var(--green);
-}
-
-.toast-error {
-  border: 2px solid var(--red);
-}

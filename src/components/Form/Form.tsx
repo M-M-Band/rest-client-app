@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -30,12 +31,14 @@ type AuthFormProps = {
 
 const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
   const router = useRouter();
+  const t = useTranslations('Main');
+
   const isSignUpMode = mode === 'signup';
-  const formNameAndButtonSubmitName = isSignUpMode ? 'Sign Up' : 'Sign In';
-  const formChangeName = !isSignUpMode ? 'Sign Up' : 'Sign In';
+  const formNameAndButtonSubmitName = isSignUpMode ? t('signUp') : t('signIn');
+  const formChangeName = !isSignUpMode ? t('signUp') : t('signIn');
   const aboutFormText = isSignUpMode
-    ? "Let's get started! Create your account in just a few steps."
-    : 'Good to see you again! Sign in to continue your journey.';
+    ? t('formSignUpDescription')
+    : t('formSignInDescription');
   const fields = FORM_FIELDS_CONFIG[mode];
   const {
     register,

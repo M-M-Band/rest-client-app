@@ -44,7 +44,19 @@ export default async function RootLayout({
             <Toaster
               theme='dark'
               position='bottom-right'
-              duration={1500}
+              duration={2000}
+              expand={true}
+              richColors
+              toastOptions={{
+                style: {
+                  background: 'var(--bg-grey)',
+                  color: '#ffffff',
+                  fontSize: '1.1rem',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                },
+              }}
             />
           </div>
         </NextIntlClientProvider>

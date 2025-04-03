@@ -6,6 +6,15 @@
     "signUp": "Зарегистрироваться",
     "signOut": "Выйти",
     "home": "На главную",
-    "variables": "Переменные"
+    "variables": "Переменные",
+    "errorPageDescription": "Простите, что-то пошло не так.",
+    "formSignInDescription": "Давайте начнем! Создайте свой аккаунт за несколько шагов.",
+    "formSignUpDescription": "Рады видеть вас снова! Войдите, чтобы продолжить своё путешествие.",
+    "formSignInEmailPlaceholder": "Введите адрес электронной почты",
+    "formSignInPasswordPlaceholder": "Введите ваш пароль",
+    "formSignUpNamePlaceholder": "Введите ваше имя",
+    "formSignUpEmailPlaceholder": "Введите адрес электронной почты",
+    "formSignUpPasswordPlaceholder": "Выберите пароль",
+    "formSignUpConfirmPasswordPlaceholder": "Повторите пароль"
   }
 }

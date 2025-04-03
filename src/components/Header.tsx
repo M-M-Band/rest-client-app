@@ -100,7 +100,7 @@ const Header = () => {
               className={`button button_colored`}
               onClick={handleLogout}
             >
-              Sign Out
+              {t('signOut')}
             </button>
           </div>
         </>
