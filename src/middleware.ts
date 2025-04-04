@@ -24,9 +24,6 @@ export async function middleware(request: NextRequest) {
   const isDashboard = nextUrl.pathname.includes(DASHBOARD_PAGES.HOME);
   const hasCode = nextUrl.searchParams.has('code');
 
-  console.log('path', request.nextUrl.pathname);
-  console.log('user', !!user);
-
   if (hasCode) {
     return response;
   }
@@ -38,17 +35,6 @@ export async function middleware(request: NextRequest) {
   if (user && isAuthPage) {
     return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
   }
-
-  // if (!user && request.nextUrl.pathname.includes(DASHBOARD_PAGES.HOME)) {
-  //   return NextResponse.redirect(new URL(AUTH_PATH, request.url));
-  // }
-
-  // if (user && request.nextUrl.pathname.includes(AUTH_PATH)) {
-  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
-  // }
-  // if (user && request.nextUrl.pathname.includes('?code=')) {
-  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
-  // }
 
   const intlResponse = intlMiddleware(request);
   if (intlResponse) {

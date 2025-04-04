@@ -94,16 +94,6 @@ interface AppMetadata {
   provider: string;
   providers: string[];
 }
-// export interface SignInFormData {
-//   email: string;
-//   pass: string;
-// }
-
-// export interface SignUpFormData {
-//   email: string;
-//   pass: string;
-//   firstName: string;
-// }
 
 export interface User {
   id: string;

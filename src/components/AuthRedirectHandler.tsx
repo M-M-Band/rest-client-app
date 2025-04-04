@@ -5,29 +5,24 @@ import { useEffect } from 'react';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
-// Импортируйте из next/navigation
 import { useUser } from '@/hooks/useUser';
 
 const AuthRedirectHandler = () => {
   const router = useRouter();
-  const pathname = usePathname(); // Получаем текущий путь
-  const { user, loading } = useUser(); // Получаем пользователя и состояние загрузки
+  const pathname = usePathname();
+  const { user, loading } = useUser();
 
   useEffect(() => {
-    // Проверяем, выполняется ли код на клиенте
     if (typeof window !== 'undefined') {
-      const code = new URLSearchParams(window.location.search).get('code'); // Получаем параметр code из URL
-
-      if (!code) return; // Если кода нет, ничего не делаем
-
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (!code) return;
       if (!loading && user) {
-        // Если загрузка завершена и пользователь авторизован
         router.replace(DASHBOARD_PAGES.HOME);
       }
     }
-  }, [loading, user, router, pathname]); // Добавьте pathname в зависимости, если нужно
+  }, [loading, user, router, pathname]);
 
-  return null; // Не нужно рендерить ничего
+  return null;
 };
 
 export default AuthRedirectHandler;

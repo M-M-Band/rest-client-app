@@ -52,8 +52,6 @@ const Header = () => {
     router.push(DASHBOARD_PAGES.ROOT);
   };
 
-  console.log('user', !!user);
-
   return (
     <header ref={headerRef}>
       {user ? (
