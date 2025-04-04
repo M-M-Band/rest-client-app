@@ -1,6 +1,8 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
+import { SIGNIN_PATH, SIGNUP_PATH } from '@/config/pages-url.config';
+
 export default function Home() {
   const t = useTranslations('Main');
   return (
@@ -17,13 +19,13 @@ export default function Home() {
       </p>
       <div className='buttons-container'>
         <Link
-          href='/auth'
+          href={SIGNIN_PATH}
           className='button button_colored'
         >
           {t('signIn')}
         </Link>
         <Link
-          href='/auth'
+          href={SIGNUP_PATH}
           className='button button_colored'
         >
           {t('signUp')}

@@ -6,6 +6,15 @@
     "signUp": "Sign up",
     "signOut": "Sign out",
     "home": "Home",
-    "variables": "Variables"
+    "variables": "Variables",
+    "errorPageDescription": "Sorry, something went wrong",
+    "formSignInDescription": "Good to see you again! Sign in to continue your journey.",
+    "formSignUpDescription": "Let's get started! Create your account in just a few steps.",
+    "formSignInEmailPlaceholder": "Enter your email address",
+    "formSignInPasswordPlaceholder": "Enter your password",
+    "formSignUpNamePlaceholder": "Enter your name",
+    "formSignUpEmailPlaceholder": "Enter your email",
+    "formSignUpPasswordPlaceholder": "Choose a password",
+    "formSignUpConfirmPasswordPlaceholder": "Password again"
   }
 }

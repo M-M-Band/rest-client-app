@@ -1,13 +1,9 @@
-import { signIn, signUp } from '../../../utils/supabase/actions';
+import { redirect } from 'next/navigation';
 
-import Auth from './Auth';
+import { SIGNIN_PATH } from '@/config/pages-url.config';
 
 const AuthPage = () => {
-  return (
-    <Auth
-      signInAction={signIn}
-      signUpAction={signUp}
-    />
-  );
+  redirect(SIGNIN_PATH);
 };
+
 export default AuthPage;
