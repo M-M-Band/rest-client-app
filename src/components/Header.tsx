@@ -1,21 +1,34 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useRef } from 'react';
+import React, { ChangeEvent, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 
-import { AUTH_PATH, DASHBOARD_PAGES } from '@/config/pages-url.config';
+import {
+  DASHBOARD_PAGES,
+  SIGNIN_PATH,
+  SIGNUP_PATH,
+} from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
 
 import logo from '../../public/logo.svg';
 
+import { usePathname, useRouter } from '@/i18n/navigation';
+
 const Header = () => {
   const headerRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
-  const { user, signOut, isLoading } = useUser();
+  const { user, signOut } = useUser();
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('Main');
+
+  const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    router.replace({ pathname }, { locale: e.target.value });
+  };
 
   useEffect(() => {
     const header = headerRef.current;
@@ -34,37 +47,29 @@ const Header = () => {
 
   const handleLogout = async () => {
     await signOut();
-    router.push(AUTH_PATH);
-  };
+    toast.success('Successfully signed out!');
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+    router.push(DASHBOARD_PAGES.ROOT);
+  };
 
   return (
     <header ref={headerRef}>
-      <Link
-        href={`${DASHBOARD_PAGES.ROOT}`}
-        className='buttons-container'
-      >
-        <Image
-          priority={true}
-          width={30}
-          height={30}
-          src={logo}
-          alt='logo'
-        />
-        <span>Rest Client</span>
-      </Link>
       {user ? (
         <>
+          <Link
+            href={`${DASHBOARD_PAGES.HOME}`}
+            className='buttons-container'
+          >
+            <Image
+              priority={true}
+              width={30}
+              height={30}
+              src={logo}
+              alt='logo'
+            />
+            <span>Rest Client</span>
+          </Link>
           <div className='buttons-container'>
-            <Link
-              href={`${DASHBOARD_PAGES.HOME}`}
-              className={`button ${pathname === `${DASHBOARD_PAGES.HOME}` ? 'active' : ''}`}
-            >
-              Home
-            </Link>
             <Link
               href={`${DASHBOARD_PAGES.REST}`}
               className={`button ${pathname === `${DASHBOARD_PAGES.REST}` ? 'active' : ''}`}
@@ -81,7 +86,7 @@ const Header = () => {
               href={`${DASHBOARD_PAGES.VARIABLES}`}
               className={`button ${pathname === `${DASHBOARD_PAGES.VARIABLES}` ? 'active' : ''}`}
             >
-              Variables
+              {t('variables')}
             </Link>
           </div>
           <div className='buttons-container'>
@@ -91,32 +96,48 @@ const Header = () => {
             </select>
 
             <button
-              className={`button ${pathname === '/auth' ? 'active' : ''}`}
+              className={`button button_colored`}
               onClick={handleLogout}
             >
-              Sign Out
+              {t('signOut')}
             </button>
           </div>
         </>
       ) : (
         <>
+          <Link
+            href={`${DASHBOARD_PAGES.ROOT}`}
+            className='buttons-container'
+          >
+            <Image
+              priority={true}
+              width={30}
+              height={30}
+              src={logo}
+              alt='logo'
+            />
+            <span>Rest Client</span>
+          </Link>
           <div className='buttons-container'>
-            <select>
-              <option value='En'>En</option>
-              <option value='Ru'>Ru</option>
+            <select
+              onChange={handleLangChange}
+              defaultValue={locale}
+            >
+              <option value='en'>En</option>
+              <option value='ru'>Ru</option>
             </select>
 
             <Link
-              href={`${AUTH_PATH}`}
-              className={`button ${pathname === '/auth' ? 'active' : ''}`}
+              href={SIGNIN_PATH}
+              className={`button ${pathname === SIGNIN_PATH ? 'active' : ''}`}
             >
-              Sign In
+              {t('signIn')}
             </Link>
             <Link
-              href={`${AUTH_PATH}`}
-              className={`button ${pathname === '/auth' ? 'active' : ''}`}
+              href={SIGNUP_PATH}
+              className={`button ${pathname === SIGNUP_PATH ? 'active' : ''}`}
             >
-              Sign Up
+              {t('signUp')}
             </Link>
           </div>
         </>

@@ -1,9 +1,13 @@
+import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { updateSession } from '@/utils/supabase/middleware';
 import { createClient } from '@/utils/supabase/server';
 
 import { AUTH_PATH, DASHBOARD_PAGES } from './config/pages-url.config';
+import { routing } from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   const response = await updateSession(request);
@@ -20,6 +24,13 @@ export async function middleware(request: NextRequest) {
 
   if (user && request.nextUrl.pathname.includes(AUTH_PATH)) {
     return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
+  }
+
+  console.log('middleware url', request.nextUrl.pathname);
+
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse) {
+    return intlResponse;
   }
 
   return response;

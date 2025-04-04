@@ -29,11 +29,11 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: var(--font-lexend);
+  font-family: var(--font-exo);
 }
 
 body {
-  background: url('../../public/background.svg') top left/100vw;
+  background: url('../../../public/background.svg') top left/100vw;
 }
 
 .appWrapper {
@@ -103,6 +103,7 @@ button.button {
 
 :is(.button:not(:is(.active, .button_colored)):hover, select:hover) {
   background-color: var(--hover-button);
+  color: var(--white);
 }
 
 :is(.button_colored, .active) {

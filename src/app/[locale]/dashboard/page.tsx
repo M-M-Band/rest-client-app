@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <>
-      <h2>Main page</h2>
       <Dashboard />
     </>
   );

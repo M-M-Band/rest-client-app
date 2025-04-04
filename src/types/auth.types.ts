@@ -1,7 +1,10 @@
 import { Session } from '@supabase/supabase-js';
+// import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
+
+// const t = useTranslations('Main');
 
 export type AuthFormTypes = {
   email: string;
@@ -24,21 +27,25 @@ export const FORM_FIELDS_CONFIG = {
       name: 'name',
       type: 'text',
       placeholder: 'Enter your name',
+      // placeholder: t('formSignUpNamePlaceholder'),
     },
     {
       name: 'email',
       type: 'email',
       placeholder: 'Enter your email',
+      // placeholder: t('formSignUpEmailPlaceholder'),
     },
     {
       name: 'password',
       type: 'password',
       placeholder: 'Choose a password',
+      // placeholder: t('formSignUpPasswordPlaceholder'),
     },
     {
       name: 'confirmPassword',
       type: 'password',
       placeholder: 'Password again',
+      // placeholder: t('formSignUpConfirmPasswordPlaceholder'),
     },
   ] as FormFieldConfig<SignUpFormData>[],
   signin: [
@@ -46,11 +53,13 @@ export const FORM_FIELDS_CONFIG = {
       name: 'email',
       type: 'email',
       placeholder: 'Enter your email address',
+      // placeholder: t('formSignInEmailPlaceholder'),
     },
     {
       name: 'password',
       type: 'password',
       placeholder: 'Enter your password',
+      // placeholder: t('formSignInPasswordPlaceholder'),
     },
   ] as FormFieldConfig<SignUpFormData>[],
 };
@@ -115,21 +124,3 @@ export interface User {
 export interface AuthSession {
   session: Session | null;
 }
-
-// export const convertSupabaseUserToUser = (supabaseUser: SupabaseUser): User => {
-//   return {
-//     id: supabaseUser.id,
-//     aud: supabaseUser.aud,
-//     role: supabaseUser.role || 'authenticated', // Устанавливаем значение по умолчанию
-//     email: supabaseUser.email || '',
-//     email_confirmed_at: supabaseUser.email_confirmed_at || '',
-//     phone: supabaseUser.phone || '',
-//     confirmed_at: supabaseUser.confirmed_at || '',
-//     last_sign_in_at: supabaseUser.last_sign_in_at || '',
-//     app_metadata: supabaseUser.app_metadata,
-//     user_metadata: supabaseUser.user_metadata,
-//     identities: supabaseUser.identities || [],
-//     created_at: supabaseUser.created_at,
-//     updated_at: supabaseUser.updated_at,
-//   };
-// };

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
@@ -8,5 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function ErrorPage() {
-  return <p>Sorry, something went wrong</p>;
+  const t = useTranslations('Main');
+  return <p>{t('errorPageDescription')}</p>;
 }
