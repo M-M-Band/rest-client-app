@@ -52,6 +52,8 @@ const Header = () => {
     router.push(DASHBOARD_PAGES.ROOT);
   };
 
+  console.log('user', !!user);
+
   return (
     <header ref={headerRef}>
       {user ? (
@@ -90,7 +92,10 @@ const Header = () => {
             </Link>
           </div>
           <div className='buttons-container'>
-            <select>
+            <select
+              onChange={handleLangChange}
+              defaultValue={locale}
+            >
               <option value='En'>En</option>
               <option value='Ru'>Ru</option>
             </select>

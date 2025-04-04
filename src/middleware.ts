@@ -10,6 +10,8 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
+  const { nextUrl } = request;
+
   const response = await updateSession(request);
 
   const supabase = await createClient();
@@ -18,15 +20,35 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname.includes(DASHBOARD_PAGES.HOME)) {
+  const isAuthPage = nextUrl.pathname.includes(AUTH_PATH);
+  const isDashboard = nextUrl.pathname.includes(DASHBOARD_PAGES.HOME);
+  const hasCode = nextUrl.searchParams.has('code');
+
+  console.log('path', request.nextUrl.pathname);
+  console.log('user', !!user);
+
+  if (hasCode) {
+    return response;
+  }
+
+  if (!user && isDashboard) {
     return NextResponse.redirect(new URL(AUTH_PATH, request.url));
   }
 
-  if (user && request.nextUrl.pathname.includes(AUTH_PATH)) {
+  if (user && isAuthPage) {
     return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
   }
 
-  console.log('middleware url', request.nextUrl.pathname);
+  // if (!user && request.nextUrl.pathname.includes(DASHBOARD_PAGES.HOME)) {
+  //   return NextResponse.redirect(new URL(AUTH_PATH, request.url));
+  // }
+
+  // if (user && request.nextUrl.pathname.includes(AUTH_PATH)) {
+  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
+  // }
+  // if (user && request.nextUrl.pathname.includes('?code=')) {
+  //   return NextResponse.redirect(new URL(DASHBOARD_PAGES.HOME, request.url));
+  // }
 
   const intlResponse = intlMiddleware(request);
   if (intlResponse) {

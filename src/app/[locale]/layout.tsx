@@ -4,6 +4,7 @@ import { Exo_2 } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { Toaster } from 'sonner';
 
+import AuthRedirectHandler from '@/components/AuthRedirectHandler';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
@@ -58,6 +59,7 @@ export default async function RootLayout({
                 },
               }}
             />
+            <AuthRedirectHandler />
           </div>
         </NextIntlClientProvider>
       </body>

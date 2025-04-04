@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -15,6 +16,7 @@ const SignUpPage = () => {
   const supabase = createClient();
   const router = useRouter();
   const mode = 'signup';
+  const locale = useLocale();
 
   const handleSubmit = async (formData: SignUpFormData | SignInFormData) => {
     const { email, password, name } = formData as SignUpFormData;
@@ -22,6 +24,7 @@ const SignUpPage = () => {
       email,
       password,
       options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/dashboard`,
         data: {
           first_name: name,
         },

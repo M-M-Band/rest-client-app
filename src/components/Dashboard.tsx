@@ -1,21 +1,22 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { AUTH_PATH } from '@/config/pages-url.config';
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
 
 const Dashboard = () => {
   const { user, signOut } = useUser();
+  const locale = useLocale();
   const router = useRouter();
 
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
-    router.push(AUTH_PATH);
+    router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
   };
 
   const t = useTranslations('Main');
