@@ -94,8 +94,8 @@ const Header = () => {
               onChange={handleLangChange}
               defaultValue={locale}
             >
-              <option value='En'>En</option>
-              <option value='Ru'>Ru</option>
+              <option value='en'>En</option>
+              <option value='ru'>Ru</option>
             </select>
 
             <button
