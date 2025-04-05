@@ -80,7 +80,12 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       style={{ backgroundPosition: isSignUpMode ? 'top right' : '' }}
     >
       <div className={container}>
-        <h1 className='maintext maintext_green'>{formName}</h1>
+        <h1
+          className='maintext maintext_green'
+          data-testid={'form-title'}
+        >
+          {formName}
+        </h1>
         <p className='subtext'>{aboutFormText}</p>
       </div>
       <div className={`${container} ${container_formElements}`}>
