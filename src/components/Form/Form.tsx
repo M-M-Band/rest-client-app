@@ -37,7 +37,8 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isSubmitting },
+    // formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<SignInFormData | SignUpFormData>({
     resolver: zodResolver(isSignUpMode ? SignUpSchema : SignInSchema),
     mode: 'all',
@@ -104,8 +105,10 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
         <button
           type='submit'
           formNoValidate
-          disabled={!isValid || isSubmitting}
+          // disabled={!isValid || isSubmitting}
+          disabled={isSubmitting} // FIXME: for testing purposes
           className={`button button_colored ${button}`}
+          data-testid={'submit-button'}
         >
           {buttonSubmitName}
         </button>
