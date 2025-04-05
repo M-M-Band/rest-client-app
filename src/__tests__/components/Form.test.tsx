@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+=======
+import {
+  // fireEvent,
+  render,
+  screen,
+  // waitFor,
+} from '@testing-library/react';
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
 // import { rest } from 'msw';
 import { useTranslations } from 'next-intl';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
@@ -24,10 +33,16 @@ import { SignInFormData, SignUpFormData } from '@/types/auth.types';
 
 import { server } from '../mocks/server';
 
+<<<<<<< HEAD
 const push = vi.fn();
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push,
+=======
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
     replace: vi.fn(),
     prefetch: vi.fn(),
     back: vi.fn(),
@@ -51,7 +66,11 @@ vi.mock('next-intl', () => ({
 
 const onSubmitMock = vi.fn();
 const mockedUseTranslations = vi.mocked(useTranslations);
+<<<<<<< HEAD
 // const mockedUseRouter = vi.mocked(vi.importActual('next/navigation') as any);
+=======
+// const mockedUseRouter = vi.mocked(useRouter);
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
 
 describe('Form component', () => {
   beforeAll(() => server.listen());
@@ -59,8 +78,11 @@ describe('Form component', () => {
     server.resetHandlers();
     onSubmitMock.mockClear();
     mockedUseTranslations.mockClear();
+<<<<<<< HEAD
     // mockedUseRouter.useRouter().push.mockClear();
     push.mockClear();
+=======
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
   });
   afterAll(() => server.close());
 
@@ -71,6 +93,10 @@ describe('Form component', () => {
     mode: 'signin' | 'signup';
     onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
   }) => {
+<<<<<<< HEAD
+=======
+    // const t = useTranslations('Main');
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
     return (
       <Form
         mode={mode}
@@ -100,6 +126,7 @@ describe('Form component', () => {
     expect(
       screen.getByPlaceholderText(t('Enter your password'))
     ).toBeInTheDocument();
+<<<<<<< HEAD
     expect(screen.getByTestId('submit-button')).toBeInTheDocument();
   });
 
@@ -323,4 +350,105 @@ describe('Form component', () => {
       expect(screen.getByText(t(`Passwords don't match`))).toBeInTheDocument();
     });
   });
+=======
+    expect(
+      screen.getByRole('button', { name: t('signIn') })
+    ).toBeInTheDocument();
+  });
+
+  // it('should render signin form correctly', () => {
+  //   renderForm('signin');
+  //   expect(mockedUseTranslations).toHaveBeenCalledWith('Main');
+  //   expect(screen.getByText('signIn')).toBeInTheDocument();
+  //   expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
+  //   expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
+  //   expect(screen.getByRole('button', { name: 'signIn' })).toBeInTheDocument();
+  // });
+
+  // it('should render signup form correctly', () => {
+  //   renderForm('signup');
+  //   expect(mockedUseTranslations).toHaveBeenCalledWith('Main');
+  //   expect(screen.getByText('signUp')).toBeInTheDocument();
+  //   expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
+  //   expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
+  //   expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
+  //   expect(screen.getByRole('button', { name: 'signUp' })).toBeInTheDocument();
+  // });
+
+  // it('should display validation errors', async () => {
+  //   renderForm('signin');
+  //   fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+
+  //   await waitFor(() => {
+  //     expect(screen.getByText('Email is required')).toBeInTheDocument();
+  //     expect(screen.getByText('Password is required')).toBeInTheDocument();
+  //   });
+  // });
+
+  // it('should call onSubmit with correct data for signin', async () => {
+  //   renderForm('signin');
+  //   fireEvent.change(screen.getByPlaceholderText('Email'), {
+  //     target: { value: 'test@example.com' },
+  //   });
+  //   fireEvent.change(screen.getByPlaceholderText('Password'), {
+  //     target: { value: 'password123' },
+  //   });
+  //   fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+
+  //   await waitFor(() => {
+  //     expect(onSubmitMock).toHaveBeenCalledWith({
+  //       email: 'test@example.com',
+  //       password: 'password123',
+  //     });
+  //   });
+  // });
+
+  // it('should call onSubmit with correct data for signup', async () => {
+  //   renderForm('signup');
+  //   fireEvent.change(screen.getByPlaceholderText('Email'), {
+  //     target: { value: 'test@example.com' },
+  //   });
+  //   fireEvent.change(screen.getByPlaceholderText('Password'), {
+  //     target: { value: 'password123' },
+  //   });
+  //   fireEvent.change(screen.getByPlaceholderText('Name'), {
+  //     target: { value: 'test' },
+  //   });
+  //   fireEvent.click(screen.getByRole('button', { name: 'signUp' }));
+
+  //   await waitFor(() => {
+  //     expect(onSubmitMock).toHaveBeenCalledWith({
+  //       email: 'test@example.com',
+  //       password: 'password123',
+  //       name: 'test',
+  //     });
+  //   });
+  // });
+
+  // it('should switch to signup form when "signUp" button clicked on signin form', async () => {
+  //   const { push } = vi.fn();
+  //   const routerMock = {
+  //     push,
+  //   };
+  //   mockedUseRouter.mockImplementation(() => routerMock);
+  //   renderForm('signin');
+  //   fireEvent.click(screen.getByRole('button', { name: 'signUp' }));
+  //   await waitFor(() => {
+  //     expect(routerMock.push).toHaveBeenCalledWith('/auth/signup');
+  //   });
+  // });
+
+  // it('should switch to signin form when "signIn" button clicked on signup form', async () => {
+  //   const { push } = vi.fn();
+  //   const routerMock = {
+  //     push,
+  //   };
+  //   mockedUseRouter.mockImplementation(() => routerMock);
+  //   renderForm('signup');
+  //   fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+  //   await waitFor(() => {
+  //     expect(routerMock.push).toHaveBeenCalledWith('/auth/signin');
+  //   });
+  // });
+>>>>>>> c4842e0 (feat: add form component tests and update dependencies)
 });
