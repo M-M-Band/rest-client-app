@@ -3,6 +3,12 @@
   flex-direction: column;
   align-items: center;
   gap: 40px;
+  padding: 20px 0px;
+  margin: 0px 150px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: url('../../../public/backgroundForm.png') no-repeat;
+  background-size: cover;
   .container {
     display: flex;
     flex-direction: column;

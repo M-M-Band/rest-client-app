@@ -1,0 +1,22 @@
+{
+  "Main": {
+    "title": "Welcome to <span>REST Client</span>",
+    "description": "A REST client enables and simplifies communication with any open RESTful API. It offers an abstraction over HTTP libraries that allows for convenient conversion to an HTTP request, and the creation of objects from an HTTP response. <br></br>To start using the application please sign up or login.",
+    "authorizedTitle": "Welcome",
+    "authorizedDescription": "We are glad to see you again. You now have access to all features of your account.",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "history": "History",
+    "variables": "Variables",
+    "errorPageDescription": "Sorry, something went wrong",
+    "formSignInDescription": "Good to see you again! Sign in to continue your journey.",
+    "formSignUpDescription": "Let's get started! Create your account in just a few steps.",
+    "formSignInEmailPlaceholder": "Enter your email address",
+    "formSignInPasswordPlaceholder": "Enter your password",
+    "formSignUpNamePlaceholder": "Enter your name",
+    "formSignUpEmailPlaceholder": "Enter your email",
+    "formSignUpPasswordPlaceholder": "Choose a password",
+    "formSignUpConfirmPasswordPlaceholder": "Password again"
+  }
+}

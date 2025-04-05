@@ -1,56 +1,46 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-import { AUTH_PATH } from '@/config/pages-url.config';
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
-
-import { createClient } from '@/utils/supabase/client';
 
 import styles from './dashboard.module.css';
 
 const { dashboard } = styles;
 
-export default function Dashboard() {
-  const { user, isLoading, error } = useUser();
-  const supabase = createClient();
+const Dashboard = () => {
+  const { user, signOut } = useUser();
+  const locale = useLocale();
+  const router = useRouter();
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    redirect(AUTH_PATH);
+    await signOut();
+    toast.success('Successfully signed out!');
+    router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
   };
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
-  if (!user) {
-    return <p>Not logged in</p>;
-  }
+  const t = useTranslations('Main');
 
   return (
     <section className={dashboard}>
       <h1 className='maintext'>
-        Welcome,{' '}
+        {t('authorizedTitle')},{' '}
         <span className='maintext_green'>
-          {user.identities[0].identity_data.first_name}
+          {user?.identities[0].identity_data.first_name}
         </span>
         !
       </h1>
-      <p className='subtext'>
-        We are glad to see you again. You now have access to all features of
-        your account.
-      </p>
+      <p className='subtext'>{t('authorizedDescription')}</p>
       <button
         onClick={handleLogout}
         className='button button_colored'
       >
-        Sign Out
+        {t('signOut')}
       </button>
     </section>
   );
-}
+};
+export default Dashboard;

@@ -1,0 +1,22 @@
+{
+  "Main": {
+    "title": "Добро пожаловать в <span>REST Client</span>",
+    "description": "REST Client обеспечивает и упрощает связь с любым открытым RESTful API. Он предлагает абстракцию над библиотеками HTTP, что позволяет удобно преобразовывать их в HTTP-запрос и создавать объекты из HTTP-ответа. <br></br>Чтобы начать использовать приложение, зарегистрируйтесь или войдите в систему.",
+    "authorizedTitle": "Добро пожаловать",
+    "authorizedDescription": "Мы рады снова видеть вас. Теперь у вас есть доступ ко всем функциям вашего аккаунта.",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "signOut": "Выйти",
+    "history": "История",
+    "variables": "Переменные",
+    "errorPageDescription": "Простите, что-то пошло не так.",
+    "formSignInDescription": "Рады видеть вас снова! Войдите, чтобы продолжить своё путешествие.",
+    "formSignUpDescription": "Давайте начнем! Создайте свой аккаунт за несколько шагов.",
+    "formSignInEmailPlaceholder": "Введите адрес электронной почты",
+    "formSignInPasswordPlaceholder": "Введите ваш пароль",
+    "formSignUpNamePlaceholder": "Введите ваше имя",
+    "formSignUpEmailPlaceholder": "Введите адрес электронной почты",
+    "formSignUpPasswordPlaceholder": "Выберите пароль",
+    "formSignUpConfirmPasswordPlaceholder": "Повторите пароль"
+  }
+}
