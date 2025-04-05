@@ -252,25 +252,17 @@ describe('Form component', () => {
     });
   });
 
-  // it('should display password min length error for signin', async () => {
-  //   const t = useTranslations('Main');
-  //   renderForm('signin');
-  //   fireEvent.change(screen.getByPlaceholderText('Enter your email address'), {
-  //     target: { value: 'test@test.com' },
-  //   });
-  //   fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-  //     target: { value: '123' },
-  //   });
-  //   fireEvent.click(screen.getByTestId('submit-button'));
+  it('should display password min length error for signin', async () => {
+    const t = useTranslations('Main');
+    renderForm('signin');
+    fireEvent.focus(screen.getByPlaceholderText('Enter your email address'));
+    fireEvent.focus(screen.getByPlaceholderText('Enter your password'));
+    fireEvent.click(screen.getByTestId('submit-button'));
 
-  //   await waitFor(() => {
-  //     const error = screen.getAllByText(
-  //       (_, el) =>
-  //         el?.textContent === 'Password must contain at least 8 characters'
-  //     );
-  //     expect(error).toHaveLength(4);
-  //   });
-  // });
+    await waitFor(() => {
+      expect(screen.getByText(t('Email is required'))).toBeInTheDocument();
+    });
+  });
 
   it('should display email format error for signin', async () => {
     const t = useTranslations('Main');
