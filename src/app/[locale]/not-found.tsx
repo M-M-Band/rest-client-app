@@ -2,6 +2,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
+
 import img from '@/../public/404.png';
 
 export default function NotFound() {
@@ -11,7 +13,7 @@ export default function NotFound() {
       <h1 className='maintext_green'>{t('title')}</h1>
       <p className='subtext'>{t('description')}</p>
       <Link
-        href='/'
+        href={`${DASHBOARD_PAGES.HOME}`}
         className='button button_colored'
       >
         {t('backButton')}
