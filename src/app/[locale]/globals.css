@@ -161,3 +161,13 @@ select {
   color: var(--gray-300);
   font-weight: var(--fw-regular);
 }
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__namedLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
