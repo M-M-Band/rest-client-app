@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function VariablesPage() {
   return (
-    <div>
-      <h2>Variables Page</h2>
-    </div>
+    <section>
+      <h1 className='maintext maintext_green'>Variables</h1>
+    </section>
   );
 }

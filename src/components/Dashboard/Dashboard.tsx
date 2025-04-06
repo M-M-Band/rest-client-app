@@ -8,11 +8,14 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
 
+import styles from './dashboard.module.css';
+
+const { dashboard } = styles;
+
 const Dashboard = () => {
   const { user, signOut } = useUser();
   const locale = useLocale();
   const router = useRouter();
-
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
@@ -22,16 +25,22 @@ const Dashboard = () => {
   const t = useTranslations('Main');
 
   return (
-    <div>
-      <h1>Личный кабинет</h1>
-      <div>
-        {user?.email && <p>Email: {user.email}</p>}
-        {user?.identities && user.identities[0]?.identity_data?.first_name && (
-          <p>Имя: {user.identities[0].identity_data.first_name}</p>
-        )}
-        <button onClick={handleLogout}>{t('signOut')}</button>
-      </div>
-    </div>
+    <section className={dashboard}>
+      <h1 className='maintext'>
+        {t('authorizedTitle')},{' '}
+        <span className='maintext_green'>
+          {user?.identities[0].identity_data.first_name}
+        </span>
+        !
+      </h1>
+      <p className='subtext'>{t('authorizedDescription')}</p>
+      <button
+        onClick={handleLogout}
+        className='button button_colored'
+      >
+        {t('signOut')}
+      </button>
+    </section>
   );
 };
 export default Dashboard;

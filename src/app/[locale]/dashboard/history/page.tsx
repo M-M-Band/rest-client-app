@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function HistoryPage() {
   return (
-    <div>
-      <h2>History Page</h2>
-    </div>
+    <section>
+      <h1 className='maintext maintext_green'>History</h1>
+    </section>
   );
 }

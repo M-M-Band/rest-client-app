@@ -80,7 +80,7 @@ const Header = () => {
               href={`${DASHBOARD_PAGES.HISTORY}`}
               className={`button ${pathname === `${DASHBOARD_PAGES.HISTORY}` ? 'active' : ''}`}
             >
-              History
+              {t('history')}
             </Link>
             <Link
               href={`${DASHBOARD_PAGES.VARIABLES}`}

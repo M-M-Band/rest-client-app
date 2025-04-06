@@ -33,7 +33,9 @@
 }
 
 body {
-  background: url('../../../public/background.svg') top left/100vw;
+  background: url('../../../public/background.svg') no-repeat top left/100vw
+    fixed;
+  background-size: cover;
 }
 
 .appWrapper {
@@ -45,7 +47,7 @@ body {
   justify-content: space-between;
   font-size: var(--fs-medium);
   font-weight: var(--fw-medium);
-  height: 100vh;
+  min-height: 100vh;
 }
 
 :is(header, footer) {
@@ -74,6 +76,14 @@ footer {
     color: var(--gray-200);
     font-weight: var(--fw-regular);
   }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--white);
+  gap: 20px;
 }
 
 a {
@@ -123,11 +133,7 @@ select {
 
 .home {
   width: 600px;
-  display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  gap: 20px;
-  color: var(--white);
 }
 
 .buttons-container {

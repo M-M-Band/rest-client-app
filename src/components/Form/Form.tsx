@@ -77,6 +77,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
       className={form}
+      style={{ backgroundPosition: isSignUpMode ? 'top right' : '' }}
     >
       <div className={container}>
         <h1 className='maintext maintext_green'>{formName}</h1>
