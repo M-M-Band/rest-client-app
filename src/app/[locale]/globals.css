@@ -91,6 +91,11 @@ a {
   color: var(--white);
 }
 
+h2,
+h3 {
+  font-weight: var(--fw-medium);
+}
+
 :is(button:not(:disabled), select) {
   cursor: pointer;
 }
