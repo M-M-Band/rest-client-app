@@ -18,5 +18,10 @@
     "formSignUpEmailPlaceholder": "Введите адрес электронной почты",
     "formSignUpPasswordPlaceholder": "Выберите пароль",
     "formSignUpConfirmPasswordPlaceholder": "Повторите пароль"
+  },
+  "404": {
+    "title": "ОЙ! ОШИБКА 404!",
+    "description": "Такой страницы нет. Попробуйте вернуться на главную и начать заново",
+    "backButton": "Перейти на главную"
   }
 }
