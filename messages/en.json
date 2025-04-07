@@ -23,5 +23,14 @@
     "title": "OH NO! ERROR 404!",
     "description": "This page doesn’t exist or was removed. We suggest you go back to home",
     "backButton": "Return home"
+  },
+  "about": {
+    "title": "Our team",
+    "name1": "Danila Kotenkov",
+    "name2": "Ekaterina Grigoreva",
+    "name3": "Alexandr Kabanau",
+    "description1": "Danila is a promising young developer who's taken on the leadership role with enthusiasm. He's been coordinating the team's efforts and hasn't been afraid to make architectural decisions. He has quickly developed his expertise in JavaScript frameworks and RESTful API integration. Dan is eager to learn and solve complex problems what made him an inspiring team leader.",
+    "description2": "Ekaterina is a creative beginner with a natural talent for user experience design. Though she is new to professional development, she brings fresh perspectives to creating intuitive interfaces for the API client. Kate is passionate about learning more about component design and responsive layouts. Her willingness to experiment with new approaches often leads to innovative solutions that more experienced developers might overlook.",
+    "description3": "Alexandr is an ambitious newcomer who's fascinated by the challenges of API integration. While still building his experience, Alex took on authentication implementation and data handling with determination. He enjoys diving into documentation and is not intimidated by complex technical specifications. His methodical approach to problem-solving helps the team overcome unexpected integration obstacles."
   }
 }
