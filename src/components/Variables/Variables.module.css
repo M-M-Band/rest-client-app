@@ -1,0 +1,49 @@
+.variables {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.variables__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.variables__add {
+  gap: 1rem;
+}
+
+.variables__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.variables__item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.variables__input {
+  padding: 0.5rem;
+  border: 1px solid var(--border-grey);
+  border-radius: 4px;
+  flex-grow: 1;
+}
+
+.variables__button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--main-green);
+  color: white;
+  cursor: pointer;
+}
+
+.variables__button_remove {
+  background-color: var(--red);
+}

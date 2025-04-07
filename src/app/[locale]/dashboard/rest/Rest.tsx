@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   HTTP_METHODS,
@@ -12,6 +13,7 @@ import {
 import { sendRequest } from '@/utils/rest-actions';
 
 import styles from './rest.module.css';
+import { useVariables } from '@/context/VariablesContext';
 
 const {
   rest,
@@ -32,16 +34,15 @@ const {
 } = styles;
 
 const Rest = () => {
-  const [state, formAction, isPending] = useActionState(
-    sendRequest,
-    initialState
-  );
+  const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/posts');
+
   const [headers, setHeaders] = useState<Header[]>([
     { key: 'Content-Type', value: 'application/json' },
   ]);
   const [body, setBody] = useState('');
   const [method, setMethod] = useState('GET');
   const [showHeaders, setShowHeaders] = useState(true);
+  const { variables } = useVariables();
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -49,6 +50,10 @@ const Rest = () => {
   const setInputRef = (index: number) => (el: HTMLInputElement | null) => {
     inputTableRefs.current[index] = el;
   };
+
+  useEffect(() => {
+    setUrl(substituteVariables(url));
+  }, []);
 
   useEffect(() => {
     if (inputSearchRef.current) {
@@ -81,12 +86,80 @@ const Rest = () => {
     setHeaders(newHeaders);
   };
 
+  const variableRegexes = variables.map((variable) => ({
+    name: variable.name,
+    regex: new RegExp(`\\{\\{${variable.name}\\}\\}`, 'g'),
+  }));
+
+  const substituteVariables = (text: string) => {
+    let result = text;
+    variableRegexes.forEach(({ name, regex }) => {
+      const variable = variables.find((v) => v.name === name);
+      if (variable) {
+        result = result.replace(regex, variable.value);
+      } else {
+        toast.error(`Variable ${name} not found.`);
+      }
+    });
+    return result;
+  };
+
+  const handleSendRequest = (
+    prevState: typeof initialState,
+    formData: FormData
+  ) => {
+    try {
+      const headersString = formData.get('headers') as string;
+      const method = formData.get('method') as string;
+      const url = formData.get('url') as string;
+      let parsedHeaders: Header[] = [];
+      try {
+        parsedHeaders = JSON.parse(headersString) as Header[];
+      } catch (error) {
+        toast.error(`Invalid JSON in headers. ${error}`);
+        return initialState;
+      }
+      const body = formData.get('body') as string;
+
+      const newHeaders = parsedHeaders.map((header) => ({
+        ...header,
+        value: substituteVariables(header.value),
+      }));
+      const newBody = substituteVariables(body);
+      const newUrl = substituteVariables(url);
+
+      const newFormData = new FormData();
+      newFormData.append('headers', JSON.stringify(newHeaders));
+      newFormData.append('body', newBody);
+      newFormData.append('method', method);
+      newFormData.append('url', newUrl);
+
+      return sendRequest(prevState, newFormData);
+    } catch (error) {
+      toast.error('An error occurred while sending the request.');
+      console.error(error);
+      return initialState;
+    }
+  };
+
+  const [state, formAction, isPending] = useActionState(
+    handleSendRequest,
+    initialState
+  );
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   formAction(formData); //ERROR
+  // };
+
   return (
     <section className={rest}>
       <h1 className='maintext maintext_green'>REST Client</h1>
       <form
         className={form}
-        action={formAction}
+        // onSubmit={handleSubmit} //ERROR
+        action={formAction} //ERROR
       >
         <input
           type='hidden'
@@ -123,8 +196,9 @@ const Rest = () => {
               ref={inputSearchRef}
               name='url'
               type='url'
-              defaultValue='https://650abf4edfd73d1fab08cfdc.mockapi.io/items'
-              placeholder='https://650abf4edfd73d1fab08cfdc.mockapi.io/items'
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder='https://jsonplaceholder.typicode.com'
               required
             />
           </div>
@@ -235,4 +309,5 @@ const Rest = () => {
     </section>
   );
 };
+
 export default Rest;
