@@ -3,7 +3,9 @@ import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 import styles from './about.module.css';
-import photo from '@/../public/photo.webp';
+import photoAlex from '@/../public/photo_Alex.jpg';
+import photoDan from '@/../public/photo_Dan.jpg';
+import photoKate from '@/../public/photo_Kate.png';
 
 const { about, wrapper, img, card, mt20 } = styles;
 
@@ -50,19 +52,19 @@ const About = () => {
         <MemberCard
           teamLead={'Team Lead,'}
           name={t('name1')}
-          photo={photo}
+          photo={photoDan}
           description={t('description1')}
           githubLink='https://github.com/FroZe36'
         />
         <MemberCard
           name={t('name2')}
-          photo={photo}
+          photo={photoKate}
           description={t('description2')}
           githubLink='https://github.com/katiegrigoreva'
         />
         <MemberCard
           name={t('name3')}
-          photo={photo}
+          photo={photoAlex}
           description={t('description3')}
           githubLink='https://github.com/AlexKabanau'
         />
