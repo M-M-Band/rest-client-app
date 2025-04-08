@@ -11,9 +11,14 @@ export const HTTP_METHODS = [
 export type Header = { key: string; value: string };
 export type ResponseData = {
   status: number;
-  headers: Record<string, string>;
   data: unknown;
-  time: string;
+};
+
+export type FormDataType = {
+  method: string;
+  headers: Header[];
+  body: string;
+  url: string;
 };
 
 export type State = {

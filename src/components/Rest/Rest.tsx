@@ -1,10 +1,25 @@
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
+import { useLocale } from 'next-intl';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  FC,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
 
-import { HTTP_METHODS, Header, initialState } from '@/types/rest.types';
+import {
+  FormDataType,
+  HTTP_METHODS,
+  Header,
+  initialState,
+} from '@/types/rest.types';
 
-import { sendRequest } from '@/utils/rest-actions';
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import styles from './rest.module.css';
 
@@ -26,19 +41,115 @@ const {
   response__container,
 } = styles;
 
-const Rest = () => {
-  const [state, formAction, isPending] = useActionState(
-    sendRequest,
-    initialState
-  );
-  const [headers, setHeaders] = useState<Header[]>([
-    { key: 'Content-Type', value: 'application/json' },
-  ]);
+interface RestProps {
+  slugs: string[];
+}
+
+const Rest: FC<RestProps> = ({ slugs }) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const locale = useLocale();
+  const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
+  const [isPending, startTransition] = useTransition();
+  const [headers, setHeaders] = useState<Header[]>(() => {
+    const headersArray: Header[] =
+      searchParams.size > 0
+        ? [{ key: 'Content-Type', value: 'application/json' }]
+        : [{ key: 'Content-Type', value: 'application/json' }];
+    return headersArray;
+  });
   const [body, setBody] = useState('');
   const [method, setMethod] = useState('GET');
+  const [dataResponse, setDataResponse] = useState(initialState);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
+
+  const fetchData = useCallback(
+    async (data: string[]) => {
+      const [methodFetch, urlFetch, bodyFetch] = data;
+      try {
+        const url = Buffer.from(urlFetch, 'base64').toString('utf-8');
+        const headersArray = Object.fromEntries(searchParams.entries());
+        const options: RequestInit = {
+          method: methodFetch,
+          headers: headersArray,
+        };
+        if (['POST', 'PUT', 'PATCH'].includes(methodFetch) && bodyFetch) {
+          options.body = bodyFetch;
+        }
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        setDataResponse({
+          status: 'success',
+          response: {
+            status: response.status,
+            data,
+          },
+          error: null,
+        });
+      } catch (error) {
+        setDataResponse({
+          status: 'error',
+          response: null,
+          error: error instanceof Error ? error.message : 'Unknown Error',
+        });
+      }
+    },
+    [searchParams]
+  );
+
+  useEffect(() => {
+    if (slugs) {
+      fetchData(slugs);
+    }
+  }, [slugs, fetchData]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    startTransition(() => {
+      const form = new FormData(e.currentTarget);
+      const data = {
+        ...Object.fromEntries(form.entries()),
+        headers: JSON.parse(form.get('headers') as string) as Header[],
+      } as FormDataType;
+
+      const encodedUrl = data.url
+        ? Buffer.from(data.url).toString('base64')
+        : '';
+      const encodedBody = data.body
+        ? Buffer.from(data.body).toString('base64')
+        : '';
+
+      const apiPath = `/${data.method}/${encodedUrl}${encodedBody ? `/${encodedBody}` : ''}`;
+      const params = new URLSearchParams();
+      data.headers.forEach((h: Header) => {
+        if (h.key && h.value) {
+          params.append(h.key, encodeURIComponent(h.value));
+        }
+      });
+
+      const normalizePath = (path: string) =>
+        path.replace(/\/+/g, '/').replace(/\/$/, '');
+
+      const currentFullPath = normalizePath(
+        `${pathname}?${searchParams.toString()}`
+      );
+      const newFullPath = normalizePath(
+        `${BASEPATH}${apiPath}?${params.toString()}`
+      );
+      if (currentFullPath !== newFullPath) {
+        const finalUrl = `${BASEPATH}${apiPath}${params.toString() ? `?${params.toString()}` : ''}`;
+        router.push(finalUrl);
+      } else {
+        console.log('URL identical - skipping navigation');
+      }
+    });
+  };
 
   const setInputRef = (index: number) => (el: HTMLInputElement | null) => {
     inputTableRefs.current[index] = el;
@@ -80,7 +191,7 @@ const Rest = () => {
       <h1 className='maintext maintext_green'>REST Client</h1>
       <form
         className={form}
-        action={formAction}
+        onSubmit={handleSubmit}
       >
         <input
           type='hidden'
@@ -200,19 +311,26 @@ const Rest = () => {
       </form>
       <div className={response}>
         <h2>Response: </h2>
-        {state.response && (
+        {dataResponse.response ? (
           <div className={response__container}>
             <h3 className={response__maintext}>
               Status:{' '}
-              <span>{`${state.response.status} - ${state.status}`}</span>
+              <span>{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
             </h3>
             <div className={response__container}>
               <h3 className={response__maintext}>Body:</h3>
 
               <pre className={response__precode}>
-                {JSON.stringify(state.response.data, null, 3)}
+                {JSON.stringify(dataResponse.response.data, null, 3)}
               </pre>
             </div>
+          </div>
+        ) : (
+          <div className={response__container}>
+            <h3 className={response__maintext}>
+              Status:{' '}
+              <span>{`${dataResponse.error} - ${dataResponse.status}`}</span>
+            </h3>
           </div>
         )}
       </div>
