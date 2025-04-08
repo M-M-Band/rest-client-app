@@ -8,6 +8,8 @@ import AuthRedirectHandler from '@/components/AuthRedirectHandler';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
+import SessionChecker from '../providers/SessionChecker';
+
 import './globals.css';
 import { VariablesProvider } from '@/context/VariablesContext';
 import { routing } from '@/i18n/routing';
@@ -40,6 +42,7 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <VariablesProvider>
             <div className='appWrapper'>
+              <SessionChecker />
               <Header />
               <main>{children}</main>
               <Footer />

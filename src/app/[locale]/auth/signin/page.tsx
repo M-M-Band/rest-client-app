@@ -18,13 +18,18 @@ const SignInPage = () => {
 
   const handleSubmit = async (formData: SignInFormData | SignUpFormData) => {
     const { email, password } = formData;
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (data.session) {
+      const expiresAt = data.session.expires_at; // Unix timestamp
+      localStorage.setItem('session_expires_at', String(expiresAt));
+    }
     if (error) {
       toast.error(error.message);
     } else {
+      localStorage.setItem('authToken', data.session.access_token);
       toast.success('Successfully signed in!');
       router.push(DASHBOARD_PAGES.HOME);
     }
