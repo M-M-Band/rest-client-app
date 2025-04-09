@@ -2,6 +2,8 @@
 
 import { useActionState, useEffect, useRef, useState } from 'react';
 
+import CodeSnippet from '@/components/CodeSnippet/CodeSnippet';
+
 import {
   HTTP_METHODS,
   Header,
@@ -42,6 +44,7 @@ const Rest = () => {
   const [body, setBody] = useState('');
   const [method, setMethod] = useState('GET');
   const [showHeaders, setShowHeaders] = useState(true);
+  const [showCodeSnippet, setShowCodeSnippet] = useState(false);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -200,8 +203,14 @@ const Rest = () => {
         )}
 
         <div className={`${container} ${container_nested}`}>
-          <h2>Code:</h2>
+          <h2
+            onClick={() => setShowCodeSnippet((prev) => !prev)}
+            style={{ cursor: 'pointer' }}
+          >
+            {showCodeSnippet ? '▼' : '▶'} Code:
+          </h2>
         </div>
+        {showCodeSnippet && <CodeSnippet />}
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
             <h2>Body:</h2>
