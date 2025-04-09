@@ -3,6 +3,8 @@
 import codeGen from 'postman-code-generators';
 import sdk from 'postman-collection';
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { nnfxDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const CodeSnippet = () => {
   const targets = [
@@ -82,7 +84,20 @@ const CodeSnippet = () => {
           })}
         </select>
       </div>
-      <textarea defaultValue={output} />
+      <div>
+        <SyntaxHighlighter
+          language={selectedTargetKey}
+          wrapLongLines={true}
+          style={nnfxDark}
+          customStyle={{
+            backgroundColor: 'transparent',
+            padding: '20px',
+            border: '1px solid var(--black-700)',
+          }}
+        >
+          {output}
+        </SyntaxHighlighter>
+      </div>
     </>
   );
 };
