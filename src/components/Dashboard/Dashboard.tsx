@@ -21,6 +21,8 @@ const Dashboard = () => {
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
+    localStorage.removeItem('authToken');
+
     router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
   };
 

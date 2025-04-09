@@ -7,12 +7,9 @@ import { SIGNIN_PATH } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
-// import { createClient as createClientServer } from '@/utils/supabase/server';
-
 const SessionChecker = () => {
   const router = useRouter();
   const supabase = createClient();
-  // const supabaseServer = createClientServer();
 
   useEffect(() => {
     const checkSession = () => {
@@ -22,18 +19,17 @@ const SessionChecker = () => {
       if (expiresAt && now >= expiresAt) {
         localStorage.removeItem('session_expires_at');
         supabase.auth.signOut();
-        // supabaseServer.auth.signOut();
         setTimeout(() => {
-          router.push(SIGNIN_PATH); // или твой путь на авторизацию
+          router.push(SIGNIN_PATH);
         }, 3000);
       }
     };
 
-    const interval = setInterval(checkSession, 5000); // каждые 5 сек
+    const interval = setInterval(checkSession, 5000);
     return () => clearInterval(interval);
   }, [router]);
 
-  return null; // это просто логика, UI не нужен
+  return null;
 };
 
 export default SessionChecker;

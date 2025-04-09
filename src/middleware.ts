@@ -21,8 +21,6 @@ export async function middleware(request: NextRequest) {
     error,
   } = await supabase.auth.getUser();
   if (error || !user) {
-    console.log('отработало', error, !!user);
-    // Если токен недействителен, разлогиниваем пользователя
     await supabase.auth.signOut();
   }
 

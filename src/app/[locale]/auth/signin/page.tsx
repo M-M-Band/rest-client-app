@@ -23,7 +23,7 @@ const SignInPage = () => {
       password,
     });
     if (data.session) {
-      const expiresAt = data.session.expires_at; // Unix timestamp
+      const expiresAt = data.session.expires_at;
       localStorage.setItem('session_expires_at', String(expiresAt));
     }
     if (error) {

@@ -50,7 +50,7 @@ const Header = () => {
     toast.success('Successfully signed out!');
     localStorage.removeItem('authToken');
 
-    router.push(DASHBOARD_PAGES.ROOT);
+    router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
   };
 
   return (
