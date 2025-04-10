@@ -91,6 +91,11 @@ a {
   color: var(--white);
 }
 
+h2,
+h3 {
+  font-weight: var(--fw-medium);
+}
+
 :is(button:not(:disabled), select) {
   cursor: pointer;
 }
@@ -155,4 +160,14 @@ select {
 .subtext {
   color: var(--gray-300);
   font-weight: var(--fw-regular);
+}
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__namedLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }

@@ -7,6 +7,7 @@ export const HTTP_METHODS = [
   { value: 'HEAD', label: 'HEAD', color: '#9012fe' },
   { value: 'OPTIONS', label: 'OPTIONS', color: '#0d5aa7' },
 ];
+export const METHODS_WITH_BODY = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
 export type Header = { key: string; value: string };
 export type ResponseData = {
