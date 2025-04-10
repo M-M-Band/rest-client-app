@@ -48,7 +48,6 @@ const Header = () => {
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
-    // localStorage.removeItem('authToken');
 
     router.push(DASHBOARD_PAGES.ROOT);
   };

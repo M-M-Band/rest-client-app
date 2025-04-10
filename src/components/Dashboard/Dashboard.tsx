@@ -16,12 +16,10 @@ const { dashboard } = styles;
 
 const Dashboard = () => {
   const { user, signOut } = useUser();
-  // const locale = useLocale();
   const router = useRouter();
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
-    // localStorage.removeItem('authToken');
 
     router.push(DASHBOARD_PAGES.ROOT);
   };
