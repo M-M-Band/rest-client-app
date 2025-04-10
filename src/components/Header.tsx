@@ -37,7 +37,7 @@ const Header = () => {
     const handleScroll = () => {
       const shouldBeTransparent = window.scrollY > 20;
       header.style.backgroundColor = shouldBeTransparent
-        ? 'transparent'
+        ? 'rgba(28, 28, 28, 0.7)'
         : 'var(--bg-grey)';
     };
 
@@ -48,8 +48,9 @@ const Header = () => {
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
+    localStorage.removeItem('authToken');
 
-    router.push(DASHBOARD_PAGES.ROOT);
+    router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
   };
 
   return (

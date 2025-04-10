@@ -8,6 +8,8 @@ import AuthRedirectHandler from '@/components/AuthRedirectHandler';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
+import SessionChecker from '@/providers/SessionChecker';
+
 import './globals.css';
 import { routing } from '@/i18n/routing';
 
@@ -37,6 +39,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`${exo.variable}`}>
         <NextIntlClientProvider>
+          <SessionChecker />
           <div className='appWrapper'>
             <Header />
             <main>{children}</main>

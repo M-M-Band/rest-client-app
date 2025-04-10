@@ -18,7 +18,11 @@ export async function middleware(request: NextRequest) {
 
   const {
     data: { user },
+    error,
   } = await supabase.auth.getUser();
+  if (error || !user) {
+    await supabase.auth.signOut();
+  }
 
   const isAuthPage = nextUrl.pathname.includes(AUTH_PATH);
   const isDashboard = nextUrl.pathname.includes(DASHBOARD_PAGES.HOME);
