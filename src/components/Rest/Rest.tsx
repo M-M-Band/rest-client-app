@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,
   FC,
@@ -45,17 +46,30 @@ interface RestProps {
   slugs: string[];
 }
 
-const Rest: FC<RestProps> = () => {
+const Rest: FC<RestProps> = ({ slugs }) => {
   const locale = useLocale();
+  const searchParams = useSearchParams();
   const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
+
   const [isPending, startTransition] = useTransition();
+
   const [method, setMethod] = useState('GET');
   const [url, setUrl] = useState('');
   const [body, setBody] = useState('');
-  const [headers, setHeaders] = useState<Header[]>([
-    { key: 'Content-Type', value: 'application/json' },
-  ]);
-  const [dataResponse] = useState(initialState);
+  const [headers, setHeaders] = useState<Header[]>(() => {
+    const arr: Header[] = [];
+    if (searchParams.size)
+      searchParams.forEach((value, key) => arr.push({ key, value }));
+    return searchParams.size
+      ? arr
+      : [
+          { key: 'Content-Type', value: 'application/json' },
+          { key: 'header', value: 'Accept' },
+          { key: 'header', value: 'Content-Type' },
+        ];
+  });
+
+  const [dataResponse, setDataResponse] = useState(initialState);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -84,60 +98,71 @@ const Rest: FC<RestProps> = () => {
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
 
-  // const fetchData = useCallback(
-  //   async (data: string[]) => {
-  //     const [methodFetch, urlFetch, bodyFetch] = data;
-  //     try {
-  //       const url = Buffer.from(urlFetch, 'base64').toString('utf-8');
-  //       const headersArray = Object.fromEntries(searchParams.entries());
-  //       const options: RequestInit = {
-  //         method: methodFetch,
-  //         headers: headersArray,
-  //       };
-  //       if (['POST', 'PUT', 'PATCH'].includes(methodFetch) && bodyFetch) {
-  //         options.body = bodyFetch;
-  //       }
-  //       const response = await fetch(url, options);
-  //       const data = await response.json();
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-  //       setDataResponse({
-  //         status: 'success',
-  //         response: {
-  //           status: response.status,
-  //           data,
-  //         },
-  //         error: null,
-  //       });
-  //     } catch (error) {
-  //       setDataResponse({
-  //         status: 'error',
-  //         response: null,
-  //         error: error instanceof Error ? error.message : 'Unknown Error',
-  //       });
-  //     }
-  //   },
-  //   [searchParams]
-  // );
-
-  // useEffect(() => {
-  //   if (slugs) {
-  //     fetchData(slugs);
-  //   }
-  // }, [slugs, fetchData]);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    startTransition(() => {
-      const form = new FormData(e.currentTarget);
-      const data = {
-        ...Object.fromEntries(form.entries()),
-        headers: JSON.parse(form.get('headers') as string) as Header[],
-      } as FormDataType;
-      console.log(data);
+    startTransition(async () => {
+      try {
+        const form = new FormData(e.currentTarget);
+        const { method, headers, body, url } = {
+          ...Object.fromEntries(form.entries()),
+          headers: JSON.parse(form.get('headers') as string) as Header[],
+        } as FormDataType;
+
+        const options: RequestInit = {
+          method,
+          headers: headers.reduce(
+            (acc, { key, value }) => {
+              if (key && value) acc[key] = value;
+              return acc;
+            },
+            {} as Record<string, string>
+          ),
+        };
+
+        if (['POST', 'PUT', 'PATCH'].includes(method) && body) {
+          options.body = body;
+        }
+
+        const response = await fetch(url, options);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        setDataResponse({
+          status: 'success',
+          response: {
+            status: response.status,
+            data,
+          },
+          error: null,
+        });
+      } catch (error) {
+        setDataResponse({
+          status: 'error',
+          response: null,
+          error: error instanceof Error ? error.message : 'Unknown Error',
+        });
+      }
     });
   };
+
+  useEffect(() => {
+    if (slugs) {
+      const [method, url, body] = slugs;
+      if (method) {
+        setMethod(method);
+      }
+      if (url) {
+        setUrl(Buffer.from(url, 'base64').toString('utf-8'));
+      }
+      if (body) {
+        setBody(Buffer.from(body, 'base64').toString('utf-8'));
+      }
+    }
+  }, [slugs]);
+
   useEffect(() => {
     updateURL();
   }, [updateURL]);
@@ -191,7 +216,6 @@ const Rest: FC<RestProps> = () => {
       <form
         className={form}
         onSubmit={handleSubmit}
-        // onChange={(e) => console.log(e)}
       >
         <input
           type='hidden'
@@ -303,6 +327,8 @@ const Rest: FC<RestProps> = () => {
         <div className={`${container} ${container_requestbody}`}>
           <h2>Body:</h2>
           <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
             onBlur={handleBodyBlur}
             placeholder='Request body (JSON)'
             rows={6}
