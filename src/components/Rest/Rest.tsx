@@ -23,6 +23,7 @@ import {
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { HISTORY_KEY } from '@/utils/constants';
+import { filterString } from '@/utils/helpers';
 
 import styles from './rest.module.css';
 
@@ -80,8 +81,12 @@ const Rest: FC<RestProps> = ({ slugs }) => {
   };
 
   const updateURL = useCallback(() => {
-    const encodedUrl = url ? Buffer.from(url).toString('base64') : '';
-    const encodedBody = body ? Buffer.from(body).toString('base64') : '';
+    const encodedUrl = url
+      ? filterString(Buffer.from(url).toString('base64'))
+      : '';
+    const encodedBody = body
+      ? filterString(Buffer.from(body).toString('base64'))
+      : '';
     const headersParams = new URLSearchParams();
     headers.forEach((header) => {
       if (header.key && header.value) {
@@ -165,10 +170,10 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         setMethod(method);
       }
       if (url) {
-        setUrl(Buffer.from(url, 'base64').toString('utf-8'));
+        setUrl(Buffer.from(url, 'base64').toString('utf8'));
       }
       if (body) {
-        setBody(Buffer.from(body, 'base64').toString('utf-8'));
+        setBody(Buffer.from(body, 'base64').toString('utf8'));
       }
     }
   }, [slugs]);
