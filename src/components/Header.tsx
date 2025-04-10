@@ -37,7 +37,7 @@ const Header = () => {
     const handleScroll = () => {
       const shouldBeTransparent = window.scrollY > 20;
       header.style.backgroundColor = shouldBeTransparent
-        ? 'transparent'
+        ? 'rgba(28, 28, 28, 0.7)'
         : 'var(--bg-grey)';
     };
 

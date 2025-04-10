@@ -18,10 +18,14 @@ const SignInPage = () => {
 
   const handleSubmit = async (formData: SignInFormData | SignUpFormData) => {
     const { email, password } = formData;
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (data.session) {
+      const expiresAt = data.session.expires_at;
+      localStorage.setItem('session_expires_at', String(expiresAt));
+    }
     if (error) {
       toast.error(error.message);
     } else {

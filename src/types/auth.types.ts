@@ -1,10 +1,7 @@
 import { Session } from '@supabase/supabase-js';
-// import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
-
-// const t = useTranslations('Main');
 
 export type AuthFormTypes = {
   email: string;
@@ -27,25 +24,21 @@ export const FORM_FIELDS_CONFIG = {
       name: 'name',
       type: 'text',
       placeholder: 'Enter your name',
-      // placeholder: t('formSignUpNamePlaceholder'),
     },
     {
       name: 'email',
       type: 'email',
       placeholder: 'Enter your email',
-      // placeholder: t('formSignUpEmailPlaceholder'),
     },
     {
       name: 'password',
       type: 'password',
       placeholder: 'Choose a password',
-      // placeholder: t('formSignUpPasswordPlaceholder'),
     },
     {
       name: 'confirmPassword',
       type: 'password',
       placeholder: 'Password again',
-      // placeholder: t('formSignUpConfirmPasswordPlaceholder'),
     },
   ] as FormFieldConfig<SignUpFormData>[],
   signin: [
@@ -53,13 +46,11 @@ export const FORM_FIELDS_CONFIG = {
       name: 'email',
       type: 'email',
       placeholder: 'Enter your email address',
-      // placeholder: t('formSignInEmailPlaceholder'),
     },
     {
       name: 'password',
       type: 'password',
       placeholder: 'Enter your password',
-      // placeholder: t('formSignInPasswordPlaceholder'),
     },
   ] as FormFieldConfig<SignUpFormData>[],
 };
