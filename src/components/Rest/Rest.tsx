@@ -4,19 +4,19 @@ import { useLocale } from 'next-intl';
 import {
   ChangeEvent,
   FC,
-  // FormEvent,
+  FormEvent,
   useCallback,
   useEffect,
   useRef,
   useState,
-  // useTransition,
+  useTransition,
 } from 'react';
 
 import {
-  // FormDataType,
+  FormDataType,
   HTTP_METHODS,
   Header,
-  // initialState,
+  initialState,
 } from '@/types/rest.types';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
@@ -48,14 +48,14 @@ interface RestProps {
 const Rest: FC<RestProps> = () => {
   const locale = useLocale();
   const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
-  // const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [method, setMethod] = useState('GET');
-  const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/posts');
+  const [url, setUrl] = useState('');
   const [body, setBody] = useState('');
   const [headers, setHeaders] = useState<Header[]>([
     { key: 'Content-Type', value: 'application/json' },
   ]);
-  // const [dataResponse, setDataResponse] = useState(initialState);
+  const [dataResponse] = useState(initialState);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -83,10 +83,6 @@ const Rest: FC<RestProps> = () => {
 
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
-
-  // const handleFormChange = (e: ChangeEvent<HTMLFormElement>) => {
-  //   const url = `${BASEPATH}/method/`;
-  // };
 
   // const fetchData = useCallback(
   //   async (data: string[]) => {
@@ -131,47 +127,17 @@ const Rest: FC<RestProps> = () => {
   //   }
   // }, [slugs, fetchData]);
 
-  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   startTransition(() => {
-  //     const form = new FormData(e.currentTarget);
-  //     const data = {
-  //       ...Object.fromEntries(form.entries()),
-  //       headers: JSON.parse(form.get('headers') as string) as Header[],
-  //     } as FormDataType;
-
-  //     const encodedUrl = data.url
-  //       ? Buffer.from(data.url).toString('base64')
-  //       : '';
-  //     const encodedBody = data.body
-  //       ? Buffer.from(data.body).toString('base64')
-  //       : '';
-
-  //     const apiPath = `/${data.method}/${encodedUrl}${encodedBody ? `/${encodedBody}` : ''}`;
-  //     const params = new URLSearchParams();
-  //     data.headers.forEach((h: Header) => {
-  //       if (h.key && h.value) {
-  //         params.append(h.key, encodeURIComponent(h.value));
-  //       }
-  //     });
-
-  //     const normalizePath = (path: string) =>
-  //       path.replace(/\/+/g, '/').replace(/\/$/, '');
-
-  //     const currentFullPath = normalizePath(
-  //       `${pathname}?${searchParams.toString()}`
-  //     );
-  //     const newFullPath = normalizePath(
-  //       `${BASEPATH}${apiPath}?${params.toString()}`
-  //     );
-  //     if (currentFullPath !== newFullPath) {
-  //       const finalUrl = `${BASEPATH}${apiPath}${params.toString() ? `?${params.toString()}` : ''}`;
-  //       router.push(finalUrl);
-  //     } else {
-  //       console.log('URL identical - skipping navigation');
-  //     }
-  //   });
-  // };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    startTransition(() => {
+      const form = new FormData(e.currentTarget);
+      const data = {
+        ...Object.fromEntries(form.entries()),
+        headers: JSON.parse(form.get('headers') as string) as Header[],
+      } as FormDataType;
+      console.log(data);
+    });
+  };
   useEffect(() => {
     updateURL();
   }, [updateURL]);
@@ -224,7 +190,7 @@ const Rest: FC<RestProps> = () => {
       <h1 className='maintext maintext_green'>REST Client</h1>
       <form
         className={form}
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         // onChange={(e) => console.log(e)}
       >
         <input
