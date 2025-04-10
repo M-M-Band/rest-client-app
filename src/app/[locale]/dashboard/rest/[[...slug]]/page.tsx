@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 
-// import { useRouter } from 'next/router';
-
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
 import Rest from '../../../../../components/Rest/Rest';

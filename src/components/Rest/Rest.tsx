@@ -1,22 +1,22 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
+  ChangeEvent,
   FC,
-  FormEvent,
+  // FormEvent,
   useCallback,
   useEffect,
   useRef,
   useState,
-  useTransition,
+  // useTransition,
 } from 'react';
 
 import {
-  FormDataType,
+  // FormDataType,
   HTTP_METHODS,
   Header,
-  initialState,
+  // initialState,
 } from '@/types/rest.types';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
@@ -45,115 +45,136 @@ interface RestProps {
   slugs: string[];
 }
 
-const Rest: FC<RestProps> = ({ slugs }) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const Rest: FC<RestProps> = () => {
   const locale = useLocale();
   const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
-  const [isPending, startTransition] = useTransition();
-  const [headers, setHeaders] = useState<Header[]>(() => {
-    const headersArray: Header[] =
-      searchParams.size > 0
-        ? [{ key: 'Content-Type', value: 'application/json' }]
-        : [{ key: 'Content-Type', value: 'application/json' }];
-    return headersArray;
-  });
-  const [body, setBody] = useState('');
+  // const [isPending, startTransition] = useTransition();
   const [method, setMethod] = useState('GET');
-  const [dataResponse, setDataResponse] = useState(initialState);
+  const [url, setUrl] = useState('https://jsonplaceholder.typicode.com/posts');
+  const [body, setBody] = useState('');
+  const [headers, setHeaders] = useState<Header[]>([
+    { key: 'Content-Type', value: 'application/json' },
+  ]);
+  // const [dataResponse, setDataResponse] = useState(initialState);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
-
-  const fetchData = useCallback(
-    async (data: string[]) => {
-      const [methodFetch, urlFetch, bodyFetch] = data;
-      try {
-        const url = Buffer.from(urlFetch, 'base64').toString('utf-8');
-        const headersArray = Object.fromEntries(searchParams.entries());
-        const options: RequestInit = {
-          method: methodFetch,
-          headers: headersArray,
-        };
-        if (['POST', 'PUT', 'PATCH'].includes(methodFetch) && bodyFetch) {
-          options.body = bodyFetch;
-        }
-        const response = await fetch(url, options);
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        setDataResponse({
-          status: 'success',
-          response: {
-            status: response.status,
-            data,
-          },
-          error: null,
-        });
-      } catch (error) {
-        setDataResponse({
-          status: 'error',
-          response: null,
-          error: error instanceof Error ? error.message : 'Unknown Error',
-        });
-      }
-    },
-    [searchParams]
-  );
-
-  useEffect(() => {
-    if (slugs) {
-      fetchData(slugs);
-    }
-  }, [slugs, fetchData]);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    startTransition(() => {
-      const form = new FormData(e.currentTarget);
-      const data = {
-        ...Object.fromEntries(form.entries()),
-        headers: JSON.parse(form.get('headers') as string) as Header[],
-      } as FormDataType;
-
-      const encodedUrl = data.url
-        ? Buffer.from(data.url).toString('base64')
-        : '';
-      const encodedBody = data.body
-        ? Buffer.from(data.body).toString('base64')
-        : '';
-
-      const apiPath = `/${data.method}/${encodedUrl}${encodedBody ? `/${encodedBody}` : ''}`;
-      const params = new URLSearchParams();
-      data.headers.forEach((h: Header) => {
-        if (h.key && h.value) {
-          params.append(h.key, encodeURIComponent(h.value));
-        }
-      });
-
-      const normalizePath = (path: string) =>
-        path.replace(/\/+/g, '/').replace(/\/$/, '');
-
-      const currentFullPath = normalizePath(
-        `${pathname}?${searchParams.toString()}`
-      );
-      const newFullPath = normalizePath(
-        `${BASEPATH}${apiPath}?${params.toString()}`
-      );
-      if (currentFullPath !== newFullPath) {
-        const finalUrl = `${BASEPATH}${apiPath}${params.toString() ? `?${params.toString()}` : ''}`;
-        router.push(finalUrl);
-      } else {
-        console.log('URL identical - skipping navigation');
-      }
-    });
-  };
-
   const setInputRef = (index: number) => (el: HTMLInputElement | null) => {
     inputTableRefs.current[index] = el;
   };
+
+  const updateURL = useCallback(() => {
+    const encodedUrl = url ? Buffer.from(url).toString('base64') : '';
+    const encodedBody = body ? Buffer.from(body).toString('base64') : '';
+    const headersParams = new URLSearchParams();
+    headers.forEach((header) => {
+      if (header.key && header.value) {
+        headersParams.append(header.key, header.value);
+      }
+    });
+
+    const pathSegments = [BASEPATH, method, encodedUrl, encodedBody].filter(
+      Boolean
+    );
+
+    const fullUrl = headersParams.toString()
+      ? `${pathSegments.join('/')}?${headersParams}`
+      : pathSegments.join('/');
+
+    window.history.replaceState(null, '', fullUrl);
+  }, [BASEPATH, body, url, method, headers]);
+
+  // const handleFormChange = (e: ChangeEvent<HTMLFormElement>) => {
+  //   const url = `${BASEPATH}/method/`;
+  // };
+
+  // const fetchData = useCallback(
+  //   async (data: string[]) => {
+  //     const [methodFetch, urlFetch, bodyFetch] = data;
+  //     try {
+  //       const url = Buffer.from(urlFetch, 'base64').toString('utf-8');
+  //       const headersArray = Object.fromEntries(searchParams.entries());
+  //       const options: RequestInit = {
+  //         method: methodFetch,
+  //         headers: headersArray,
+  //       };
+  //       if (['POST', 'PUT', 'PATCH'].includes(methodFetch) && bodyFetch) {
+  //         options.body = bodyFetch;
+  //       }
+  //       const response = await fetch(url, options);
+  //       const data = await response.json();
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       setDataResponse({
+  //         status: 'success',
+  //         response: {
+  //           status: response.status,
+  //           data,
+  //         },
+  //         error: null,
+  //       });
+  //     } catch (error) {
+  //       setDataResponse({
+  //         status: 'error',
+  //         response: null,
+  //         error: error instanceof Error ? error.message : 'Unknown Error',
+  //       });
+  //     }
+  //   },
+  //   [searchParams]
+  // );
+
+  // useEffect(() => {
+  //   if (slugs) {
+  //     fetchData(slugs);
+  //   }
+  // }, [slugs, fetchData]);
+
+  // const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   startTransition(() => {
+  //     const form = new FormData(e.currentTarget);
+  //     const data = {
+  //       ...Object.fromEntries(form.entries()),
+  //       headers: JSON.parse(form.get('headers') as string) as Header[],
+  //     } as FormDataType;
+
+  //     const encodedUrl = data.url
+  //       ? Buffer.from(data.url).toString('base64')
+  //       : '';
+  //     const encodedBody = data.body
+  //       ? Buffer.from(data.body).toString('base64')
+  //       : '';
+
+  //     const apiPath = `/${data.method}/${encodedUrl}${encodedBody ? `/${encodedBody}` : ''}`;
+  //     const params = new URLSearchParams();
+  //     data.headers.forEach((h: Header) => {
+  //       if (h.key && h.value) {
+  //         params.append(h.key, encodeURIComponent(h.value));
+  //       }
+  //     });
+
+  //     const normalizePath = (path: string) =>
+  //       path.replace(/\/+/g, '/').replace(/\/$/, '');
+
+  //     const currentFullPath = normalizePath(
+  //       `${pathname}?${searchParams.toString()}`
+  //     );
+  //     const newFullPath = normalizePath(
+  //       `${BASEPATH}${apiPath}?${params.toString()}`
+  //     );
+  //     if (currentFullPath !== newFullPath) {
+  //       const finalUrl = `${BASEPATH}${apiPath}${params.toString() ? `?${params.toString()}` : ''}`;
+  //       router.push(finalUrl);
+  //     } else {
+  //       console.log('URL identical - skipping navigation');
+  //     }
+  //   });
+  // };
+  useEffect(() => {
+    updateURL();
+  }, [updateURL]);
 
   useEffect(() => {
     if (inputSearchRef.current) {
@@ -161,6 +182,18 @@ const Rest: FC<RestProps> = ({ slugs }) => {
       inputSearchRef.current.style.borderColor = color;
     }
   }, [method]);
+
+  const handleMethodChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setMethod(e.target.value);
+  };
+
+  const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
+
+  const handleBodyBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setBody(e.target.value);
+  };
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -191,7 +224,8 @@ const Rest: FC<RestProps> = ({ slugs }) => {
       <h1 className='maintext maintext_green'>REST Client</h1>
       <form
         className={form}
-        onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
+        // onChange={(e) => console.log(e)}
       >
         <input
           type='hidden'
@@ -208,7 +242,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             <select
               name='method'
               value={method}
-              onChange={(e) => setMethod(e.target.value)}
+              onChange={handleMethodChange}
               className={selectSearch}
             >
               {HTTP_METHODS.map(({ value, color }) => {
@@ -226,9 +260,10 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             <input
               className={inputSearch}
               ref={inputSearchRef}
+              onChange={handleUrlChange}
+              value={url}
               name='url'
               type='url'
-              defaultValue='https://jsonplaceholder.typicode.com/posts'
               placeholder='https://jsonplaceholder.typicode.com'
               required
             />
@@ -302,8 +337,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         <div className={`${container} ${container_requestbody}`}>
           <h2>Body:</h2>
           <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onBlur={handleBodyBlur}
             placeholder='Request body (JSON)'
             rows={6}
           ></textarea>
