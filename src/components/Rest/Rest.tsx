@@ -22,6 +22,8 @@ import {
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
+import { HISTORY_KEY } from '@/utils/constants';
+
 import styles from './rest.module.css';
 
 const {
@@ -129,6 +131,14 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const historyLocalStorage: string[] = JSON.parse(
+          localStorage.getItem(HISTORY_KEY) ?? '[]'
+        );
+        historyLocalStorage.push(
+          `${window.location.pathname}/${window.location.search}`
+        );
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(historyLocalStorage));
 
         setDataResponse({
           status: 'success',
