@@ -1,15 +1,30 @@
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
+import { useLocale } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
+import {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
 
 import {
+  FormDataType,
   HTTP_METHODS,
   Header,
   METHODS_WITH_BODY,
   initialState,
 } from '@/types/rest.types';
 
-import { sendRequest } from '@/utils/rest-actions';
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
+
+import { HISTORY_KEY } from '@/utils/constants';
+import { filterString } from '@/utils/helpers';
 
 import styles from './rest.module.css';
 
@@ -31,24 +46,143 @@ const {
   response__container,
 } = styles;
 
-const Rest = () => {
-  const [state, formAction, isPending] = useActionState(
-    sendRequest,
-    initialState
-  );
-  const [headers, setHeaders] = useState<Header[]>([
-    { key: 'Content-Type', value: 'application/json' },
-  ]);
-  const [body, setBody] = useState('');
+interface RestProps {
+  slugs: string[];
+}
+
+const Rest: FC<RestProps> = ({ slugs }) => {
+  const locale = useLocale();
+  const searchParams = useSearchParams();
+  const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
+
+  const [isPending, startTransition] = useTransition();
+
   const [method, setMethod] = useState('GET');
+  const [url, setUrl] = useState('');
+  const [body, setBody] = useState('');
+  const [headers, setHeaders] = useState<Header[]>(() => {
+    const arr: Header[] = [];
+    if (searchParams.size)
+      searchParams.forEach((value, key) => arr.push({ key, value }));
+    return searchParams.size
+      ? arr
+      : [
+          { key: 'Content-Type', value: 'application/json' },
+          { key: 'header', value: 'Accept' },
+          { key: 'header', value: 'Content-Type' },
+        ];
+  });
+
+  const [dataResponse, setDataResponse] = useState(initialState);
   const [showHeaders, setShowHeaders] = useState(true);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
-
   const setInputRef = (index: number) => (el: HTMLInputElement | null) => {
     inputTableRefs.current[index] = el;
   };
+
+  const updateURL = useCallback(() => {
+    const encodedUrl = url
+      ? filterString(Buffer.from(url).toString('base64'))
+      : '';
+    const encodedBody = body
+      ? filterString(Buffer.from(body).toString('base64'))
+      : '';
+    const headersParams = new URLSearchParams();
+    headers.forEach((header) => {
+      if (header.key && header.value) {
+        headersParams.append(header.key, header.value);
+      }
+    });
+
+    const pathSegments = [BASEPATH, method, encodedUrl, encodedBody].filter(
+      Boolean
+    );
+
+    const fullUrl = headersParams.toString()
+      ? `${pathSegments.join('/')}?${headersParams}`
+      : pathSegments.join('/');
+
+    window.history.replaceState(null, '', fullUrl);
+  }, [BASEPATH, body, url, method, headers]);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    startTransition(async () => {
+      try {
+        const form = new FormData(e.currentTarget);
+        const { method, headers, body, url } = {
+          ...Object.fromEntries(form.entries()),
+          headers: JSON.parse(form.get('headers') as string) as Header[],
+        } as FormDataType;
+
+        const options: RequestInit = {
+          method,
+          headers: headers.reduce(
+            (acc, { key, value }) => {
+              if (key && value) acc[key] = value;
+              return acc;
+            },
+            {} as Record<string, string>
+          ),
+        };
+
+        if (METHODS_WITH_BODY.includes(method) && body) {
+          options.body = body;
+        }
+
+        const response = await fetch(url, options);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const historyLocalStorage: string[] = JSON.parse(
+          localStorage.getItem(HISTORY_KEY) ?? '[]'
+        );
+        historyLocalStorage.push(
+          `${window.location.pathname}/${window.location.search}`
+        );
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(historyLocalStorage));
+
+        setDataResponse({
+          status: 'success',
+          response: {
+            status: response.status,
+            data,
+          },
+          error: null,
+        });
+      } catch (error) {
+        setDataResponse({
+          status: 'error',
+          response: null,
+          error: error instanceof Error ? error.message : 'Unknown Error',
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (slugs) {
+      const [method, url, body] = slugs;
+      if (method) {
+        setMethod(method);
+      }
+      if (url) {
+        setUrl(Buffer.from(url, 'base64').toString('utf8'));
+      }
+      if (body) {
+        setBody(Buffer.from(body, 'base64').toString('utf8'));
+      }
+    }
+  }, [slugs]);
+
+  useEffect(() => {
+    updateURL();
+  }, [updateURL]);
 
   useEffect(() => {
     if (inputSearchRef.current) {
@@ -56,6 +190,18 @@ const Rest = () => {
       inputSearchRef.current.style.borderColor = color;
     }
   }, [method]);
+
+  const handleMethodChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setMethod(e.target.value);
+  };
+
+  const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
+
+  const handleBodyBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setBody(e.target.value);
+  };
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -86,7 +232,7 @@ const Rest = () => {
       <h1 className='maintext maintext_green'>REST Client</h1>
       <form
         className={form}
-        action={formAction}
+        onSubmit={handleSubmit}
       >
         <input
           type='hidden'
@@ -103,7 +249,7 @@ const Rest = () => {
             <select
               name='method'
               value={method}
-              onChange={(e) => setMethod(e.target.value)}
+              onChange={handleMethodChange}
               className={selectSearch}
             >
               {HTTP_METHODS.map(({ value, color }) => {
@@ -121,10 +267,11 @@ const Rest = () => {
             <input
               className={inputSearch}
               ref={inputSearchRef}
+              onChange={handleUrlChange}
+              value={url}
               name='url'
               type='url'
-              defaultValue='https://650abf4edfd73d1fab08cfdc.mockapi.io/items'
-              placeholder='https://650abf4edfd73d1fab08cfdc.mockapi.io/items'
+              placeholder='https://jsonplaceholder.typicode.com'
               required
             />
           </div>
@@ -208,6 +355,7 @@ const Rest = () => {
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
+              onBlur={handleBodyBlur}
               placeholder='Request body (JSON)'
               rows={6}
             ></textarea>
@@ -216,19 +364,26 @@ const Rest = () => {
       </form>
       <div className={response}>
         <h2>Response: </h2>
-        {state.response && (
+        {dataResponse.response ? (
           <div className={response__container}>
             <h3 className={response__maintext}>
               Status:{' '}
-              <span>{`${state.response.status} - ${state.status}`}</span>
+              <span>{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
             </h3>
             <div className={response__container}>
               <h3 className={response__maintext}>Body:</h3>
 
               <pre className={response__precode}>
-                {JSON.stringify(state.response.data, null, 3)}
+                {JSON.stringify(dataResponse.response.data, null, 3)}
               </pre>
             </div>
+          </div>
+        ) : (
+          <div className={response__container}>
+            <h3 className={response__maintext}>
+              Status:{' '}
+              <span>{`${dataResponse.error} - ${dataResponse.status}`}</span>
+            </h3>
           </div>
         )}
       </div>
