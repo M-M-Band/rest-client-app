@@ -8,7 +8,7 @@ import AuthRedirectHandler from '@/components/AuthRedirectHandler';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
-import SessionChecker from '@/providers/SessionChecker';
+import SessionChecker from '@/utils/SessionChecker';
 
 import './globals.css';
 import { routing } from '@/i18n/routing';
