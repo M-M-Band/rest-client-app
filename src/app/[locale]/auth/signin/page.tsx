@@ -29,7 +29,7 @@ const SignInPage = () => {
     if (error) {
       toast.error(error.message);
     } else {
-      localStorage.setItem('authToken', data.session.access_token);
+      // localStorage.setItem('authToken', data.session.access_token);
       toast.success('Successfully signed in!');
       router.push(DASHBOARD_PAGES.HOME);
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -16,14 +16,14 @@ const { dashboard } = styles;
 
 const Dashboard = () => {
   const { user, signOut } = useUser();
-  const locale = useLocale();
+  // const locale = useLocale();
   const router = useRouter();
   const handleLogout = async () => {
     await signOut();
     toast.success('Successfully signed out!');
-    localStorage.removeItem('authToken');
+    // localStorage.removeItem('authToken');
 
-    router.push(`/${locale}${DASHBOARD_PAGES.ROOT}`);
+    router.push(DASHBOARD_PAGES.ROOT);
   };
 
   const t = useTranslations('Main');
