@@ -72,7 +72,7 @@ const Header = () => {
           <div className='buttons-container'>
             <Link
               href={`${DASHBOARD_PAGES.REST}`}
-              className={`button ${pathname === `${DASHBOARD_PAGES.REST}` ? 'active' : ''}`}
+              className={`button ${pathname.includes(`${DASHBOARD_PAGES.REST}`) ? 'active' : ''}`}
             >
               REST Client
             </Link>
