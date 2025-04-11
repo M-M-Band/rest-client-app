@@ -24,7 +24,9 @@ const CodeSnippet = () => {
     targets[0].variants[0]
   );
   const [selectedTargetKey, setSelectedTargetKey] = useState(targets[0].key);
-  const [output, setOutput] = useState<string>('');
+  const [output, setOutput] = useState<string>(
+    'Please add request URL for the code to be generated'
+  );
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -66,18 +68,20 @@ const CodeSnippet = () => {
     followRedirect: true,
   };
   const convert = () => {
-    codeGen.convert(
-      selectedTargetKey,
-      selectedTargetVar,
-      request,
-      options,
-      function (error: Error | null, snippet: string) {
-        if (error) {
-          throw new Error(error.message);
-        }
-        setOutput(snippet);
-      }
-    );
+    return parsePathname().url
+      ? codeGen.convert(
+          selectedTargetKey,
+          selectedTargetVar,
+          request,
+          options,
+          function (error: Error | null, snippet: string) {
+            if (error) {
+              throw new Error(error.message);
+            }
+            setOutput(snippet);
+          }
+        )
+      : setOutput('Please add request URL for the code to be generated');
   };
 
   useEffect(() => {
