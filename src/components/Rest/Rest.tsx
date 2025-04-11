@@ -24,6 +24,7 @@ import {
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
+import { applyVariables } from '@/utils/applyVariables';
 import { HISTORY_KEY } from '@/utils/constants';
 import { filterString } from '@/utils/helpers';
 
@@ -50,11 +51,6 @@ const {
 
 interface RestProps {
   slugs: string[];
-}
-
-interface ApplyVariablesResult {
-  replaced: string;
-  unmatchedVariables: string[];
 }
 
 const Rest: FC<RestProps> = ({ slugs }) => {
@@ -111,21 +107,6 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
 
-  const applyVariables = (text: string): ApplyVariablesResult => {
-    const unmatchedVariables: string[] = [];
-    const replaced = text.replace(/{{\s*([\w\d_-]+)\s*}}/g, (_, varName) => {
-      const found = variables.find((v) => v.name === varName);
-      if (found) {
-        return found.value;
-      } else {
-        unmatchedVariables.push(varName);
-        return `{{${varName}}}`;
-      }
-    });
-
-    return { replaced, unmatchedVariables };
-  };
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(async () => {
@@ -137,15 +118,15 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         } as FormDataType;
 
         const { replaced: parsedUrl, unmatchedVariables: urlUnmatched } =
-          applyVariables(url);
+          applyVariables(url, variables);
         const { replaced: parsedBody, unmatchedVariables: bodyUnmatched } =
-          applyVariables(body);
+          applyVariables(body, variables);
 
         const parsedHeaders = headers.map(({ key, value }) => {
           const { replaced: parsedKey, unmatchedVariables: keyUnmatched } =
-            applyVariables(key);
+            applyVariables(key, variables);
           const { replaced: parsedValue, unmatchedVariables: valueUnmatched } =
-            applyVariables(value);
+            applyVariables(value, variables);
           return {
             key: parsedKey,
             value: parsedValue,
