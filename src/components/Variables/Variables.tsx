@@ -8,12 +8,10 @@ import { useVariables } from '@/context/VariablesContext';
 const {
   variables,
   variables__container,
-  variables__list,
-  variables__item,
+  variables__table,
   variables__input,
-  variables__button,
-  variables__button_remove,
   variables__add,
+  button_border,
 } = styles;
 
 export const Variables = () => {
@@ -38,67 +36,85 @@ export const Variables = () => {
     <section className={variables}>
       <h1 className='maintext maintext_green'>Variables</h1>
       <div className={`${variables__container} ${variables__add}`}>
-        <h2>Add New Variable</h2>
-        <input
-          className={variables__input}
-          type='text'
-          placeholder='Variable Name'
-          value={newVariableName}
-          onChange={(e) => setNewVariableName(e.target.value)}
-        />
-        <input
-          className={variables__input}
-          type='text'
-          placeholder='Variable Value'
-          value={newVariableValue}
-          onChange={(e) => setNewVariableValue(e.target.value)}
-        />
-        <button
-          className={variables__button}
-          onClick={handleAddVariable}
-        >
-          Add
-        </button>
-      </div>
-      <div className={variables__container}>
-        <h2>Existing Variables</h2>
-        <ul className={variables__list}>
-          {storedVariables.map((variable, index) => (
-            <li
-              key={index}
-              className={variables__item}
-            >
-              <input
-                className={variables__input}
-                type='text'
-                value={variable.name}
-                onChange={(e) =>
-                  updateVariable(index, {
-                    ...variable,
-                    name: e.target.value,
-                  })
-                }
-              />
-              <input
-                className={variables__input}
-                type='text'
-                value={variable.value}
-                onChange={(e) =>
-                  updateVariable(index, {
-                    ...variable,
-                    value: e.target.value,
-                  })
-                }
-              />
-              <button
-                className={`${variables__button} ${variables__button_remove}`}
-                onClick={() => removeVariable(index)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+        <table className={variables__table}>
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>
+                <input
+                  className={variables__input}
+                  type='text'
+                  placeholder='Variable Name'
+                  value={newVariableName}
+                  onChange={(e) => setNewVariableName(e.target.value)}
+                />
+              </th>
+              <th>
+                <input
+                  className={variables__input}
+                  type='text'
+                  placeholder='Variable Value'
+                  value={newVariableValue}
+                  onChange={(e) => setNewVariableValue(e.target.value)}
+                />
+              </th>
+              <th>
+                <button
+                  className={`button ${button_border}`}
+                  type='button'
+                  onClick={handleAddVariable}
+                >
+                  Add
+                </button>
+              </th>
+            </tr>
+            {storedVariables.map((variable, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    className={variables__input}
+                    type='text'
+                    value={variable.name}
+                    onChange={(e) =>
+                      updateVariable(index, {
+                        ...variable,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    className={variables__input}
+                    type='text'
+                    value={variable.value}
+                    onChange={(e) =>
+                      updateVariable(index, {
+                        ...variable,
+                        value: e.target.value,
+                      })
+                    }
+                  />
+                </td>
+                <td>
+                  <button
+                    type='button'
+                    className={`button ${button_border}`}
+                    onClick={() => removeVariable(index)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );

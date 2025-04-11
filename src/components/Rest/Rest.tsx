@@ -27,6 +27,7 @@ import { HISTORY_KEY } from '@/utils/constants';
 import { filterString } from '@/utils/helpers';
 
 import styles from './rest.module.css';
+import { useVariables } from '@/context/VariablesContext';
 
 const {
   rest,
@@ -51,6 +52,7 @@ interface RestProps {
 }
 
 const Rest: FC<RestProps> = ({ slugs }) => {
+  const { variables } = useVariables();
   const locale = useLocale();
   const searchParams = useSearchParams();
   const BASEPATH = `/${locale}${DASHBOARD_PAGES.REST}`;
@@ -107,6 +109,13 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
 
+  const applyVariables = (text: string) => {
+    return variables.reduce((acc, variable) => {
+      const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
+      return acc.replace(regex, variable.value);
+    }, text);
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(async () => {
@@ -132,7 +141,27 @@ const Rest: FC<RestProps> = ({ slugs }) => {
           options.body = body;
         }
 
-        const response = await fetch(url, options);
+        const parsedUrl = applyVariables(url);
+        const parsedBody = applyVariables(body);
+        const parsedHeaders = headers.map(({ key, value }) => ({
+          key: applyVariables(key),
+          value: applyVariables(value),
+        }));
+
+        const response = await fetch(parsedUrl, {
+          method,
+          headers: parsedHeaders.reduce(
+            (acc, { key, value }) => {
+              if (key && value) acc[key] = value;
+              return acc;
+            },
+            {} as Record<string, string>
+          ),
+          body:
+            METHODS_WITH_BODY.includes(method) && parsedBody
+              ? parsedBody
+              : undefined,
+        });
         const data = await response.json();
 
         if (!response.ok) {

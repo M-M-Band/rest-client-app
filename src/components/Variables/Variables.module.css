@@ -10,22 +10,34 @@
   gap: 0.5rem;
 }
 
+.variables__table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  margin-left: 5px;
+}
+.variables__table input {
+  background-color: var(--bg-dark);
+  outline: none;
+  border: none;
+  padding: 10px 0px;
+  font-size: var(--fs-medium);
+  font-weight: var(--fw-regular);
+  color: var(--white);
+}
+.variables__table th {
+  color: var(--gray-200);
+  font-weight: var(--fw-semiBold);
+  text-align: left;
+}
+.variables__table :is(th, td) {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
 .variables__add {
   gap: 1rem;
-}
-
-.variables__list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.variables__item {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+  width: 90%;
 }
 
 .variables__input {
@@ -34,16 +46,11 @@
   border-radius: 4px;
   flex-grow: 1;
 }
-
-.variables__button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--main-green);
-  color: white;
-  cursor: pointer;
+.button {
+  flex: 1;
 }
-
-.variables__button_remove {
-  background-color: var(--red);
+.button_border {
+  border: 1px solid var(--border-color);
+  color: var(--white);
+  background-color: transparent;
 }

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 export default function VariablesPage() {
   return (
     <section>
-      <h1 className='maintext maintext_green'>Variables</h1>
       <Variables />
     </section>
   );
