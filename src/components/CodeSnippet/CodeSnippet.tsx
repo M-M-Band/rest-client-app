@@ -127,7 +127,7 @@ const CodeSnippet = () => {
       </div>
       <div>
         <SyntaxHighlighter
-          language={selectedTargetKey}
+          language={parsePathname().url ? selectedTargetKey : 'http'}
           wrapLongLines={true}
           style={monokai}
           customStyle={{
