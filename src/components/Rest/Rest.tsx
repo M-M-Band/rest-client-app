@@ -1,5 +1,6 @@
 'use client';
 
+import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -12,6 +13,8 @@ import {
   useState,
   useTransition,
 } from 'react';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { toast } from 'sonner';
 
 import {
@@ -257,6 +260,10 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     setHeaders(newHeaders);
   };
 
+  const handleBodyChange = (value: string) => {
+    setBody(value);
+  };
+
   return (
     <section className={rest}>
       <h1 className='maintext maintext_green'>REST Client</h1>
@@ -382,13 +389,27 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
             <h2>Body:</h2>
-            <textarea
+            <CodeEditor
+              value={body}
+              language='json'
+              placeholder='Request body (JSON)'
+              onChange={(evn) => handleBodyChange(evn.target.value)}
+              padding={15}
+              onBlur={handleBodyBlur}
+              style={{
+                fontSize: 12,
+                backgroundColor: '#272922',
+                fontFamily:
+                  'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+              }}
+            />
+            {/* <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
               onBlur={handleBodyBlur}
               placeholder='Request body (JSON)'
               rows={6}
-            ></textarea>
+            ></textarea> */}
           </div>
         )}
       </form>
@@ -403,9 +424,14 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             <div className={response__container}>
               <h3 className={response__maintext}>Body:</h3>
 
-              <pre className={response__precode}>
+              <SyntaxHighlighter
+                language='json'
+                wrapLongLines={true}
+                style={monokai}
+                className={`${response__precode} syntax-scrollbar`}
+              >
                 {JSON.stringify(dataResponse.response.data, null, 3)}
-              </pre>
+              </SyntaxHighlighter>
             </div>
           </div>
         ) : (

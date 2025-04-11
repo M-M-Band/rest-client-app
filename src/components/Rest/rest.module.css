@@ -106,7 +106,7 @@
       margin-left: 10px;
       height: 40vh;
       overflow: scroll;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: var(--fw-regular);
       color: var(--white);
     }
