@@ -1,10 +1,14 @@
 'use client';
 
+import { usePathname, useSearchParams } from 'next/navigation';
 import codeGen from 'postman-code-generators';
-import sdk from 'postman-collection';
+import sdk, {
+  RequestBodyDefinition,
+  RequestDefinition,
+} from 'postman-collection';
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { nnfxDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const CodeSnippet = () => {
   const targets = [
@@ -21,7 +25,40 @@ const CodeSnippet = () => {
   );
   const [selectedTargetKey, setSelectedTargetKey] = useState(targets[0].key);
   const [output, setOutput] = useState<string>('');
-  const request = new sdk.Request('http://mockbin.com/request');
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const headers = Array.from(searchParams.entries()).map(([key, value]) => {
+    return { key, value };
+  });
+
+  const parsePathname = () => {
+    const pathnameFragments = pathname.split('/');
+    return {
+      method: pathnameFragments[4],
+      url: pathnameFragments[5]
+        ? Buffer.from(pathnameFragments[5], 'base64').toString()
+        : '',
+      body: pathnameFragments[6]
+        ? Buffer.from(pathnameFragments[6], 'base64').toString()
+        : undefined,
+    };
+  };
+
+  const requestBody: RequestBodyDefinition | undefined = parsePathname().body
+    ? {
+        mode: 'raw',
+        raw: parsePathname().body,
+      }
+    : undefined;
+  const requestObject: string | RequestDefinition = {
+    url: parsePathname().url,
+    method: parsePathname().method,
+    header: headers,
+    body: requestBody,
+  };
+  const request = new sdk.Request(requestObject);
+
   const options = {
     indentCount: 3,
     indentType: 'Space',
@@ -45,7 +82,9 @@ const CodeSnippet = () => {
 
   useEffect(() => {
     convert();
-  }, [selectedTargetVar, selectedTargetKey]);
+    console.log(parsePathname());
+    console.log(headers);
+  }, [selectedTargetVar, selectedTargetKey, pathname, searchParams]);
 
   return (
     <>
@@ -88,11 +127,9 @@ const CodeSnippet = () => {
         <SyntaxHighlighter
           language={selectedTargetKey}
           wrapLongLines={true}
-          style={nnfxDark}
+          style={monokai}
           customStyle={{
-            backgroundColor: 'transparent',
-            padding: '20px',
-            border: '1px solid var(--black-700)',
+            padding: '15px',
           }}
         >
           {output}
