@@ -82,8 +82,6 @@ const CodeSnippet = () => {
 
   useEffect(() => {
     convert();
-    console.log(parsePathname());
-    console.log(headers);
   }, [selectedTargetVar, selectedTargetKey, pathname, searchParams]);
 
   return (
