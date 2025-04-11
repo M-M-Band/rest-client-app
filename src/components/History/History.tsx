@@ -3,6 +3,10 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import styles from './history.module.css';
+
+const { history__container, history__item } = styles;
+
 type HistoryType = {
   method: string;
   url: string;
@@ -27,7 +31,7 @@ const History = () => {
   }, []);
 
   return (
-    <div className=''>
+    <div className={history__container}>
       {history.length > 0 ? (
         history
           .slice()
@@ -42,14 +46,15 @@ const History = () => {
                 href={parsed.fullUrl}
                 className=''
               >
-                <div className=''>Method:</div>
-                <div className=''>{parsed.method}</div>
-                <div className=''>{parsed.url}</div>
+                <div className={history__item}>
+                  <div className=''>Method: {parsed.method}</div>
+                  <div className=''>URL: {parsed.url}</div>
+                </div>
               </Link>
             );
           })
       ) : (
-        <div>No history items</div>
+        <h3>No history items</h3>
       )}
     </div>
   );
