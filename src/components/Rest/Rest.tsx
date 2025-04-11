@@ -12,6 +12,7 @@ import {
   useState,
   useTransition,
 } from 'react';
+import { toast } from 'sonner';
 
 import {
   FormDataType,
@@ -51,6 +52,11 @@ interface RestProps {
   slugs: string[];
 }
 
+interface ApplyVariablesResult {
+  replaced: string;
+  unmatchedVariables: string[];
+}
+
 const Rest: FC<RestProps> = ({ slugs }) => {
   const { variables } = useVariables();
   const locale = useLocale();
@@ -68,11 +74,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
       searchParams.forEach((value, key) => arr.push({ key, value }));
     return searchParams.size
       ? arr
-      : [
-          { key: 'Content-Type', value: 'application/json' },
-          { key: 'header', value: 'Accept' },
-          { key: 'header', value: 'Content-Type' },
-        ];
+      : [{ key: 'Content-Type', value: 'application/json' }];
   });
 
   const [dataResponse, setDataResponse] = useState(initialState);
@@ -109,11 +111,19 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
 
-  const applyVariables = (text: string) => {
-    return variables.reduce((acc, variable) => {
-      const regex = new RegExp(`{{\\s*${variable.name}\\s*}}`, 'g');
-      return acc.replace(regex, variable.value);
-    }, text);
+  const applyVariables = (text: string): ApplyVariablesResult => {
+    const unmatchedVariables: string[] = [];
+    const replaced = text.replace(/{{\s*([\w\d_-]+)\s*}}/g, (_, varName) => {
+      const found = variables.find((v) => v.name === varName);
+      if (found) {
+        return found.value;
+      } else {
+        unmatchedVariables.push(varName);
+        return `{{${varName}}}`;
+      }
+    });
+
+    return { replaced, unmatchedVariables };
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -126,29 +136,37 @@ const Rest: FC<RestProps> = ({ slugs }) => {
           headers: JSON.parse(form.get('headers') as string) as Header[],
         } as FormDataType;
 
-        const options: RequestInit = {
-          method,
-          headers: headers.reduce(
-            (acc, { key, value }) => {
-              if (key && value) acc[key] = value;
-              return acc;
-            },
-            {} as Record<string, string>
-          ),
-        };
+        const { replaced: parsedUrl, unmatchedVariables: urlUnmatched } =
+          applyVariables(url);
+        const { replaced: parsedBody, unmatchedVariables: bodyUnmatched } =
+          applyVariables(body);
 
-        if (METHODS_WITH_BODY.includes(method) && body) {
-          options.body = body;
+        const parsedHeaders = headers.map(({ key, value }) => {
+          const { replaced: parsedKey, unmatchedVariables: keyUnmatched } =
+            applyVariables(key);
+          const { replaced: parsedValue, unmatchedVariables: valueUnmatched } =
+            applyVariables(value);
+          return {
+            key: parsedKey,
+            value: parsedValue,
+            unmatched: [...keyUnmatched, ...valueUnmatched],
+          };
+        });
+
+        const allUnmatched = [
+          ...urlUnmatched,
+          ...bodyUnmatched,
+          ...parsedHeaders.flatMap((header) => header.unmatched),
+        ];
+
+        if (allUnmatched.length > 0) {
+          toast.error(
+            `Не найдены переменные: ${[...new Set(allUnmatched)].join(', ')}`
+          );
+          return;
         }
 
-        const parsedUrl = applyVariables(url);
-        const parsedBody = applyVariables(body);
-        const parsedHeaders = headers.map(({ key, value }) => ({
-          key: applyVariables(key),
-          value: applyVariables(value),
-        }));
-
-        const response = await fetch(parsedUrl, {
+        const options: RequestInit = {
           method,
           headers: parsedHeaders.reduce(
             (acc, { key, value }) => {
@@ -157,11 +175,13 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             },
             {} as Record<string, string>
           ),
-          body:
-            METHODS_WITH_BODY.includes(method) && parsedBody
-              ? parsedBody
-              : undefined,
-        });
+        };
+
+        if (METHODS_WITH_BODY.includes(method) && parsedBody) {
+          options.body = parsedBody;
+        }
+
+        const response = await fetch(parsedUrl, options);
         const data = await response.json();
 
         if (!response.ok) {
@@ -419,4 +439,5 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     </section>
   );
 };
+
 export default Rest;
