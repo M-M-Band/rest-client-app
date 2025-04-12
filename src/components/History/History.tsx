@@ -3,31 +3,24 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
+import { HistoryItem } from '@/components/Rest/Rest';
+
+import { HTTP_METHODS } from '@/types/rest.types';
+
+import { HISTORY_KEY } from '@/utils/constants';
+
 import styles from './history.module.css';
 
-const { history__container, history__item } = styles;
-
-type HistoryType = {
-  method: string;
-  url: string;
-  fullUrl: string;
-};
-
-const parseHistoryItem = (item: string): HistoryType | null => {
-  const parts = item.split('/rest/');
-  if (parts.length < 2) return null;
-
-  const [method, encodedUrlWithParams] = parts[1].split('/');
-  const urlWithParams = atob(encodedUrlWithParams.split('?')[0]);
-  return { method, url: urlWithParams, fullUrl: item };
-};
+const { history__container, history__item, history__item_method } = styles;
 
 const History = () => {
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem('historyUrls') || '[]');
-    setHistory(stored);
+    const storedHistory: HistoryItem[] = JSON.parse(
+      localStorage.getItem(HISTORY_KEY) || '[]'
+    );
+    setHistory(storedHistory);
   }, []);
 
   return (
@@ -37,18 +30,35 @@ const History = () => {
           .slice()
           .reverse()
           .map((item, index) => {
-            const parsed = parseHistoryItem(item);
-            if (!parsed) return null;
+            const fullUrl = item.url;
+
+            const headersParams = new URLSearchParams();
+            item.headers.forEach((header) => {
+              if (header.key && header.value) {
+                headersParams.append(header.key, header.value);
+              }
+            });
+            const methodColor =
+              HTTP_METHODS.find((m) => m.value === item.method)?.color || '';
 
             return (
               <Link
                 key={index}
-                href={parsed.fullUrl}
+                href={fullUrl}
                 className=''
               >
                 <div className={history__item}>
-                  <div className=''>Method: {parsed.method}</div>
-                  <div className=''>URL: {parsed.url}</div>
+                  <div>Date: {item.date}</div>
+                  <div>
+                    Method:{' '}
+                    <span
+                      className={history__item_method}
+                      style={{ color: methodColor }}
+                    >
+                      {item.method}
+                    </span>
+                  </div>
+                  <div>URL: {fullUrl}</div>
                 </div>
               </Link>
             );
