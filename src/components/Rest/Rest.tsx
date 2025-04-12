@@ -51,6 +51,7 @@ interface RestProps {
 }
 export interface HistoryItem {
   url: string;
+  requestURL: string;
   date: string;
   method: string;
   body: string;
@@ -156,6 +157,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
         const newHistoryItem: HistoryItem = {
           url: `${window.location.pathname}${window.location.search}`,
+          requestURL: window.location.pathname.split('/')[5],
           date: formattedDate,
           method: method,
           body: body,

@@ -58,7 +58,7 @@ const History = () => {
                       {item.method}
                     </span>
                   </div>
-                  <div>URL: {fullUrl}</div>
+                  <div>URL: {atob(item.requestURL)}</div>
                 </div>
               </Link>
             );
