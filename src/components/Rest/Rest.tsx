@@ -1,12 +1,5 @@
 'use client';
 
-// import CodeMirror from '@uiw/react-codemirror';
-// import CodeEditor from '@uiw/react-textarea-code-editor';
-// import { basicSetup } from 'codemirror';
-// import { javascript } from '@codemirror/lang-javascript';
-// import { json } from '@codemirror/lang-json';
-// import { StreamLanguage } from '@codemirror/language';
-// import { StreamLanguage } from '@codemirror/language';
 import { langs } from '@uiw/codemirror-extensions-langs';
 import { monokai as monokaiTheme } from '@uiw/codemirror-theme-monokai';
 import CodeMirror from '@uiw/react-codemirror';
@@ -61,6 +54,11 @@ const {
   response__container,
 } = styles;
 
+const languageOptions = [
+  { label: 'JSON', value: 'json', extension: langs.json() },
+  { label: 'JavaScript', value: 'javascript', extension: langs.javascript() },
+];
+
 interface RestProps {
   slugs: string[];
 }
@@ -87,6 +85,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
   const [dataResponse, setDataResponse] = useState(initialState);
   const [showHeaders, setShowHeaders] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState(languageOptions[0]);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -241,10 +240,6 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     setUrl(e.target.value);
   };
 
-  // const handleBodyBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
-  //   setBody(e.target.value);
-  // };
-
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
     setTimeout(() => {
@@ -271,6 +266,15 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
   const handleBodyChange = (value: string) => {
     setBody(value);
+  };
+
+  const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selected = languageOptions.find(
+      (lang) => lang.value === e.target.value
+    );
+    if (selected) {
+      setSelectedLanguage(selected);
+    }
   };
 
   return (
@@ -397,45 +401,31 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         </div>
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
-            <h2>Body:</h2>
+            <div className={`${container} ${container_nested}`}>
+              <h2>Body:</h2>
+              <select
+                className={selectSearch}
+                value={selectedLanguage.value}
+                onChange={handleLanguageChange}
+              >
+                {languageOptions.map((lang) => (
+                  <option
+                    key={lang.value}
+                    value={lang.value}
+                  >
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <CodeMirror
               value={body}
               height='200px'
               theme={monokaiTheme}
-              extensions={[langs.tsx()]}
+              extensions={[selectedLanguage.extension]}
               onChange={handleBodyChange}
-              // onBlur={handleBodyBlur}
-              // extensions={extensions}
             />
-
-            {/* <CodeMirror
-              value={body}
-              height='200px'
-              extensions={[basicSetup, json()]}
-              onChange={handleBodyChange}
-              theme='dark'
-            /> */}
-            {/* <CodeEditor
-              value={body}
-              language='json'
-              placeholder='Request body (JSON)'
-              onChange={(evn) => handleBodyChange(evn.target.value)}
-              padding={15}
-              onBlur={handleBodyBlur}
-              style={{
-                fontSize: 12,
-                backgroundColor: '#272922',
-                fontFamily:
-                  'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-              }}
-            /> */}
-            {/* <textarea
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              onBlur={handleBodyBlur}
-              placeholder='Request body (JSON)'
-              rows={6}
-            ></textarea> */}
           </div>
         )}
       </form>
