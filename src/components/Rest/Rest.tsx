@@ -1,6 +1,15 @@
 'use client';
 
-import CodeEditor from '@uiw/react-textarea-code-editor';
+// import CodeMirror from '@uiw/react-codemirror';
+// import CodeEditor from '@uiw/react-textarea-code-editor';
+// import { basicSetup } from 'codemirror';
+// import { javascript } from '@codemirror/lang-javascript';
+// import { json } from '@codemirror/lang-json';
+// import { StreamLanguage } from '@codemirror/language';
+// import { StreamLanguage } from '@codemirror/language';
+import { langs } from '@uiw/codemirror-extensions-langs';
+import { monokai as monokaiTheme } from '@uiw/codemirror-theme-monokai';
+import CodeMirror from '@uiw/react-codemirror';
 import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -232,9 +241,9 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     setUrl(e.target.value);
   };
 
-  const handleBodyBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setBody(e.target.value);
-  };
+  // const handleBodyBlur = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  //   setBody(e.target.value);
+  // };
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -389,7 +398,24 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
             <h2>Body:</h2>
-            <CodeEditor
+            <CodeMirror
+              value={body}
+              height='200px'
+              theme={monokaiTheme}
+              extensions={[langs.tsx()]}
+              onChange={handleBodyChange}
+              // onBlur={handleBodyBlur}
+              // extensions={extensions}
+            />
+
+            {/* <CodeMirror
+              value={body}
+              height='200px'
+              extensions={[basicSetup, json()]}
+              onChange={handleBodyChange}
+              theme='dark'
+            /> */}
+            {/* <CodeEditor
               value={body}
               language='json'
               placeholder='Request body (JSON)'
@@ -402,8 +428,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
                 fontFamily:
                   'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
               }}
-            />
-
+            /> */}
             {/* <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
