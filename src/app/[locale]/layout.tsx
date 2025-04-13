@@ -11,6 +11,7 @@ import Header from '@/components/Header';
 import SessionChecker from '@/utils/SessionChecker';
 
 import './globals.css';
+import { VariablesProvider } from '@/context/VariablesContext';
 import { routing } from '@/i18n/routing';
 
 const exo = Exo_2({
@@ -40,30 +41,32 @@ export default async function RootLayout({
       <body className={`${exo.variable}`}>
         <NextIntlClientProvider>
           <SessionChecker />
-          <div className='appWrapper'>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+          <VariablesProvider>
+            <div className='appWrapper'>
+              <Header />
+              <main>{children}</main>
+              <Footer />
 
-            <Toaster
-              theme='dark'
-              position='bottom-right'
-              duration={2000}
-              expand={true}
-              richColors
-              toastOptions={{
-                style: {
-                  background: 'var(--bg-grey)',
-                  color: '#ffffff',
-                  fontSize: '1.1rem',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            />
-            <AuthRedirectHandler />
-          </div>
+              <Toaster
+                theme='dark'
+                position='bottom-right'
+                duration={2000}
+                expand={true}
+                richColors
+                toastOptions={{
+                  style: {
+                    background: 'var(--bg-grey)',
+                    color: '#ffffff',
+                    fontSize: '1.1rem',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                  },
+                }}
+              />
+              <AuthRedirectHandler />
+            </div>
+          </VariablesProvider>
         </NextIntlClientProvider>
       </body>
     </html>
