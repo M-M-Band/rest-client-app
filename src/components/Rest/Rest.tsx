@@ -406,7 +406,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         )}
 
         <div className={`${container} ${container_nested}`}>
-          <h2>Code:</h2>
+          <h2 className={heading}>Code:</h2>
         </div>
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
@@ -441,7 +441,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         )}
       </form>
       <div className={response}>
-        <h2>Response: </h2>
+        <h2 className={heading}>Response: </h2>
         {dataResponse.response ? (
           <div className={response__container}>
             <h3 className={response__maintext}>
