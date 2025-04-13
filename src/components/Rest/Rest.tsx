@@ -66,6 +66,14 @@ const languageOptions = [
 interface RestProps {
   slugs: string[];
 }
+export interface HistoryItem {
+  url: string;
+  requestURL: string;
+  date: string;
+  method: string;
+  body: string;
+  headers: Header[];
+}
 
 const Rest: FC<RestProps> = ({ slugs }) => {
   const { variables } = useVariables();
@@ -184,12 +192,24 @@ const Rest: FC<RestProps> = ({ slugs }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const historyLocalStorage: string[] = JSON.parse(
+        const historyLocalStorage: HistoryItem[] = JSON.parse(
           localStorage.getItem(HISTORY_KEY) ?? '[]'
         );
-        historyLocalStorage.push(
-          `${window.location.pathname}/${window.location.search}`
-        );
+        console.log('historyLocalStorage', historyLocalStorage);
+
+        const now = new Date();
+        const formattedDate = now.toLocaleString(); // Format the date as needed
+
+        const newHistoryItem: HistoryItem = {
+          url: `${window.location.pathname}${window.location.search}`,
+          requestURL: window.location.pathname.split('/')[5],
+          date: formattedDate,
+          method: method,
+          body: body,
+          headers: headers,
+        };
+
+        historyLocalStorage.push(newHistoryItem);
         localStorage.setItem(HISTORY_KEY, JSON.stringify(historyLocalStorage));
 
         setDataResponse({
