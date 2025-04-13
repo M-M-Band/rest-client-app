@@ -52,11 +52,15 @@ const {
   response__maintext,
   response__precode,
   response__container,
+  heading,
+  input,
+  span,
 } = styles;
 
 const languageOptions = [
   { label: 'JSON', value: 'json', extension: langs.json() },
   { label: 'JavaScript', value: 'javascript', extension: langs.javascript() },
+  { label: 'Plain text', value: 'plaintext', extension: null },
 ];
 
 interface RestProps {
@@ -285,11 +289,13 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         onSubmit={handleSubmit}
       >
         <input
+          className={input}
           type='hidden'
           name='headers'
           value={JSON.stringify(headers)}
         />
         <input
+          className={input}
           type='hidden'
           name='body'
           value={body}
@@ -315,7 +321,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               })}
             </select>
             <input
-              className={inputSearch}
+              className={`${inputSearch} ${input}`}
               ref={inputSearchRef}
               onChange={handleUrlChange}
               value={url}
@@ -335,6 +341,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         </div>
         <div className={`${container} ${container_nested}`}>
           <h2
+            className={heading}
             onClick={() => setShowHeaders((prev) => !prev)}
             style={{ cursor: 'pointer' }}
           >
@@ -362,6 +369,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
                 <tr key={index}>
                   <td>
                     <input
+                      className={input}
                       type='text'
                       placeholder='Header name'
                       value={header.key}
@@ -373,6 +381,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
                   </td>
                   <td>
                     <input
+                      className={input}
                       type='text'
                       placeholder='Header value'
                       value={header.value}
@@ -423,7 +432,9 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               value={body}
               height='200px'
               theme={monokaiTheme}
-              extensions={[selectedLanguage.extension]}
+              extensions={
+                selectedLanguage.extension ? [selectedLanguage.extension] : []
+              }
               onChange={handleBodyChange}
             />
           </div>
@@ -435,7 +446,9 @@ const Rest: FC<RestProps> = ({ slugs }) => {
           <div className={response__container}>
             <h3 className={response__maintext}>
               Status:{' '}
-              <span>{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
+              <span
+                className={span}
+              >{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
             </h3>
             <div className={response__container}>
               <h3 className={response__maintext}>Body:</h3>
@@ -454,7 +467,9 @@ const Rest: FC<RestProps> = ({ slugs }) => {
           <div className={response__container}>
             <h3 className={response__maintext}>
               Status:{' '}
-              <span>{`${dataResponse.error} - ${dataResponse.status}`}</span>
+              <span
+                className={span}
+              >{`${dataResponse.error} - ${dataResponse.status}`}</span>
             </h3>
           </div>
         )}
