@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import styles from './Variables.module.css';
 import { useVariables } from '@/context/VariablesContext';
@@ -24,11 +25,34 @@ export const Variables = () => {
   const [newVariableName, setNewVariableName] = useState('');
   const [newVariableValue, setNewVariableValue] = useState('');
 
-  const handleAddVariable = () => {
-    if (newVariableName && newVariableValue) {
-      addVariable({ name: newVariableName, value: newVariableValue });
+  const handleVariableChange = (
+    index: number | null,
+    updatedVariable: { name: string; value: string }
+  ) => {
+    if (!updatedVariable.name || !updatedVariable.value) {
+      toast.error('Name and value cannot be empty.');
+      return;
+    }
+
+    const isDuplicate = storedVariables.some(
+      (variable, i) =>
+        (index === null || i !== index) &&
+        variable.name === updatedVariable.name
+    );
+
+    if (isDuplicate) {
+      toast.error(
+        `Variable with name "${updatedVariable.name}" already exists.`
+      );
+      return;
+    }
+
+    if (index === null) {
+      addVariable(updatedVariable);
       setNewVariableName('');
       setNewVariableValue('');
+    } else {
+      updateVariable(index, updatedVariable);
     }
   };
 
@@ -68,7 +92,12 @@ export const Variables = () => {
                 <button
                   className={`button ${button_border}`}
                   type='button'
-                  onClick={handleAddVariable}
+                  onClick={() =>
+                    handleVariableChange(null, {
+                      name: newVariableName,
+                      value: newVariableValue,
+                    })
+                  }
                 >
                   Add
                 </button>
@@ -82,7 +111,7 @@ export const Variables = () => {
                     type='text'
                     value={variable.name}
                     onChange={(e) =>
-                      updateVariable(index, {
+                      handleVariableChange(index, {
                         ...variable,
                         name: e.target.value,
                       })
@@ -95,7 +124,7 @@ export const Variables = () => {
                     type='text'
                     value={variable.value}
                     onChange={(e) =>
-                      updateVariable(index, {
+                      handleVariableChange(index, {
                         ...variable,
                         value: e.target.value,
                       })
