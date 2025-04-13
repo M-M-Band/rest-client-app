@@ -245,6 +245,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
   };
 
   const addHeader = () => {
+    setShowHeaders(true);
     setHeaders([...headers, { key: '', value: '' }]);
     setTimeout(() => {
       inputTableRefs.current[headers.length]?.focus();
@@ -411,7 +412,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
             <div className={`${container} ${container_nested}`}>
-              <h2>Body:</h2>
+              <h2 className={heading}>Body:</h2>
               <select
                 className={selectSearch}
                 value={selectedLanguage.value}
