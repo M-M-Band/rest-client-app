@@ -100,7 +100,7 @@
       overflow: scroll;
       padding: 15px;
       font-size: 18px;
-      font-weight: var(--fw-regular);
+      font-weight: var(--fw-medium);
       color: var(--white);
     }
     .response__maintext {

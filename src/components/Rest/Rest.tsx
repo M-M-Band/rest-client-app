@@ -2,7 +2,7 @@
 
 import { langs } from '@uiw/codemirror-extensions-langs';
 import { monokai as monokaiTheme } from '@uiw/codemirror-theme-monokai';
-import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -463,9 +463,10 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               value={body}
               height='200px'
               theme={monokaiTheme}
-              extensions={
-                selectedLanguage.extension ? [selectedLanguage.extension] : []
-              }
+              extensions={[
+                EditorView.lineWrapping,
+                selectedLanguage.extension ? [selectedLanguage.extension] : [],
+              ]}
               onChange={handleBodyChange}
             />
           </div>
