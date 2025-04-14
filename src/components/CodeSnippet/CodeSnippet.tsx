@@ -10,6 +10,8 @@ import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+import styles from './codeSnippet.module.css';
+
 const CodeSnippet = () => {
   const targets = [
     { key: 'curl', variants: ['cURL'] },
@@ -90,7 +92,7 @@ const CodeSnippet = () => {
 
   return (
     <>
-      <div>
+      <div className={styles.buttonsContainer}>
         <select
           onChange={(e: BaseSyntheticEvent) => {
             const targetValue = e.target.value;
@@ -125,14 +127,11 @@ const CodeSnippet = () => {
           })}
         </select>
       </div>
-      <div>
+      <div className={styles.container}>
         <SyntaxHighlighter
           language={parsePathname().url ? selectedTargetKey : 'http'}
           wrapLongLines={true}
           style={monokai}
-          customStyle={{
-            padding: '15px',
-          }}
         >
           {output}
         </SyntaxHighlighter>

@@ -431,12 +431,12 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
         <div className={`${container} ${container_nested}`}>
           <h2
+            className={heading}
             onClick={() => setShowCodeSnippet((prev) => !prev)}
             style={{ cursor: 'pointer' }}
           >
             {showCodeSnippet ? '▼' : '▶'} Code:
           </h2>
-          <h2 className={heading}>Code:</h2>
         </div>
         {showCodeSnippet && <CodeSnippet />}
         {METHODS_WITH_BODY.includes(method) && (
@@ -472,27 +472,27 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         )}
       </form>
       <div className={response}>
-        <h2 className={heading}>Response: </h2>
+        <h2 className={`${heading} ${container_nested}`}>Response: </h2>
         {dataResponse.response ? (
           <div className={response__container}>
-            <h3 className={response__maintext}>
-              Status:{' '}
-              <span
-                className={span}
-              >{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
-            </h3>
-            <div className={response__container}>
+            <div className={container_nested}>
+              <h3 className={response__maintext}>
+                Status:{' '}
+                <span
+                  className={span}
+                >{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
+              </h3>
               <h3 className={response__maintext}>Body:</h3>
-
-              <SyntaxHighlighter
-                language='json'
-                wrapLongLines={true}
-                style={monokai}
-                className={`${response__precode} syntax-scrollbar`}
-              >
-                {JSON.stringify(dataResponse.response.data, null, 3)}
-              </SyntaxHighlighter>
             </div>
+
+            <SyntaxHighlighter
+              language='json'
+              wrapLongLines={true}
+              style={monokai}
+              className={`${response__precode} syntax-scrollbar`}
+            >
+              {JSON.stringify(dataResponse.response.data, null, 3)}
+            </SyntaxHighlighter>
           </div>
         ) : (
           <div className={response__container}>
