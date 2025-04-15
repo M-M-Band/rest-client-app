@@ -1,7 +1,8 @@
+// src/app/[locale]/dashboard/history/page.tsx (новый вариант)
 import type { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 
-import History from '@/components/History/History';
+import HistoryWrapper from '@/components/History/HistoryWrapper';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 

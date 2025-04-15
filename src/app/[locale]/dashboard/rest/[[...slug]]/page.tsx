@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
-import Rest from '../../../../../components/Rest/Rest';
+import RestWrapper from '../../../../../components/Rest/RestWrapper';
 
 export const metadata: Metadata = {
   title: 'Rest',
@@ -15,5 +15,10 @@ export default async function RestPage({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
-  return <Rest slugs={slug} />;
+
+  return (
+    <div>
+      <RestWrapper slugs={slug} />
+    </div>
+  );
 }

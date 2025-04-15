@@ -150,3 +150,5 @@ export const Variables = () => {
     </section>
   );
 };
+
+export default Variables;
