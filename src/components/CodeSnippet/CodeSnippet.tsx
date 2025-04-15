@@ -42,67 +42,67 @@ const CodeSnippet = () => {
       return { key, value };
     }
   );
-  const parsePathname = () => {
-    const pathnameFragments = pathname.split('/');
-    const decodedURL = pathnameFragments[5]
-      ? applyVariables(
-          Buffer.from(pathnameFragments[5], 'base64').toString(),
-          variables
-        ).replaced
-      : '';
-    const decodedBody = pathnameFragments[6]
-      ? applyVariables(
-          Buffer.from(pathnameFragments[6], 'base64').toString(),
-          variables
-        ).replaced
-      : undefined;
-    return {
-      method: pathnameFragments[4],
-      url: decodedURL,
-      body: decodedBody,
-    };
-  };
-
-  const requestBody: RequestBodyDefinition | undefined = parsePathname().body
-    ? {
-        mode: 'raw',
-        raw: parsePathname().body,
-      }
-    : undefined;
-  const requestObject: string | RequestDefinition = {
-    url: parsePathname().url,
-    method: parsePathname().method,
-    header: headers,
-    body: requestBody,
-  };
-  const request = new sdk.Request(requestObject);
-
-  const options = {
-    indentCount: 3,
-    indentType: 'Space',
-    trimRequestBody: true,
-    followRedirect: true,
-  };
-  const convert = () => {
-    return parsePathname().url
-      ? codeGen.convert(
-          selectedTargetKey,
-          selectedTargetVar,
-          request,
-          options,
-          function (error: Error | null, snippet: string) {
-            if (error) {
-              throw new Error(error.message);
-            }
-            setOutput(snippet);
-          }
-        )
-      : setOutput('Please add request URL for the code to be generated');
-  };
 
   useEffect(() => {
+    const parsePathname = () => {
+      const pathnameFragments = pathname.split('/');
+      const decodedURL = pathnameFragments[5]
+        ? applyVariables(
+            Buffer.from(pathnameFragments[5], 'base64').toString(),
+            variables
+          ).replaced
+        : '';
+      const decodedBody = pathnameFragments[6]
+        ? applyVariables(
+            Buffer.from(pathnameFragments[6], 'base64').toString(),
+            variables
+          ).replaced
+        : undefined;
+      return {
+        method: pathnameFragments[4],
+        url: decodedURL,
+        body: decodedBody,
+      };
+    };
+
+    const requestBody: RequestBodyDefinition | undefined = parsePathname().body
+      ? {
+          mode: 'raw',
+          raw: parsePathname().body,
+        }
+      : undefined;
+    const requestObject: string | RequestDefinition = {
+      url: parsePathname().url,
+      method: parsePathname().method,
+      header: headers,
+      body: requestBody,
+    };
+    const request = new sdk.Request(requestObject);
+
+    const options = {
+      indentCount: 3,
+      indentType: 'Space',
+      trimRequestBody: true,
+      followRedirect: true,
+    };
+    const convert = () => {
+      return parsePathname().url
+        ? codeGen.convert(
+            selectedTargetKey,
+            selectedTargetVar,
+            request,
+            options,
+            function (error: Error | null, snippet: string) {
+              if (error) {
+                throw new Error(error.message);
+              }
+              setOutput(snippet);
+            }
+          )
+        : setOutput('Please add request URL for the code to be generated');
+    };
     convert();
-  }, [selectedTargetVar, selectedTargetKey, pathname, searchParams]);
+  }, [headers, pathname, selectedTargetKey, selectedTargetVar, variables]);
 
   return (
     <>
@@ -111,8 +111,6 @@ const CodeSnippet = () => {
           onChange={(e: BaseSyntheticEvent) => {
             const targetValue = e.target.value;
             setSelectedTargetKey(targetValue);
-            console.log(parsePathname());
-            console.log(variables);
             const selectedItem = targets.find(
               (item) => item.key === targetValue
             );
@@ -144,7 +142,7 @@ const CodeSnippet = () => {
       </div>
       <div className={styles.container}>
         <SyntaxHighlighter
-          language={parsePathname().url ? selectedTargetKey : 'http'}
+          language={pathname.split('/')[5] ? selectedTargetKey : 'http'}
           wrapLongLines={true}
           style={monokai}
         >
