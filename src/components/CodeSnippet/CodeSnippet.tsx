@@ -10,7 +10,10 @@ import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+import { applyVariables } from '@/utils/applyVariables';
+
 import styles from './codeSnippet.module.css';
+import { useVariables } from '@/context/VariablesContext';
 
 const CodeSnippet = () => {
   const targets = [
@@ -29,23 +32,34 @@ const CodeSnippet = () => {
   const [output, setOutput] = useState<string>(
     'Please add request URL for the code to be generated'
   );
-
+  const { variables } = useVariables();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const headers = Array.from(searchParams.entries()).map(([key, value]) => {
-    return { key, value };
-  });
-
+  const headers = Array.from(searchParams.entries()).map(
+    ([keyToParse, valueToParse]) => {
+      const value = applyVariables(valueToParse, variables).replaced;
+      const key = applyVariables(keyToParse, variables).replaced;
+      return { key, value };
+    }
+  );
   const parsePathname = () => {
     const pathnameFragments = pathname.split('/');
+    const decodedURL = pathnameFragments[5]
+      ? applyVariables(
+          Buffer.from(pathnameFragments[5], 'base64').toString(),
+          variables
+        ).replaced
+      : '';
+    const decodedBody = pathnameFragments[6]
+      ? applyVariables(
+          Buffer.from(pathnameFragments[6], 'base64').toString(),
+          variables
+        ).replaced
+      : undefined;
     return {
       method: pathnameFragments[4],
-      url: pathnameFragments[5]
-        ? Buffer.from(pathnameFragments[5], 'base64').toString()
-        : '',
-      body: pathnameFragments[6]
-        ? Buffer.from(pathnameFragments[6], 'base64').toString()
-        : undefined,
+      url: decodedURL,
+      body: decodedBody,
     };
   };
 
@@ -97,7 +111,8 @@ const CodeSnippet = () => {
           onChange={(e: BaseSyntheticEvent) => {
             const targetValue = e.target.value;
             setSelectedTargetKey(targetValue);
-
+            console.log(parsePathname());
+            console.log(variables);
             const selectedItem = targets.find(
               (item) => item.key === targetValue
             );
