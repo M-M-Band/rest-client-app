@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { usePathname, useSearchParams } from 'next/navigation';
 import codeGen from 'postman-code-generators';
 import sdk, {
@@ -16,6 +17,7 @@ import styles from './codeSnippet.module.css';
 import { useVariables } from '@/context/VariablesContext';
 
 const CodeSnippet = () => {
+  const locale = useLocale();
   const targets = [
     { key: 'curl', variants: ['cURL'] },
     { key: 'csharp', variants: ['HttpClient', 'RestSharp'] },
@@ -99,7 +101,11 @@ const CodeSnippet = () => {
               setOutput(snippet);
             }
           )
-        : setOutput('Please add request URL for the code to be generated');
+        : setOutput(
+            locale === 'en'
+              ? 'Please add request URL for the code to be generated'
+              : 'Пожалуйста введите URL запроса для генерации кода'
+          );
     };
     convert();
   }, [headers, pathname, selectedTargetKey, selectedTargetVar, variables]);
