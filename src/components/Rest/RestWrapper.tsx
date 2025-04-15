@@ -4,7 +4,6 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 
 import Spinner from '../Spinner/Spinner';
 
-// Ленивая загрузка компонента Rest
 const LazyRest = lazy(() => import('@/components/Rest/Rest'));
 
 interface RestWrapperProps {

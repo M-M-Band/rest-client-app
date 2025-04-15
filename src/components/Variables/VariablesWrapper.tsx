@@ -4,7 +4,6 @@ import { Suspense, lazy } from 'react';
 
 import Spinner from '../Spinner/Spinner';
 
-// Ленивая загрузка компонента Variables
 const LazyVariables = lazy(() => import('@/components/Variables/Variables'));
 
 const VariablesWrapper = () => {

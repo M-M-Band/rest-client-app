@@ -1,4 +1,3 @@
-// src/app/[locale]/dashboard/history/page.tsx (новый вариант)
 import type { Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 
