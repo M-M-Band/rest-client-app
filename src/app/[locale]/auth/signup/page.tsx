@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import { getURL } from 'next/dist/shared/lib/utils';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -24,7 +25,7 @@ const SignUpPage = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/dashboard`,
+        emailRedirectTo: `${getURL()}/${locale}/dashboard`,
         data: {
           first_name: name,
         },
