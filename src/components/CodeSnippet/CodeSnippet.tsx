@@ -108,7 +108,14 @@ const CodeSnippet = () => {
           );
     };
     convert();
-  }, [headers, pathname, selectedTargetKey, selectedTargetVar, variables]);
+  }, [
+    headers,
+    locale,
+    pathname,
+    selectedTargetKey,
+    selectedTargetVar,
+    variables,
+  ]);
 
   return (
     <>
