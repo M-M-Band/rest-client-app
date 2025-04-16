@@ -79,6 +79,8 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       className={form}
       style={{ backgroundPosition: isSignUpMode ? 'top right' : '' }}
     >
+      {process.env.NEXT_PUBLIC_SITE_URL}
+      {process.env.NEXT_PUBLIC_VERCEL_URL}
       <div className={container}>
         <h1 className='maintext maintext_green'>{formName}</h1>
         <p className='subtext'>{aboutFormText}</p>
