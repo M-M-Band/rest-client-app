@@ -1,7 +1,6 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { getURL } from 'next/dist/shared/lib/utils';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -12,6 +11,8 @@ import { SignInFormData, SignUpFormData } from '@/types/auth.types';
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
+
+import { getURL } from '../../../../utils/helpers';
 
 const SignUpPage = () => {
   const supabase = createClient();
