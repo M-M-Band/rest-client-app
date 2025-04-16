@@ -12,6 +12,7 @@ import {
 } from 'vitest';
 
 import Form from '@/components/Form/Form';
+import Input from '@/components/Input/Input';
 
 import { SignInFormData, SignUpFormData } from '@/types/auth.types';
 
@@ -58,14 +59,17 @@ describe('Form component', () => {
   const RenderForm = ({
     mode,
     onSubmit,
+    errorMessage,
   }: {
     mode: 'signin' | 'signup';
     onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
+    errorMessage?: string;
   }) => {
     return (
       <Form
         mode={mode}
         onSubmit={onSubmit}
+        errorMessage={errorMessage}
       />
     );
   };
@@ -311,6 +315,68 @@ describe('Form component', () => {
 
     await waitFor(() => {
       expect(screen.getByText(t(`Passwords don't match`))).toBeInTheDocument();
+    });
+  });
+  it('should reset form after submission', async () => {
+    renderForm('signin');
+    fireEvent.change(screen.getByPlaceholderText('Enter your email address'), {
+      target: { value: 'test@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
+      target: { value: 'Qwe!23qwe' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+    await waitFor(() => {
+      expect(onSubmitMock).toHaveBeenCalled();
+    });
+    expect(
+      (
+        screen.getByPlaceholderText(
+          'Enter your email address'
+        ) as HTMLInputElement
+      ).value
+    ).toBe('');
+    expect(
+      (
+        screen.getByPlaceholderText(
+          'Enter your email address'
+        ) as HTMLInputElement
+      ).value
+    ).toBe('');
+  });
+  it('should show error message', async () => {
+    render(
+      <MemoryRouterProvider>
+        <RenderForm
+          mode={'signin'}
+          onSubmit={onSubmitMock}
+          errorMessage={'invalid credentials'}
+        />
+      </MemoryRouterProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-message')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByText('invalid credentials')).toBeInTheDocument();
+    });
+  });
+  it('should display validation error', async () => {
+    const t = useTranslations('Main');
+    render(
+      <MemoryRouterProvider>
+        <Input
+          type={'text'}
+          id={'name'}
+          placeholder={t('Enter your name')}
+          errorMsg={'Name is required'}
+        />
+      </MemoryRouterProvider>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Name is required')).toBeInTheDocument();
     });
   });
 });

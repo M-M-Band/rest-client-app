@@ -1,11 +1,9 @@
-// src/components/Form/Form.tsx
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
-// Import useState
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -22,18 +20,6 @@ import { SignInSchema, SignUpSchema } from '@/utils/validators';
 import Input from '../Input/Input';
 
 import styles from './Form.module.css';
-
-// src/components/Form/Form.tsx
-
-// src/components/Form/Form.tsx
-
-// src/components/Form/Form.tsx
-
-// src/components/Form/Form.tsx
-
-// src/components/Form/Form.tsx
-
-// src/components/Form/Form.tsx
 
 const {
   form,
