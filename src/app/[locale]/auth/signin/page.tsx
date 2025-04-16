@@ -18,12 +18,6 @@ import { createClient } from '@/utils/supabase/client';
 
 // src/app/[locale]/auth/signin/page.tsx
 
-// src/app/[locale]/auth/signin/page.tsx
-
-// src/app/[locale]/auth/signin/page.tsx
-
-// src/app/[locale]/auth/signin/page.tsx
-
 const SignInPage = () => {
   const supabase = createClient();
   const router = useRouter();
