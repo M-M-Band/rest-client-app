@@ -1,6 +1,6 @@
 import { Variable } from '@/context/VariablesContext';
 
-interface ApplyVariablesResult {
+export interface ApplyVariablesResult {
   replaced: string;
   unmatchedVariables: string[];
 }

@@ -2,8 +2,8 @@
 
 import { langs } from '@uiw/codemirror-extensions-langs';
 import { monokai as monokaiTheme } from '@uiw/codemirror-theme-monokai';
-import CodeMirror from '@uiw/react-codemirror';
-import { useLocale } from 'next-intl';
+import CodeMirror, { EditorView } from '@uiw/react-codemirror';
+import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,
@@ -18,6 +18,8 @@ import {
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { toast } from 'sonner';
+
+import CodeSnippet from '@/components/CodeSnippet/CodeSnippet';
 
 import {
   FormDataType,
@@ -76,6 +78,7 @@ export interface HistoryItem {
 }
 
 const Rest: FC<RestProps> = ({ slugs }) => {
+  const t = useTranslations('rest');
   const { variables } = useVariables();
   const locale = useLocale();
   const searchParams = useSearchParams();
@@ -97,6 +100,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
   const [dataResponse, setDataResponse] = useState(initialState);
   const [showHeaders, setShowHeaders] = useState(true);
+  const [showCodeSnippet, setShowCodeSnippet] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(languageOptions[0]);
 
   const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -195,7 +199,6 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         const historyLocalStorage: HistoryItem[] = JSON.parse(
           localStorage.getItem(HISTORY_KEY) ?? '[]'
         );
-        console.log('historyLocalStorage', historyLocalStorage);
 
         const now = new Date();
         const formattedDate = now.toLocaleString(); // Format the date as needed
@@ -357,7 +360,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             disabled={isPending}
             className={`button button_colored ${button}`}
           >
-            {isPending ? 'Sending...' : 'Send'}
+            {isPending ? t('sending') : t('send')}
           </button>
         </div>
         <div className={`${container} ${container_nested}`}>
@@ -366,23 +369,23 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             onClick={() => setShowHeaders((prev) => !prev)}
             style={{ cursor: 'pointer' }}
           >
-            {showHeaders ? '▼' : '▶'} Headers:
+            {showHeaders ? '▼' : '▶'} {t('headers')}
           </h2>
           <button
             className={`button ${button_border}`}
             type='button'
             onClick={addHeader}
           >
-            Add header
+            {t('addHeader')}
           </button>
         </div>
         {showHeaders && (
           <table className={headers__table}>
             <thead>
               <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th>Action</th>
+                <th>{t('key')}</th>
+                <th>{t('value')}</th>
+                <th>{t('action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -392,7 +395,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
                     <input
                       className={input}
                       type='text'
-                      placeholder='Header name'
+                      placeholder={t('headerName')}
                       value={header.key}
                       onChange={(e) =>
                         handleHeaderChange(index, 'key', e.target.value)
@@ -404,7 +407,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
                     <input
                       className={input}
                       type='text'
-                      placeholder='Header value'
+                      placeholder={t('headerValue')}
                       value={header.value}
                       onChange={(e) =>
                         handleHeaderChange(index, 'value', e.target.value)
@@ -427,12 +430,19 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         )}
 
         <div className={`${container} ${container_nested}`}>
-          <h2 className={heading}>Code:</h2>
+          <h2
+            className={heading}
+            onClick={() => setShowCodeSnippet((prev) => !prev)}
+            style={{ cursor: 'pointer' }}
+          >
+            {showCodeSnippet ? '▼' : '▶'} {t('code')}
+          </h2>
         </div>
+        {showCodeSnippet && <CodeSnippet />}
         {METHODS_WITH_BODY.includes(method) && (
           <div className={`${container} ${container_requestbody}`}>
             <div className={`${container} ${container_nested}`}>
-              <h2 className={heading}>Body:</h2>
+              <h2 className={heading}>{t('requestBody')}</h2>
               <select
                 className={selectSearch}
                 value={selectedLanguage.value}
@@ -453,36 +463,37 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               value={body}
               height='200px'
               theme={monokaiTheme}
-              extensions={
-                selectedLanguage.extension ? [selectedLanguage.extension] : []
-              }
+              extensions={[
+                EditorView.lineWrapping,
+                selectedLanguage.extension ? [selectedLanguage.extension] : [],
+              ]}
               onChange={handleBodyChange}
             />
           </div>
         )}
       </form>
       <div className={response}>
-        <h2 className={heading}>Response: </h2>
+        <h2 className={`${heading} ${container_nested}`}>{t('response')}</h2>
         {dataResponse.response ? (
           <div className={response__container}>
-            <h3 className={response__maintext}>
-              Status:{' '}
-              <span
-                className={span}
-              >{`${dataResponse.response.status} - ${dataResponse.status}`}</span>
-            </h3>
-            <div className={response__container}>
-              <h3 className={response__maintext}>Body:</h3>
-
-              <SyntaxHighlighter
-                language='json'
-                wrapLongLines={true}
-                style={monokai}
-                className={`${response__precode} syntax-scrollbar`}
-              >
-                {JSON.stringify(dataResponse.response.data, null, 3)}
-              </SyntaxHighlighter>
+            <div className={container_nested}>
+              <h3 className={response__maintext}>
+                {t('status')}
+                <span
+                  className={span}
+                >{` ${dataResponse.response.status} - ${dataResponse.status}`}</span>
+              </h3>
+              <h3 className={response__maintext}>{t('responseBody')}</h3>
             </div>
+
+            <SyntaxHighlighter
+              language='json'
+              wrapLongLines={true}
+              style={monokai}
+              className={`${response__precode} syntax-scrollbar`}
+            >
+              {JSON.stringify(dataResponse.response.data, null, 3)}
+            </SyntaxHighlighter>
           </div>
         ) : (
           <div className={response__container}>

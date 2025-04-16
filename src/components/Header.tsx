@@ -33,11 +33,10 @@ const Header = () => {
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
-
     const handleScroll = () => {
       const shouldBeTransparent = window.scrollY > 20;
       header.style.backgroundColor = shouldBeTransparent
-        ? 'rgba(28, 28, 28, 0.7)'
+        ? '#272822'
         : 'var(--bg-grey)';
     };
 

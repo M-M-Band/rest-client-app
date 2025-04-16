@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useTranslations } from 'use-intl';
 
 import { HistoryItem } from '@/components/Rest/Rest';
 
@@ -14,6 +15,7 @@ import styles from './history.module.css';
 const { history__container, history__item, history__item_method } = styles;
 
 const History = () => {
+  const t = useTranslations('history');
   const [history, setHistory] = useState<HistoryItem[]>([]);
 
   useEffect(() => {
@@ -48,9 +50,11 @@ const History = () => {
                 className=''
               >
                 <div className={history__item}>
-                  <div>Date: {item.date}</div>
                   <div>
-                    Method:{' '}
+                    {t('date')} {item.date}
+                  </div>
+                  <div>
+                    {t('method')}{' '}
                     <span
                       className={history__item_method}
                       style={{ color: methodColor }}
@@ -58,13 +62,15 @@ const History = () => {
                       {item.method}
                     </span>
                   </div>
-                  <div>URL: {atob(item.requestURL)}</div>
+                  <div>
+                    {t('url')} {atob(item.requestURL)}
+                  </div>
                 </div>
               </Link>
             );
           })
       ) : (
-        <h3>No history items</h3>
+        <h3>{t('noItems')}</h3>
       )}
     </div>
   );

@@ -18,7 +18,7 @@
     align-items: center;
   }
   .container_requestbody {
-    margin-left: 20px;
+    padding-left: 20px;
     display: flex;
     flex-direction: column;
   }
@@ -89,17 +89,18 @@
     width: 90%;
     gap: 20px;
     padding-left: 20px;
+
     .response__container {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
     .response__precode {
-      margin-left: 10px;
       height: 40vh;
       overflow: scroll;
-      font-size: 14px;
-      font-weight: var(--fw-regular);
+      padding: 15px;
+      font-size: 18px;
+      font-weight: var(--fw-medium);
       color: var(--white);
     }
     .response__maintext {

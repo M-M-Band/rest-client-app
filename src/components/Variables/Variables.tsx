@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'use-intl';
 
 import styles from './Variables.module.css';
 import { useVariables } from '@/context/VariablesContext';
@@ -16,6 +17,7 @@ const {
 } = styles;
 
 export const Variables = () => {
+  const t = useTranslations('variables');
   const {
     variables: storedVariables,
     addVariable,
@@ -58,14 +60,14 @@ export const Variables = () => {
 
   return (
     <section className={variables}>
-      <h1 className='maintext maintext_green'>Variables</h1>
+      <h1 className='maintext maintext_green'>{t('var')}</h1>
       <div className={`${variables__container} ${variables__add}`}>
         <table className={variables__table}>
           <thead>
             <tr>
-              <th>Key</th>
-              <th>Value</th>
-              <th>Action</th>
+              <th>{t('key')}</th>
+              <th>{t('value')}</th>
+              <th>{t('action')}</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +76,7 @@ export const Variables = () => {
                 <input
                   className={variables__input}
                   type='text'
-                  placeholder='Variable Name'
+                  placeholder={t('varName')}
                   value={newVariableName}
                   onChange={(e) => setNewVariableName(e.target.value)}
                 />
@@ -83,7 +85,7 @@ export const Variables = () => {
                 <input
                   className={variables__input}
                   type='text'
-                  placeholder='Variable Value'
+                  placeholder={t('varValue')}
                   value={newVariableValue}
                   onChange={(e) => setNewVariableValue(e.target.value)}
                 />
@@ -99,7 +101,7 @@ export const Variables = () => {
                     })
                   }
                 >
-                  Add
+                  {t('add')}
                 </button>
               </th>
             </tr>
@@ -137,7 +139,7 @@ export const Variables = () => {
                     className={`button ${button_border}`}
                     onClick={() => removeVariable(index)}
                   >
-                    Remove
+                    {t('remove')}
                   </button>
                 </td>
               </tr>
