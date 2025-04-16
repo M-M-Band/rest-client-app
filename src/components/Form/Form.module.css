@@ -28,4 +28,7 @@
     color: var(--white);
     background-color: transparent;
   }
+  .text_red_500 {
+    color: red;
+  }
 }
