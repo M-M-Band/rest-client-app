@@ -26,7 +26,7 @@ const SignUpPage = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${getURL()}/${locale}/dashboard`,
+        emailRedirectTo: `${getURL()}${locale}/dashboard`,
         data: {
           first_name: name,
         },

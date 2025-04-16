@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import React, { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -15,6 +15,7 @@ import {
 
 import { SIGNIN_PATH, SIGNUP_PATH } from '@/config/pages-url.config';
 
+import { getURL } from '@/utils/helpers';
 import { SignInSchema, SignUpSchema } from '@/utils/validators';
 
 import Input from '../Input/Input';
@@ -33,6 +34,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
   const router = useRouter();
   const t = useTranslations('Main');
   const isSignUpMode = mode === 'signup';
+  const locale = useLocale();
   const {
     register,
     handleSubmit,
@@ -79,7 +81,10 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
       className={form}
       style={{ backgroundPosition: isSignUpMode ? 'top right' : '' }}
     >
+      {`${getURL()}${locale}/dashboard`}
+      {''}
       {process.env.NEXT_PUBLIC_SITE_URL}
+      {''}
       {process.env.NEXT_PUBLIC_VERCEL_URL}
       <div className={container}>
         <h1 className='maintext maintext_green'>{formName}</h1>
