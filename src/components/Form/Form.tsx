@@ -33,7 +33,7 @@ const {
 type AuthFormProps = {
   mode: AuthMode;
   onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
-  errorMessage?: string; // Add errorMessage prop
+  errorMessage?: string;
 };
 
 const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
@@ -95,7 +95,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
         </h1>
         <p className='subtext'>{aboutFormText}</p>
       </div>
-      {errorMessage && ( // Display the error message
+      {errorMessage && (
         <div
           className={container}
           data-testid='error-message'
@@ -119,7 +119,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
         <button
           type='submit'
           formNoValidate
-          disabled={isSubmitting} // FIXME: for testing purposes
+          disabled={isSubmitting}
           className={`button button_colored ${button}`}
           data-testid={'submit-button'}
         >

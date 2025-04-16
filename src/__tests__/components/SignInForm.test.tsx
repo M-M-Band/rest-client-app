@@ -1,4 +1,3 @@
-// src/__tests__/components/SignInForm.test.tsx
 import {
   AuthError,
   AuthResponse,
@@ -20,17 +19,13 @@ import { createClient } from '@/utils/supabase/client';
 import { server } from '@/__tests__/mocks/server';
 import SignInPage from '@/app/[locale]/auth/signin/page';
 
-// import { messages } from '@/messages';
-
 vi.mock('@/utils/supabase/client');
 
-// Правильный мок для useRouter
 const mockedUseRouter = vi.fn();
 vi.mock('next/navigation', () => ({
   useRouter: () => mockedUseRouter(),
 }));
 
-// Определяем тип для мока Supabase
 interface MockSupabaseClient {
   auth: {
     signInWithPassword: (
@@ -72,7 +67,6 @@ describe('SignInForm', () => {
     };
     mockedUseRouter.mockReturnValue(routerMock);
 
-    // Полный мок для Supabase
     const mockSupabase: MockSupabaseClient = {
       auth: {
         signInWithPassword: vi.fn().mockResolvedValue({
@@ -99,10 +93,7 @@ describe('SignInForm', () => {
     const locale = 'en';
     render(
       <MemoryRouterProvider>
-        <NextIntlClientProvider
-          locale={locale}
-          // messages={messages[locale]}
-        >
+        <NextIntlClientProvider locale={locale}>
           <SignInPage />
         </NextIntlClientProvider>
       </MemoryRouterProvider>
@@ -116,7 +107,7 @@ describe('SignInForm', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: 'Main.signIn' }));
 
-    await new Promise((resolve) => setTimeout(resolve, 500)); // Добавили ожидание
+    await new Promise((resolve) => setTimeout(resolve, 500));
     await waitFor(() => {
       expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.HOME);
     });
@@ -165,10 +156,7 @@ describe('SignInForm', () => {
 
     render(
       <MemoryRouterProvider>
-        <NextIntlClientProvider
-          locale={locale}
-          // messages={messages[locale]}
-        >
+        <NextIntlClientProvider locale={locale}>
           <SignInPage />
         </NextIntlClientProvider>
       </MemoryRouterProvider>
@@ -183,7 +171,7 @@ describe('SignInForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Main.signIn' }));
 
     await waitFor(() => {
-      expect(screen.getByTestId('error-message')).toBeInTheDocument(); // Check if the error message is displayed
+      expect(screen.getByTestId('error-message')).toBeInTheDocument();
       expect(screen.getByText('invalid credentials')).toBeInTheDocument();
     });
   });

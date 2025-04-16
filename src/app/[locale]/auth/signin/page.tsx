@@ -1,7 +1,5 @@
-// src/app/[locale]/auth/signin/page.tsx
 'use client';
 
-// Import useState
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -14,24 +12,16 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
-// src/app/[locale]/auth/signin/page.tsx
-
-// src/app/[locale]/auth/signin/page.tsx
-
-// src/app/[locale]/auth/signin/page.tsx
-
-// src/app/[locale]/auth/signin/page.tsx
-
 const SignInPage = () => {
   const supabase = createClient();
   const router = useRouter();
   const mode = 'signin';
   const [errorMessage, setErrorMessage] = useState<string | undefined>(
     undefined
-  ); // Add state for errorMessage
+  );
 
   const handleSubmit = async (formData: SignInFormData | SignUpFormData) => {
-    setErrorMessage(undefined); // Clear previous error messages
+    setErrorMessage(undefined);
     const { email, password } = formData;
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -42,7 +32,7 @@ const SignInPage = () => {
       localStorage.setItem('session_expires_at', String(expiresAt));
     }
     if (error) {
-      setErrorMessage(error.message); // Set the error message in state
+      setErrorMessage(error.message);
       toast.error('Invalid login credentials');
     } else {
       toast.success('Successfully signed in!');
@@ -54,7 +44,7 @@ const SignInPage = () => {
     <Form
       mode={mode}
       onSubmit={handleSubmit}
-      errorMessage={errorMessage} // Pass the error message
+      errorMessage={errorMessage}
     />
   );
 };

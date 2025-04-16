@@ -1,4 +1,3 @@
-// src/__tests__/components/SignUpForm.test.tsx
 import {
   AuthError,
   AuthResponse,
@@ -15,7 +14,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
-// import { messages } from '@/messages';
 import { createClient } from '@/utils/supabase/client';
 
 import { server } from '@/__tests__/mocks/server';
@@ -23,13 +21,11 @@ import SignUpPage from '@/app/[locale]/auth/signup/page';
 
 vi.mock('@/utils/supabase/client');
 
-// Правильный мок для useRouter
 const mockedUseRouter = vi.fn();
 vi.mock('next/navigation', () => ({
   useRouter: () => mockedUseRouter(),
 }));
 
-// Определяем тип для мока Supabase
 interface MockSupabaseClient {
   auth: {
     signUp: (
@@ -74,7 +70,6 @@ describe('SignUpForm', () => {
     };
     mockedUseRouter.mockReturnValue(routerMock);
 
-    // Полный мок для Supabase
     const mockSupabase: MockSupabaseClient = {
       auth: {
         signUp: vi.fn().mockResolvedValue({
@@ -101,10 +96,7 @@ describe('SignUpForm', () => {
     const locale = 'en';
     render(
       <MemoryRouterProvider>
-        <NextIntlClientProvider
-          locale={locale}
-          // messages={messages[locale]}
-        >
+        <NextIntlClientProvider locale={locale}>
           <SignUpPage />
         </NextIntlClientProvider>
       </MemoryRouterProvider>
@@ -124,15 +116,13 @@ describe('SignUpForm', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: 'Main.signUp' }));
 
-    await new Promise((resolve) => setTimeout(resolve, 500)); // Добавили ожидание
+    await new Promise((resolve) => setTimeout(resolve, 500));
     await waitFor(() => {
       expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.HOME);
     });
     expect(mockSupabase.auth.signUp).toHaveBeenCalledWith({
-      // name: 'test',
       email: 'test@example.com',
       password: 'Qwe!23qwe',
-      // confirmPassword: 'Qwe!23qwe',
       options: {
         data: {
           first_name: 'test',
@@ -181,10 +171,7 @@ describe('SignUpForm', () => {
 
     render(
       <MemoryRouterProvider>
-        <NextIntlClientProvider
-          locale={locale}
-          // messages={messages[locale]}
-        >
+        <NextIntlClientProvider locale={locale}>
           <SignUpPage />
         </NextIntlClientProvider>
       </MemoryRouterProvider>
