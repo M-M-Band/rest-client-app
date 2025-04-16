@@ -199,7 +199,6 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         const historyLocalStorage: HistoryItem[] = JSON.parse(
           localStorage.getItem(HISTORY_KEY) ?? '[]'
         );
-        console.log('historyLocalStorage', historyLocalStorage);
 
         const now = new Date();
         const formattedDate = now.toLocaleString(); // Format the date as needed
