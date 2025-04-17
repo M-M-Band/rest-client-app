@@ -28,6 +28,7 @@ const {
   button_border,
   container_formElements,
   text_red_500,
+  error_container,
 } = styles;
 
 type AuthFormProps = {
@@ -95,14 +96,6 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
         </h1>
         <p className='subtext'>{aboutFormText}</p>
       </div>
-      {errorMessage && (
-        <div
-          className={container}
-          data-testid='error-message'
-        >
-          <p className={text_red_500}>{errorMessage}</p>
-        </div>
-      )}
       <div className={`${container} ${container_formElements}`}>
         {fields.map((field) => (
           <Input
@@ -115,6 +108,14 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
           />
         ))}
       </div>
+      {errorMessage && (
+        <div
+          className={`${error_container}`} // Используем новый класс
+          data-testid='error-message'
+        >
+          <p className={text_red_500}>{errorMessage}</p>
+        </div>
+      )}
       <div className={container}>
         <button
           type='submit'
