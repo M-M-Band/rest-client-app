@@ -44,7 +44,6 @@ vi.mock('next-intl', () => ({
 
 const onSubmitMock = vi.fn();
 const mockedUseTranslations = vi.mocked(useTranslations);
-// const mockedUseRouter = vi.mocked(vi.importActual('next/navigation') as any);
 
 describe('Form component', () => {
   beforeAll(() => server.listen());
@@ -52,7 +51,6 @@ describe('Form component', () => {
     server.resetHandlers();
     onSubmitMock.mockClear();
     mockedUseTranslations.mockClear();
-    // mockedUseRouter.useRouter().push.mockClear();
     push.mockClear();
   });
   afterAll(() => server.close());
@@ -152,7 +150,7 @@ describe('Form component', () => {
   it('should display validation errors for signup', async () => {
     renderForm('signup');
     fireEvent.change(screen.getByPlaceholderText('Choose a password'), {
-      target: { value: '123' }, // короткий пароль
+      target: { value: '123' },
     });
 
     fireEvent.change(screen.getByPlaceholderText('Password again'), {
@@ -285,7 +283,6 @@ describe('Form component', () => {
   });
 
   it('should display password min length error for signup', async () => {
-    // const t = useTranslations('Main');
     renderForm('signup');
     fireEvent.change(screen.getByPlaceholderText('Choose a password'), {
       target: { value: 'Qwe!23' },
