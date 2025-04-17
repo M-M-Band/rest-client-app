@@ -1,9 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-// import { rest } from 'msw';
 import { useTranslations } from 'next-intl';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
-// import { useRouter } from 'next/navigation';
-// import { useForm } from 'react-hook-form';
 import {
   afterAll,
   afterEach,
@@ -16,11 +13,7 @@ import {
 
 import Form from '@/components/Form/Form';
 
-// import styles from '@/components/Form/Form.module.css';
-
 import { SignInFormData, SignUpFormData } from '@/types/auth.types';
-
-// import { SignInSchema, SignUpSchema } from '@/utils/validators';
 
 import { server } from '../mocks/server';
 
