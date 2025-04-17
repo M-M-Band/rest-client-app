@@ -16,7 +16,7 @@ const {
   button_border,
 } = styles;
 
-export const Variables = () => {
+const Variables = () => {
   const t = useTranslations('variables');
   const {
     variables: storedVariables,
