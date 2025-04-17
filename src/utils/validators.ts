@@ -1,11 +1,14 @@
 import { z } from 'zod';
 
-const emailSchema = z.string().min(1, { message: 'Email is required' }).email();
-const nameSchema = z
+export const emailSchema = z
+  .string()
+  .min(1, { message: 'Email is required' })
+  .email();
+export const nameSchema = z
   .string()
   .min(1, { message: 'Name is required' })
   .regex(/[\p{L}]/u, { message: 'Name must start with an uppercase letter' });
-const passwordSchema = z
+export const passwordSchema = z
   .string()
   .min(8, { message: 'Password must contain at least 8 characters' })
   .regex(/[\p{L}]/u, { message: 'Password must contain at least one letter' })

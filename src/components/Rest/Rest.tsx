@@ -1,13 +1,11 @@
 'use client';
 
-import { langs } from '@uiw/codemirror-extensions-langs';
-import { monokai as monokaiTheme } from '@uiw/codemirror-theme-monokai';
-import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import {
   ChangeEvent,
   FC,
+  FocusEventHandler,
   FormEvent,
   useCallback,
   useEffect,
@@ -15,16 +13,13 @@ import {
   useState,
   useTransition,
 } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { monokai } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { toast } from 'sonner';
-
-import CodeSnippet from '@/components/CodeSnippet/CodeSnippet';
 
 import {
   FormDataType,
   HTTP_METHODS,
   Header,
+  HistoryItem,
   METHODS_WITH_BODY,
   initialState,
 } from '@/types/rest.types';
@@ -35,6 +30,10 @@ import { applyVariables } from '@/utils/applyVariables';
 import { HISTORY_KEY } from '@/utils/constants';
 import { filterString } from '@/utils/helpers';
 
+import Body from './Body';
+import Code from './Code';
+import Headers from './Headers';
+import Response from './Response';
 import styles from './rest.module.css';
 import { useVariables } from '@/context/VariablesContext';
 
@@ -42,39 +41,15 @@ const {
   rest,
   form,
   container,
-  container_nested,
-  container_requestbody,
-  headers__table,
   container_search,
   selectSearch,
   inputSearch,
   button,
-  button_border,
-  response,
-  response__maintext,
-  response__precode,
-  response__container,
-  heading,
   input,
-  span,
 } = styles;
-
-const languageOptions = [
-  { label: 'JSON', value: 'json', extension: langs.json() },
-  { label: 'JavaScript', value: 'javascript', extension: langs.javascript() },
-  { label: 'Plain text', value: 'plaintext', extension: null },
-];
 
 interface RestProps {
   slugs: string[];
-}
-export interface HistoryItem {
-  url: string;
-  requestURL: string;
-  date: string;
-  method: string;
-  body: string;
-  headers: Header[];
 }
 
 const Rest: FC<RestProps> = ({ slugs }) => {
@@ -99,15 +74,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
   });
 
   const [dataResponse, setDataResponse] = useState(initialState);
-  const [showHeaders, setShowHeaders] = useState(true);
-  const [showCodeSnippet, setShowCodeSnippet] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languageOptions[0]);
-
-  const inputTableRefs = useRef<(HTMLInputElement | null)[]>([]);
   const inputSearchRef = useRef<HTMLInputElement | null>(null);
-  const setInputRef = (index: number) => (el: HTMLInputElement | null) => {
-    inputTableRefs.current[index] = el;
-  };
 
   const updateURL = useCallback(() => {
     const encodedUrl = url
@@ -201,7 +168,7 @@ const Rest: FC<RestProps> = ({ slugs }) => {
         );
 
         const now = new Date();
-        const formattedDate = now.toLocaleString(); // Format the date as needed
+        const formattedDate = now.toLocaleString();
 
         const newHistoryItem: HistoryItem = {
           url: `${window.location.pathname}${window.location.search}`,
@@ -267,42 +234,9 @@ const Rest: FC<RestProps> = ({ slugs }) => {
     setUrl(e.target.value);
   };
 
-  const addHeader = () => {
-    setShowHeaders(true);
-    setHeaders([...headers, { key: '', value: '' }]);
-    setTimeout(() => {
-      inputTableRefs.current[headers.length]?.focus();
-    }, 0);
-  };
-
-  const removeHeader = (index: number) => {
-    setHeaders(headers.filter((_, i) => i !== index));
-    inputTableRefs.current = inputTableRefs.current.filter(
-      (_, i) => i !== index
-    );
-  };
-
-  const handleHeaderChange = (
-    index: number,
-    field: 'key' | 'value',
-    value: string
-  ) => {
-    const newHeaders = [...headers];
-    newHeaders[index][field] = value;
-    setHeaders(newHeaders);
-  };
-
-  const handleBodyChange = (value: string) => {
-    setBody(value);
-  };
-
-  const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selected = languageOptions.find(
-      (lang) => lang.value === e.target.value
-    );
-    if (selected) {
-      setSelectedLanguage(selected);
-    }
+  const handleBodyBlur: FocusEventHandler<HTMLDivElement> = (event) => {
+    const element = event.target.children[0];
+    setBody(element.textContent ?? '');
   };
 
   return (
@@ -363,149 +297,24 @@ const Rest: FC<RestProps> = ({ slugs }) => {
             {isPending ? t('sending') : t('send')}
           </button>
         </div>
-        <div className={`${container} ${container_nested}`}>
-          <h2
-            className={heading}
-            onClick={() => setShowHeaders((prev) => !prev)}
-            style={{ cursor: 'pointer' }}
-          >
-            {showHeaders ? '▼' : '▶'} {t('headers')}
-          </h2>
-          <button
-            className={`button ${button_border}`}
-            type='button'
-            onClick={addHeader}
-          >
-            {t('addHeader')}
-          </button>
-        </div>
-        {showHeaders && (
-          <table className={headers__table}>
-            <thead>
-              <tr>
-                <th>{t('key')}</th>
-                <th>{t('value')}</th>
-                <th>{t('action')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {headers.map((header, index) => (
-                <tr key={index}>
-                  <td>
-                    <input
-                      className={input}
-                      type='text'
-                      placeholder={t('headerName')}
-                      value={header.key}
-                      onChange={(e) =>
-                        handleHeaderChange(index, 'key', e.target.value)
-                      }
-                      ref={setInputRef(index)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={input}
-                      type='text'
-                      placeholder={t('headerValue')}
-                      value={header.value}
-                      onChange={(e) =>
-                        handleHeaderChange(index, 'value', e.target.value)
-                      }
-                    />
-                  </td>
-                  <td>
-                    <button
-                      type='button'
-                      className={`button ${button_border}`}
-                      onClick={() => removeHeader(index)}
-                    >
-                      X
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-
-        <div className={`${container} ${container_nested}`}>
-          <h2
-            className={heading}
-            onClick={() => setShowCodeSnippet((prev) => !prev)}
-            style={{ cursor: 'pointer' }}
-          >
-            {showCodeSnippet ? '▼' : '▶'} {t('code')}
-          </h2>
-        </div>
-        {showCodeSnippet && <CodeSnippet />}
+        <Headers
+          headers={headers}
+          setHeaders={setHeaders}
+          translate={t}
+        />
+        <Code translate={t} />
         {METHODS_WITH_BODY.includes(method) && (
-          <div className={`${container} ${container_requestbody}`}>
-            <div className={`${container} ${container_nested}`}>
-              <h2 className={heading}>{t('requestBody')}</h2>
-              <select
-                className={selectSearch}
-                value={selectedLanguage.value}
-                onChange={handleLanguageChange}
-              >
-                {languageOptions.map((lang) => (
-                  <option
-                    key={lang.value}
-                    value={lang.value}
-                  >
-                    {lang.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <CodeMirror
-              value={body}
-              height='200px'
-              theme={monokaiTheme}
-              extensions={[
-                EditorView.lineWrapping,
-                selectedLanguage.extension ? [selectedLanguage.extension] : [],
-              ]}
-              onChange={handleBodyChange}
-            />
-          </div>
+          <Body
+            body={body}
+            bodyBlurHandler={handleBodyBlur}
+            translate={t}
+          />
         )}
       </form>
-      <div className={response}>
-        <h2 className={`${heading} ${container_nested}`}>{t('response')}</h2>
-        {dataResponse.response ? (
-          <div className={response__container}>
-            <div className={container_nested}>
-              <h3 className={response__maintext}>
-                {t('status')}
-                <span
-                  className={span}
-                >{` ${dataResponse.response.status} - ${dataResponse.status}`}</span>
-              </h3>
-              <h3 className={response__maintext}>{t('responseBody')}</h3>
-            </div>
-
-            <SyntaxHighlighter
-              language='json'
-              wrapLongLines={true}
-              style={monokai}
-              className={`${response__precode} syntax-scrollbar`}
-            >
-              {JSON.stringify(dataResponse.response.data, null, 3)}
-            </SyntaxHighlighter>
-          </div>
-        ) : (
-          <div className={response__container}>
-            <h3 className={response__maintext}>
-              Status:{' '}
-              <span
-                className={span}
-              >{`${dataResponse.error} - ${dataResponse.status}`}</span>
-            </h3>
-          </div>
-        )}
-      </div>
+      <Response
+        data={dataResponse}
+        translate={t}
+      />
     </section>
   );
 };

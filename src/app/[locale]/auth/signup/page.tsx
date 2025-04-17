@@ -12,6 +12,8 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
+import { getURL } from '../../../../utils/helpers';
+
 const SignUpPage = () => {
   const supabase = createClient();
   const router = useRouter();
@@ -24,7 +26,7 @@ const SignUpPage = () => {
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/dashboard`,
+        emailRedirectTo: `${getURL()}${locale}/dashboard`,
         data: {
           first_name: name,
         },
