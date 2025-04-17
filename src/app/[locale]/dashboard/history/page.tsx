@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
 
 import HistoryWrapper from '@/components/History/HistoryWrapper';
 
@@ -11,11 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function HistoryPage() {
-  const t = useTranslations('history');
   return (
     <section>
-      <h1 className='maintext maintext_green'>{t('history')}</h1>
-      <History />
+      <HistoryWrapper />
     </section>
   );
 }

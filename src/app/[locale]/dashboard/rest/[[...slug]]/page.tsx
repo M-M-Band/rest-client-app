@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import RestWrapper from '@/components/Rest/RestWrapper';
+import RestLazyWrapper from '@/components/Rest/RestLazyWrapper';
 
 import { NO_INDEX_PAGE } from '@/constants/seo.constants';
 
@@ -18,7 +18,7 @@ export default async function RestPage({
 
   return (
     <div>
-      <RestWrapper slugs={slug} />
+      <RestLazyWrapper slugs={slug} />
     </div>
   );
 }

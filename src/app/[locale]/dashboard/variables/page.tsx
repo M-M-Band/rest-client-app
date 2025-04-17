@@ -10,9 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function VariablesPage() {
-  return (
-    <div>
-      <VariablesWrapper />
-    </div>
-  );
+  return <VariablesWrapper />;
 }
