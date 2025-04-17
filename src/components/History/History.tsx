@@ -4,9 +4,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 
-import { HistoryItem } from '@/components/Rest/Rest';
-
-import { HTTP_METHODS } from '@/types/rest.types';
+import { HTTP_METHODS, HistoryItem } from '@/types/rest.types';
 
 import { HISTORY_KEY } from '@/utils/constants';
 

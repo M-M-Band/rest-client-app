@@ -33,3 +33,12 @@ export const initialState: State = {
   response: null,
   error: null,
 };
+
+export interface HistoryItem {
+  url: string;
+  requestURL: string;
+  date: string;
+  method: string;
+  body: string;
+  headers: Header[];
+}
