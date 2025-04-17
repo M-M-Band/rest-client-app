@@ -16,9 +16,5 @@ export default async function RestPage({
 }) {
   const { slug } = await params;
 
-  return (
-    <div>
-      <RestLazyWrapper slugs={slug} />
-    </div>
-  );
+  return <RestLazyWrapper slugs={slug} />;
 }

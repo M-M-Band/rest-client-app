@@ -10,9 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function HistoryPage() {
-  return (
-    <section>
-      <HistoryWrapper />
-    </section>
-  );
+  return <HistoryWrapper />;
 }

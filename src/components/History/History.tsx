@@ -24,7 +24,7 @@ const History = () => {
   }, []);
 
   return (
-    <>
+    <section>
       <h1 className='maintext maintext_green'>{t('history')}</h1>
       <div className={history__container}>
         {history.length > 0 ? (
@@ -73,7 +73,7 @@ const History = () => {
           <h3>{t('noItems')}</h3>
         )}
       </div>
-    </>
+    </section>
   );
 };
 
