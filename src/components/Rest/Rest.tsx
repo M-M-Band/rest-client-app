@@ -100,7 +100,6 @@ const Rest: FC<RestProps> = ({ slugs }) => {
 
     window.history.replaceState(null, '', fullUrl);
   }, [BASEPATH, body, url, method, headers]);
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     startTransition(async () => {
@@ -265,10 +264,12 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               value={method}
               onChange={handleMethodChange}
               className={selectSearch}
+              data-testid='method'
             >
               {HTTP_METHODS.map(({ value, color }) => {
                 return (
                   <option
+                    data-testid='method-options'
                     key={value}
                     value={value}
                     style={{ color: color }}
@@ -287,12 +288,14 @@ const Rest: FC<RestProps> = ({ slugs }) => {
               type='url'
               placeholder='https://jsonplaceholder.typicode.com'
               required
+              data-testid='url'
             />
           </div>
           <button
             type='submit'
             disabled={isPending}
             className={`button button_colored ${button}`}
+            data-testid='submit'
           >
             {isPending ? t('sending') : t('send')}
           </button>

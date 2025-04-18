@@ -80,7 +80,10 @@ const Headers: FC<HeadersProps> = ({ headers, setHeaders, translate }) => {
           </thead>
           <tbody>
             {headers.map((header, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                data-testid='headers'
+              >
                 <td>
                   <input
                     className={input}
