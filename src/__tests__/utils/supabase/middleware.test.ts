@@ -1,21 +1,10 @@
-import { type CookieOptions, createServerClient } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextRequest } from 'next/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { updateSession } from '@/utils/supabase/middleware';
 
-type MockCookieType = {
-  name: string;
-  value: string;
-  options?: CookieOptions;
-};
-
-type MockCookieStoreType = {
-  cookies: Map<string, string>;
-  getAll: vi.Mock<[], MockCookieType[]>;
-  set: vi.Mock<[string, string, CookieOptions?], void>;
-};
-const mockCookieStore: MockCookieStoreType = {
+const mockCookieStore = {
   cookies: new Map<string, string>(),
   getAll: vi.fn(() => {
     const cookies = [];

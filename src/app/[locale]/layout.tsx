@@ -48,15 +48,15 @@ export default async function RootLayout({
               <Footer />
 
               <Toaster
-                theme='dark'
-                position='bottom-right'
+                theme='light'
+                position='top-right'
                 duration={2000}
                 expand={true}
                 richColors
                 toastOptions={{
                   style: {
-                    background: 'var(--bg-grey)',
-                    color: '#ffffff',
+                    // background: 'var(--bg-grey)',
+                    // color: '#ffffff',
                     fontSize: '1.1rem',
                     padding: '1rem',
                     borderRadius: '8px',

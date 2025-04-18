@@ -21,15 +21,23 @@ import Input from '../Input/Input';
 
 import styles from './Form.module.css';
 
-const { form, container, button, button_border, container_formElements } =
-  styles;
+const {
+  form,
+  container,
+  button,
+  button_border,
+  container_formElements,
+  text_red_500,
+  error_container,
+} = styles;
 
 type AuthFormProps = {
   mode: AuthMode;
   onSubmit: (data: SignUpFormData | SignInFormData) => Promise<void>;
+  errorMessage?: string;
 };
 
-const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
+const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
   const router = useRouter();
   const t = useTranslations('Main');
   const isSignUpMode = mode === 'signup';
@@ -37,7 +45,6 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
     register,
     handleSubmit,
     reset,
-    // formState: { errors, isValid, isSubmitting },
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData | SignUpFormData>({
     resolver: zodResolver(isSignUpMode ? SignUpSchema : SignInSchema),
@@ -101,12 +108,19 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit }) => {
           />
         ))}
       </div>
+      {errorMessage && (
+        <div
+          className={`${error_container}`} // Используем новый класс
+          data-testid='error-message'
+        >
+          <p className={text_red_500}>{errorMessage}</p>
+        </div>
+      )}
       <div className={container}>
         <button
           type='submit'
           formNoValidate
-          // disabled={!isValid || isSubmitting}
-          disabled={isSubmitting} // FIXME: for testing purposes
+          disabled={isSubmitting}
           className={`button button_colored ${button}`}
           data-testid={'submit-button'}
         >
