@@ -13,10 +13,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Variables from '@/components/Variables/Variables';
 
-import {
-  VariablesProvider,
-  //  useVariables
-} from '@/context/VariablesContext';
+import { VariablesProvider, useVariables } from '@/context/VariablesContext';
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -88,27 +85,25 @@ describe('Variables Component', () => {
     );
   };
 
-  // const TestComponent = () => {
-  //   useVariables();
-  //   return <div />;
-  // };
+  const TestComponent = () => {
+    useVariables();
+    return <div />;
+  };
 
-  // it('should throw an error when useVariables is used outside VariablesProvider', () => {
-  //   const { unmount } = render(
-  //     <MemoryRouterProvider>
-  //       <NextIntlClientProvider
-  //         locale='en'
-  //         messages={messages}
-  //       >
-  //         <TestComponent />
-  //       </NextIntlClientProvider>
-  //     </MemoryRouterProvider>
-  //   );
-  //   expect(() => screen.getByText('')).toThrowError(
-  //     'useVariables must be used within a VariablesProvider'
-  //   );
-  //   unmount();
-  // });
+  it('should throw an error when useVariables is used outside VariablesProvider', () => {
+    expect(() =>
+      render(
+        <MemoryRouterProvider>
+          <NextIntlClientProvider
+            locale='en'
+            messages={messages}
+          >
+            <TestComponent />
+          </NextIntlClientProvider>
+        </MemoryRouterProvider>
+      )
+    ).toThrowError('useVariables must be used within a VariablesProvider');
+  });
 
   it('should render without errors', () => {
     renderComponent();
@@ -181,11 +176,9 @@ describe('Variables Component', () => {
     fireEvent.change(nameInput, { target: { value: 'testName' } });
     fireEvent.change(valueInput, { target: { value: '' } });
     fireEvent.click(addButton);
-
     await waitFor(() => {
-      expect(
-        screen.getByText('Name and value cannot be empty.')
-      ).toBeInTheDocument();
+      const error = screen.queryByText('Name and value cannot be empty.');
+      expect(error).not.toBeNull();
     });
   });
 
@@ -231,4 +224,111 @@ describe('Variables Component', () => {
       expect(tableRow).not.toBeInTheDocument();
     });
   });
+  it('should edit only name', async () => {
+    renderComponent();
+    const nameInput = screen.getByPlaceholderText('Variable name');
+    const valueInput = screen.getByPlaceholderText('Variable value');
+    const addButton = screen.getByRole('button', { name: 'Add' });
+
+    fireEvent.change(nameInput, { target: { value: 'testName' } });
+    fireEvent.change(valueInput, { target: { value: 'testValue' } });
+    fireEvent.click(addButton);
+    await waitFor(() => {
+      screen.getByRole('row', { name: /testName/i });
+    });
+    const editNameInput = screen.getByDisplayValue('testName');
+    fireEvent.change(editNameInput, { target: { value: 'testNameEdit' } });
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('testNameEdit')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('testValue')).toBeInTheDocument();
+    });
+  });
+
+  it('should edit only value', async () => {
+    renderComponent();
+    const nameInput = screen.getByPlaceholderText('Variable name');
+    const valueInput = screen.getByPlaceholderText('Variable value');
+    const addButton = screen.getByRole('button', { name: 'Add' });
+
+    fireEvent.change(nameInput, { target: { value: 'testName' } });
+    fireEvent.change(valueInput, { target: { value: 'testValue' } });
+    fireEvent.click(addButton);
+    await waitFor(() => {
+      screen.getByRole('row', { name: /testName/i });
+    });
+    const editValueInput = screen.getByDisplayValue('testValue');
+    fireEvent.change(editValueInput, { target: { value: 'testValueEdit' } });
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('testValueEdit')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('testName')).toBeInTheDocument();
+    });
+  });
+
+  // it('should not add a duplicate variable when editing', async () => {
+  //   renderComponent();
+  //   const nameInput = screen.getByPlaceholderText('Variable name');
+  //   const valueInput = screen.getByPlaceholderText('Variable value');
+  //   const addButton = screen.getByRole('button', { name: 'Add' });
+
+  //   // Add the first variable
+  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
+  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
+  //   fireEvent.click(addButton);
+
+  //   await waitFor(() => {
+  //     screen.getByRole('row', { name: /testName/i });
+  //   });
+
+  //   // Add the same variable again
+  //   const editNameInput = screen.getByDisplayValue('testName');
+  //   fireEvent.change(editNameInput, { target: { value: 'testName' } });
+
+  //   expect(
+  //     screen.getByText('Variable with name "testName" already exists.')
+  //   ).toBeInTheDocument();
+  //   const editValueInput = screen.getByDisplayValue('testValue');
+  //   expect(editValueInput).toBeInTheDocument();
+  // });
+
+  // it('should display an error when editing an empty variable name', async () => {
+  //   renderComponent();
+  //   const nameInput = screen.getByPlaceholderText('Variable name');
+  //   const valueInput = screen.getByPlaceholderText('Variable value');
+  //   const addButton = screen.getByRole('button', { name: 'Add' });
+
+  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
+  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
+  //   fireEvent.click(addButton);
+  //   await waitFor(() => {
+  //     screen.getByRole('row', { name: /testName/i });
+  //   });
+  //   const editNameInput = screen.getByPlaceholderText('Variable name');
+  //   fireEvent.change(editNameInput, { target: { value: '' } });
+  //   await waitFor(() => {
+  //     expect(
+  //       screen.getByText('Name and value cannot be empty.')
+  //     ).toBeInTheDocument();
+  //   });
+  // });
+
+  // it('should display an error when editing an empty variable value', async () => {
+  //   renderComponent();
+  //   const nameInput = screen.getByPlaceholderText('Variable name');
+  //   const valueInput = screen.getByPlaceholderText('Variable value');
+  //   const addButton = screen.getByRole('button', { name: 'Add' });
+
+  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
+  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
+  //   fireEvent.click(addButton);
+  //   await waitFor(() => {
+  //     screen.getByRole('row', { name: /testName/i });
+  //   });
+  //   const editValueInput = screen.getByPlaceholderText('Variable value');
+  //   fireEvent.change(editValueInput, { target: { value: '' } });
+  //   await waitFor(() => {
+  //     expect(
+  //       screen.getByText('Name and value cannot be empty.')
+  //     ).toBeInTheDocument();
+  //   });
+  // });
 });
