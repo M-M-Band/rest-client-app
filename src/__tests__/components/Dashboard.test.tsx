@@ -1,4 +1,4 @@
-// import { User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
@@ -7,8 +7,6 @@ import { Toaster } from 'sonner';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import Dashboard from '@/components/Dashboard/Dashboard';
-
-import { User } from '@/types/auth.types';
 
 import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
@@ -24,10 +22,6 @@ interface Identity {
   user_id: string;
   identity_id: string;
   provider: string;
-  email: string;
-  created_at: string;
-  updated_at: string;
-  last_sign_in_at: string;
 }
 
 vi.mock('@/hooks/useUser');
