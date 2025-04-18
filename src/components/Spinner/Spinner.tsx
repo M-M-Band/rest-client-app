@@ -6,7 +6,10 @@ const Spinner = () => {
   return (
     <div className={styles.overlay}>
       <div className={styles.spinner}>
-        <span className={styles.loader_spinner}></span>
+        <span
+          data-testid='spinner'
+          className={styles.loader_spinner}
+        ></span>
       </div>
     </div>
   );
