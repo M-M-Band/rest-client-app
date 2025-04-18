@@ -1,14 +1,8 @@
 'use client';
 
-import React, {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useContext, useState } from 'react';
 
-export interface Variable {
+interface Variable {
   name: string;
   value: string;
 }
@@ -16,9 +10,8 @@ export interface Variable {
 interface VariablesContextProps {
   variables: Variable[];
   addVariable: (variable: Variable) => void;
-  updateVariable: (index: number, variable: Variable) => void;
-  removeVariable: (index: number) => void;
-  loadVariables: () => void;
+  updateVariable: (index: number, updatedVariable: Variable) => void;
+  removeVariable: (name: string) => void;
 }
 
 const VariablesContext = createContext<VariablesContextProps | undefined>(
@@ -34,7 +27,7 @@ export const useVariables = () => {
 };
 
 interface VariablesProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const VariablesProvider: React.FC<VariablesProviderProps> = ({
@@ -42,45 +35,29 @@ export const VariablesProvider: React.FC<VariablesProviderProps> = ({
 }) => {
   const [variables, setVariables] = useState<Variable[]>([]);
 
-  useEffect(() => {
-    loadVariables();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('variables', JSON.stringify(variables));
-  }, [variables]);
-
   const addVariable = (variable: Variable) => {
     setVariables([...variables, variable]);
   };
 
-  const updateVariable = (index: number, variable: Variable) => {
-    const newVariables = [...variables];
-    newVariables[index] = variable;
-    setVariables(newVariables);
+  const updateVariable = (index: number, updatedVariable: Variable) => {
+    const updatedVariables = [...variables];
+    updatedVariables[index] = updatedVariable;
+    setVariables(updatedVariables);
   };
 
-  const removeVariable = (index: number) => {
-    setVariables(variables.filter((_, i) => i !== index));
+  const removeVariable = (name: string) => {
+    setVariables(variables.filter((variable) => variable.name !== name));
   };
 
-  const loadVariables = () => {
-    const storedVariables = localStorage.getItem('variables');
-    if (storedVariables) {
-      setVariables(JSON.parse(storedVariables));
-    }
-  };
-
-  const contextValue: VariablesContextProps = {
+  const value = {
     variables,
     addVariable,
     updateVariable,
     removeVariable,
-    loadVariables,
   };
 
   return (
-    <VariablesContext.Provider value={contextValue}>
+    <VariablesContext.Provider value={value}>
       {children}
     </VariablesContext.Provider>
   );
