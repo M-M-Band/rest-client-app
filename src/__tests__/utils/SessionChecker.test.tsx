@@ -4,7 +4,7 @@ import {
   Session,
   SignInWithPasswordCredentials,
   SupabaseClient,
-  User,
+  User as SupabaseUser,
 } from '@supabase/supabase-js';
 import { render } from '@testing-library/react';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
@@ -25,7 +25,7 @@ interface MockSupabaseClient {
       error: AuthError | null;
     }>;
     getUser: () => Promise<{
-      data: { user: User | null };
+      data: { user: SupabaseUser | null };
       error: AuthError | null;
     }>;
     signOut: () => Promise<{ error: AuthError | null }>;
