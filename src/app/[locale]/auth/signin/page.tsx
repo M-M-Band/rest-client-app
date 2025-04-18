@@ -27,7 +27,7 @@ const SignInPage = () => {
       email,
       password,
     });
-    if (data.session) {
+    if (data?.session) {
       const expiresAt = data.session.expires_at;
       localStorage.setItem('session_expires_at', String(expiresAt));
     }

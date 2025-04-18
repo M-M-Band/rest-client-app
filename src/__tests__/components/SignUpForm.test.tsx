@@ -127,7 +127,7 @@ describe('SignUpForm', () => {
         data: {
           first_name: 'test',
         },
-        emailRedirectTo: 'undefined/en/dashboard',
+        emailRedirectTo: 'http://localhost:3000/en/dashboard',
       },
     });
     expect(mockedCreateClient).toHaveBeenCalled();

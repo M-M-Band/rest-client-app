@@ -47,25 +47,26 @@ export default async function RootLayout({
               <main>{children}</main>
               <Footer />
 
-            <Toaster
-              theme='light'
-              position='top-right'
-              duration={2000}
-              expand={true}
-              richColors
-              toastOptions={{
-                style: {
-                  // background: 'var(--bg-grey)',
-                  // color: '#ffffff',
-                  fontSize: '1.1rem',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                },
-              }}
-            />
-            <AuthRedirectHandler />
-          </div>
+              <Toaster
+                theme='light'
+                position='top-right'
+                duration={2000}
+                expand={true}
+                richColors
+                toastOptions={{
+                  style: {
+                    // background: 'var(--bg-grey)',
+                    // color: '#ffffff',
+                    fontSize: '1.1rem',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                  },
+                }}
+              />
+              <AuthRedirectHandler />
+            </div>
+          </VariablesProvider>
         </NextIntlClientProvider>
       </body>
     </html>
