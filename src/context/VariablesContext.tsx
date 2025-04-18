@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from 'react';
 
-interface Variable {
+export interface Variable {
   name: string;
   value: string;
 }
