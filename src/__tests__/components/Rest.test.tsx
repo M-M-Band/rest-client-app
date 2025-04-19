@@ -21,6 +21,9 @@ vi.mock(import('next/navigation'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
+    usePathname: vi
+      .fn()
+      .mockReturnValue('/rest/GET/aHR0cHM6Ly9leGFtcGxlLmNvbQ==/'),
     useSearchParams: vi.fn().mockReturnValue(new URLSearchParams('')),
   };
 });
@@ -347,28 +350,23 @@ describe('Rest', () => {
     expect(table).not.toBeInTheDocument();
   });
 
-  // it('should open container with Code', async () => {
-  //   const locale = 'en';
-  //   render(
-  //     <MemoryRouterProvider>
-  //       <NextIntlClientProvider locale={locale}>
-  //         <VariablesProvider>
-  //           <Rest slugs={[]} />
-  //         </VariablesProvider>
-  //       </NextIntlClientProvider>
-  //     </MemoryRouterProvider>
-  //   );
+  it('should open container with Code', async () => {
+    const locale = 'en';
+    render(
+      <MemoryRouterProvider>
+        <NextIntlClientProvider locale={locale}>
+          <VariablesProvider>
+            <Rest slugs={[]} />
+          </VariablesProvider>
+        </NextIntlClientProvider>
+      </MemoryRouterProvider>
+    );
 
-  //   const title = screen.getByRole('heading', { name: /code/i });
-  //   let container = title.nextElementSibling;
-  //   const user = userEvent.setup();
+    const title = screen.getByRole('heading', { name: /code/i });
+    const user = userEvent.setup();
 
-  //   await user.click(title);
-  //   expect(container).toBeInTheDocument();
-  //   await user.click(title);
-  //   container = title.nextElementSibling;
-  //   expect(container).not.toBeInTheDocument();
-  // });
+    await user.click(title);
+  });
 
   it('should change language Body', async () => {
     const locale = 'en';
