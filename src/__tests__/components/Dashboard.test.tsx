@@ -12,11 +12,11 @@ import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { useUser } from '@/hooks/useUser';
 
-interface IdentityData {
+export interface IdentityData {
   first_name: string;
 }
 
-interface Identity {
+export interface Identity {
   identity_data: IdentityData;
   id: string;
   user_id: string;
