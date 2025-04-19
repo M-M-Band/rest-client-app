@@ -1,8 +1,6 @@
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 
-// import { User as SupabaseUser } from '@/types/auth.types';
-
 import { createClient } from '@/utils/supabase/client';
 
 export const useUser = () => {
@@ -25,7 +23,6 @@ export const useUser = () => {
     return () => {
       authListener?.subscription.unsubscribe();
     };
-    // eslint-disable-next-line
   }, []);
 
   return { user, signOut, loading };

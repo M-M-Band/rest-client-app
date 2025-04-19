@@ -3,8 +3,6 @@ import { describe, expect, it, vi } from 'vitest';
 
 import DashboardPage from '@/app/[locale]/dashboard/page';
 
-// import Dashboard from '@/components/Dashboard/Dashboard';
-
 vi.mock('@/components/Dashboard/Dashboard', () => {
   return {
     __esModule: true,

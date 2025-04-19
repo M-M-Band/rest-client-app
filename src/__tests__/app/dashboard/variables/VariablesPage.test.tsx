@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-// import VariablesWrapper from '@/components/Variables/VariablesWrapper';
-
 import VariablesPage from '@/app/[locale]/dashboard/variables/page';
 
 vi.mock('@/components/Variables/VariablesWrapper', () => {

@@ -27,7 +27,6 @@ const SessionChecker = () => {
 
     const interval = setInterval(checkSession, 5000);
     return () => clearInterval(interval);
-    // eslint-disable-next-line
   }, [router]);
 
   return null;

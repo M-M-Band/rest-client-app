@@ -110,7 +110,7 @@ const Form: FC<AuthFormProps> = ({ mode, onSubmit, errorMessage }) => {
       </div>
       {errorMessage && (
         <div
-          className={`${error_container}`} // Используем новый класс
+          className={`${error_container}`}
           data-testid='error-message'
         >
           <p className={text_red_500}>{errorMessage}</p>

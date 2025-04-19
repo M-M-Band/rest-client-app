@@ -1,11 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  // within,
-} from '@testing-library/react';
-// import { useTranslations } from 'next-intl';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import { Toaster } from 'sonner';
@@ -66,8 +59,6 @@ describe('Variables Component', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
-
-  // const mockedUseTranslations = vi.mocked(useTranslations);
 
   const renderComponent = () => {
     return render(
@@ -133,12 +124,10 @@ describe('Variables Component', () => {
     const valueInput = screen.getByPlaceholderText('Variable value');
     const addButton = screen.getByRole('button', { name: 'Add' });
 
-    // Add the first variable
     fireEvent.change(nameInput, { target: { value: 'testName' } });
     fireEvent.change(valueInput, { target: { value: 'testValue' } });
     fireEvent.click(addButton);
 
-    // Add the same variable again
     fireEvent.change(nameInput, { target: { value: 'testName' } });
     fireEvent.change(valueInput, { target: { value: 'testValue' } });
     fireEvent.click(addButton);
@@ -263,72 +252,4 @@ describe('Variables Component', () => {
       expect(screen.getByDisplayValue('testName')).toBeInTheDocument();
     });
   });
-
-  // it('should not add a duplicate variable when editing', async () => {
-  //   renderComponent();
-  //   const nameInput = screen.getByPlaceholderText('Variable name');
-  //   const valueInput = screen.getByPlaceholderText('Variable value');
-  //   const addButton = screen.getByRole('button', { name: 'Add' });
-
-  //   // Add the first variable
-  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
-  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
-  //   fireEvent.click(addButton);
-
-  //   await waitFor(() => {
-  //     screen.getByRole('row', { name: /testName/i });
-  //   });
-
-  //   // Add the same variable again
-  //   const editNameInput = screen.getByDisplayValue('testName');
-  //   fireEvent.change(editNameInput, { target: { value: 'testName' } });
-
-  //   expect(
-  //     screen.getByText('Variable with name "testName" already exists.')
-  //   ).toBeInTheDocument();
-  //   const editValueInput = screen.getByDisplayValue('testValue');
-  //   expect(editValueInput).toBeInTheDocument();
-  // });
-
-  // it('should display an error when editing an empty variable name', async () => {
-  //   renderComponent();
-  //   const nameInput = screen.getByPlaceholderText('Variable name');
-  //   const valueInput = screen.getByPlaceholderText('Variable value');
-  //   const addButton = screen.getByRole('button', { name: 'Add' });
-
-  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
-  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
-  //   fireEvent.click(addButton);
-  //   await waitFor(() => {
-  //     screen.getByRole('row', { name: /testName/i });
-  //   });
-  //   const editNameInput = screen.getByPlaceholderText('Variable name');
-  //   fireEvent.change(editNameInput, { target: { value: '' } });
-  //   await waitFor(() => {
-  //     expect(
-  //       screen.getByText('Name and value cannot be empty.')
-  //     ).toBeInTheDocument();
-  //   });
-  // });
-
-  // it('should display an error when editing an empty variable value', async () => {
-  //   renderComponent();
-  //   const nameInput = screen.getByPlaceholderText('Variable name');
-  //   const valueInput = screen.getByPlaceholderText('Variable value');
-  //   const addButton = screen.getByRole('button', { name: 'Add' });
-
-  //   fireEvent.change(nameInput, { target: { value: 'testName' } });
-  //   fireEvent.change(valueInput, { target: { value: 'testValue' } });
-  //   fireEvent.click(addButton);
-  //   await waitFor(() => {
-  //     screen.getByRole('row', { name: /testName/i });
-  //   });
-  //   const editValueInput = screen.getByPlaceholderText('Variable value');
-  //   fireEvent.change(editValueInput, { target: { value: '' } });
-  //   await waitFor(() => {
-  //     expect(
-  //       screen.getByText('Name and value cannot be empty.')
-  //     ).toBeInTheDocument();
-  //   });
-  // });
 });

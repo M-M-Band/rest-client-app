@@ -82,7 +82,7 @@ describe('SessionChecker', () => {
     };
     const mockedCreateClient = vi.mocked(createClient);
     mockedCreateClient.mockReturnValue(mockSupabase as SupabaseClient);
-    const expiresAt = Math.floor(Date.now() / 1000) - 1; // Expired
+    const expiresAt = Math.floor(Date.now() / 1000) - 1;
     localStorage.setItem('session_expires_at', String(expiresAt));
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'http://localhost:54321');
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_ANON_KEY', 'test_anon_key');

@@ -55,8 +55,6 @@ export default async function RootLayout({
                 richColors
                 toastOptions={{
                   style: {
-                    // background: 'var(--bg-grey)',
-                    // color: '#ffffff',
                     fontSize: '1.1rem',
                     padding: '1rem',
                     borderRadius: '8px',
