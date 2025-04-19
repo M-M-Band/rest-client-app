@@ -23,7 +23,7 @@ export default function NotFound() {
         width={500}
         height={400}
         src={img}
-        alt='logo'
+        alt='Error'
       />
     </div>
   );
