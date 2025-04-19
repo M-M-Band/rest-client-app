@@ -31,10 +31,8 @@ describe('Error', () => {
       </NextIntlClientProvider>
     );
 
-    // Проверяем наличие заголовка
     expect(screen.getByText(/errorPageDescription/i)).toBeInTheDocument();
 
-    // Проверяем наличие изображения
     const image = screen.getByRole('img');
     expect(image).toBeInTheDocument();
     expect(image).toHaveAttribute('src');
