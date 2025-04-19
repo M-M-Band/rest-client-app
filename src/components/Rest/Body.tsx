@@ -45,6 +45,7 @@ const Body: FC<BodyProps> = ({ body, bodyBlurHandler, translate }) => {
             className={selectSearch}
             value={selectedLanguage.value}
             onChange={handleLanguageChange}
+            data-testid='body-language-select'
           >
             {languageOptions.map((lang) => (
               <option

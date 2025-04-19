@@ -52,7 +52,7 @@ const Response: FC<ResponseProps> = ({ data, translate }) => {
       ) : (
         <div className={response__container}>
           <h3 className={response__maintext}>
-            Status:{' '}
+            {translate('status')}
             <span className={span}>{`${data.error} - ${data.status}`}</span>
           </h3>
         </div>
