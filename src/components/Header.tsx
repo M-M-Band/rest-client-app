@@ -66,7 +66,7 @@ const Header = () => {
               src={logo}
               alt='logo'
             />
-            <span>Rest Client</span>
+            <span data-testid='rest_client_logo'>Rest Client</span>
           </Link>
           <div className='buttons-container'>
             <Link

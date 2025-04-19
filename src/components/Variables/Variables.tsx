@@ -58,6 +58,25 @@ const Variables = () => {
     }
   };
 
+  const handleInputChange = (
+    index: number,
+    field: 'name' | 'value',
+    newValue: string
+  ) => {
+    const currentVariable = storedVariables[index];
+    updateVariable(index, {
+      ...currentVariable,
+      [field]: newValue,
+    });
+  };
+
+  const handleAddVariable = () => {
+    handleVariableChange(null, {
+      name: newVariableName,
+      value: newVariableValue,
+    });
+  };
+
   return (
     <section className={variables}>
       <h1 className='maintext maintext_green'>{t('var')}</h1>
@@ -94,12 +113,7 @@ const Variables = () => {
                 <button
                   className={`button ${button_border}`}
                   type='button'
-                  onClick={() =>
-                    handleVariableChange(null, {
-                      name: newVariableName,
-                      value: newVariableValue,
-                    })
-                  }
+                  onClick={handleAddVariable}
                 >
                   {t('add')}
                 </button>
@@ -113,10 +127,7 @@ const Variables = () => {
                     type='text'
                     value={variable.name}
                     onChange={(e) =>
-                      handleVariableChange(index, {
-                        ...variable,
-                        name: e.target.value,
-                      })
+                      handleInputChange(index, 'name', e.target.value)
                     }
                   />
                 </td>
@@ -126,10 +137,7 @@ const Variables = () => {
                     type='text'
                     value={variable.value}
                     onChange={(e) =>
-                      handleVariableChange(index, {
-                        ...variable,
-                        value: e.target.value,
-                      })
+                      handleInputChange(index, 'value', e.target.value)
                     }
                   />
                 </td>
@@ -137,7 +145,7 @@ const Variables = () => {
                   <button
                     type='button'
                     className={`button ${button_border}`}
-                    onClick={() => removeVariable(index)}
+                    onClick={() => removeVariable(variable.name)}
                   >
                     {t('remove')}
                   </button>

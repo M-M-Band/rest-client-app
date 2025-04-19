@@ -32,7 +32,7 @@ const Dashboard = () => {
         <h1 className='maintext'>
           {t('authorizedTitle')},{' '}
           <span className='maintext_green'>
-            {user?.identities[0].identity_data.first_name}
+            {user?.identities?.[0]?.identity_data?.first_name}
           </span>
           !
         </h1>

@@ -4,7 +4,7 @@ import {
   Session,
   SignInWithPasswordCredentials,
   SupabaseClient,
-  User,
+  User as SupabaseUser,
 } from '@supabase/supabase-js';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
@@ -39,7 +39,7 @@ interface MockSupabaseClient {
       error: AuthError | null;
     }>;
     getUser: () => Promise<{
-      data: { user: User | null };
+      data: { user: SupabaseUser | null };
       error: AuthError | null;
     }>;
     signOut: () => Promise<{ error: AuthError | null }>;

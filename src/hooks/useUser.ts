@@ -1,12 +1,11 @@
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-
-import { User } from '@/types/auth.types';
 
 import { createClient } from '@/utils/supabase/client';
 
 export const useUser = () => {
   const supabase = createClient();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   const signOut = async () => {
@@ -16,7 +15,7 @@ export const useUser = () => {
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        setUser((session?.user as User) || null);
+        setUser(session?.user || null);
         setLoading(false);
       }
     );
@@ -24,7 +23,6 @@ export const useUser = () => {
     return () => {
       authListener?.subscription.unsubscribe();
     };
-    // eslint-disable-next-line
   }, []);
 
   return { user, signOut, loading };
