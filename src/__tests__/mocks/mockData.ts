@@ -1,4 +1,4 @@
-export const mockData = [
+export const MOCK_DATA_GET = [
   {
     userId: 1,
     id: 1,
