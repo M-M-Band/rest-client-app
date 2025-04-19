@@ -49,7 +49,10 @@ const History = () => {
                   href={fullUrl}
                   className=''
                 >
-                  <div className={history__item}>
+                  <div
+                    className={history__item}
+                    data-testid={`requestLink-${index}`}
+                  >
                     <div>
                       {t('date')} {item.date}
                     </div>
