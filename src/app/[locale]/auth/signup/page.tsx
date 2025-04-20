@@ -9,7 +9,7 @@ import Form from '@/components/Form/Form';
 
 import { SignInFormData, SignUpFormData } from '@/types/auth.types';
 
-import { DASHBOARD_PAGES } from '@/config/pages-url.config';
+import { SIGNIN_PATH } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
@@ -42,7 +42,7 @@ const SignUpPage = () => {
       toast.error(error.message);
     } else {
       toast.success('Please, check your email!');
-      router.push(DASHBOARD_PAGES.HOME);
+      router.push(SIGNIN_PATH);
     }
   };
 
