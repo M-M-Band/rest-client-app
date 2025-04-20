@@ -29,9 +29,7 @@
     background-color: transparent;
   }
   .text_red_500 {
-    color: #ff6347; /* Tomato - новый, более читаемый оттенок красного */
-    /* color: #FF4500; /* OrangeRed - еще один вариант, чуть более оранжевый */
-    /* color: #ff8c00; darkorange - Оранжевый, более яркий вариант */
+    color: #ff6347;
     font-weight: bold;
   }
 

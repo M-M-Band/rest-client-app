@@ -20,7 +20,7 @@ const SessionChecker = () => {
         localStorage.removeItem('session_expires_at');
         supabase.auth.signOut();
         setTimeout(() => {
-          router.push(DASHBOARD_PAGES.ROOT);
+          router.push(DASHBOARD_PAGES.HOME);
         }, 3000);
       }
     };

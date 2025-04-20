@@ -98,6 +98,6 @@ describe('SessionChecker', () => {
     expect(localStorage.getItem('session_expires_at')).toBeNull();
 
     vi.advanceTimersByTime(3000);
-    expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.ROOT);
+    expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.HOME);
   });
 });

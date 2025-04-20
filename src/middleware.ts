@@ -25,14 +25,17 @@ export async function middleware(request: NextRequest) {
   }
 
   const isAuthPage = nextUrl.pathname.includes(AUTH_PATH);
-  const isDashboard = nextUrl.pathname.includes(DASHBOARD_PAGES.HOME);
+  const isRest = nextUrl.pathname.includes(DASHBOARD_PAGES.REST);
+  const isHistory = nextUrl.pathname.includes(DASHBOARD_PAGES.HISTORY);
+  const isVariables = nextUrl.pathname.includes(DASHBOARD_PAGES.VARIABLES);
   const hasCode = nextUrl.searchParams.has('code');
 
   if (hasCode) {
     return response;
   }
 
-  if (!user && isDashboard) {
+  if (!user && (isRest || isHistory || isVariables)) {
+    console.log('переадресация на /login');
     return NextResponse.redirect(new URL(AUTH_PATH, request.url));
   }
 
