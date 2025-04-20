@@ -23,7 +23,6 @@ export async function middleware(request: NextRequest) {
   if (error || !user) {
     await supabase.auth.signOut();
   }
-  console.log(nextUrl.pathname);
 
   const isAuthPage = nextUrl.pathname.includes(AUTH_PATH);
   const isRest = nextUrl.pathname.includes(DASHBOARD_PAGES.REST);
@@ -36,7 +35,6 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!user && (isRest || isHistory || isVariables)) {
-    console.log('переадресация на /login');
     return NextResponse.redirect(new URL(AUTH_PATH, request.url));
   }
 
