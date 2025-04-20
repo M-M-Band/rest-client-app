@@ -234,8 +234,8 @@ const Rest: FC<RestProps> = ({ slugs }) => {
   };
 
   const handleBodyBlur: FocusEventHandler<HTMLDivElement> = (event) => {
-    const element = event.target.children[0];
-    setBody(element.textContent ?? '');
+    const element = event.target.innerText;
+    setBody(element ?? '');
   };
 
   return (
