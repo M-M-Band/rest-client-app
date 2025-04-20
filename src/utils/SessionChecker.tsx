@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { SIGNIN_PATH } from '@/config/pages-url.config';
+import { DASHBOARD_PAGES } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
@@ -12,20 +12,18 @@ const SessionChecker = () => {
   const supabase = createClient();
 
   useEffect(() => {
-    const checkSession = () => {
+    const checkSession = async () => {
       const expiresAt = Number(localStorage.getItem('session_expires_at'));
       const now = Math.floor(Date.now() / 1000);
 
       if (expiresAt && now >= expiresAt) {
+        await supabase.auth.signOut();
         localStorage.removeItem('session_expires_at');
-        supabase.auth.signOut();
-        setTimeout(() => {
-          router.push(SIGNIN_PATH);
-        }, 3000);
+        router.push(DASHBOARD_PAGES.ROOT);
       }
     };
 
-    const interval = setInterval(checkSession, 5000);
+    const interval = setInterval(checkSession, 3000);
     return () => clearInterval(interval);
   }, [router]);
 
