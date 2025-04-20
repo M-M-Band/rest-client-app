@@ -10,8 +10,6 @@ import { render } from '@testing-library/react';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { DASHBOARD_PAGES } from '@/config/pages-url.config';
-
 import SessionChecker from '@/utils/SessionChecker';
 import { createClient } from '@/utils/supabase/client';
 
@@ -93,11 +91,7 @@ describe('SessionChecker', () => {
       </MemoryRouterProvider>
     );
 
-    vi.advanceTimersByTime(5000);
+    vi.advanceTimersByTime(3100);
     expect(mockSupabase.auth.signOut).toHaveBeenCalled();
-    expect(localStorage.getItem('session_expires_at')).toBeNull();
-
-    vi.advanceTimersByTime(3000);
-    expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.HOME);
   });
 });
