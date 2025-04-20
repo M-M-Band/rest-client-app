@@ -12,7 +12,7 @@ import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { DASHBOARD_PAGES } from '@/config/pages-url.config';
+import { SIGNIN_PATH } from '@/config/pages-url.config';
 
 import { createClient } from '@/utils/supabase/client';
 
@@ -118,7 +118,7 @@ describe('SignUpForm', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     await waitFor(() => {
-      expect(routerMock.push).toHaveBeenCalledWith(DASHBOARD_PAGES.HOME);
+      expect(routerMock.push).toHaveBeenCalledWith(SIGNIN_PATH);
     });
     expect(mockSupabase.auth.signUp).toHaveBeenCalledWith({
       email: 'test@example.com',
