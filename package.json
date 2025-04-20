@@ -25,6 +25,7 @@
     "start": "next start",
     "lint": "next lint",
     "test-coverage": "vitest --coverage",
+    "test-coverage-noWatch": "vitest --coverage --no-watch",
     "test-ui": "vitest --ui",
     "test": "vitest",
     "format:fix": "prettier --write .",
